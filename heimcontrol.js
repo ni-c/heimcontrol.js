@@ -28,6 +28,7 @@ requirejs(['http', 'path', 'express', 'socket.io', './routes', 'heimcontrol-wake
 	});
 	
 	var io = socketio.listen(server);
+	io.set('log level', 0);
 
 	app.configure(function() {
 		app.set('views', __dirname + '/views');
