@@ -14,8 +14,8 @@ require(["jquery", "/js/bootstrap.min.js", "/js/socket.io.min.js"], function() {
 
 	$('.wol').click(function() {
 		socket.emit('wol', {
-			host : $(this).attr('data-host'),
-			mac : $(this).attr('data-mac')
+			host: $(this).attr('data-host'),
+			mac: $(this).attr('data-mac')
 		});
 	});
 });

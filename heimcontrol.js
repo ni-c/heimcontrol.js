@@ -20,7 +20,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs(['http', 'path', 'express', 'socket.io', './routes', './plugins/wakeonlan'], function(http, path, express, socketio, routes, wakeonlan) {
+requirejs(['http', 'path', 'express', 'socket.io', './routes', 'heimcontrol-wakeonlan'], function(http, path, express, socketio, routes, wakeonlan) {
 	var app = express();
 	
 	var server = http.createServer(app).listen(80, function() {
@@ -52,9 +52,6 @@ requirejs(['http', 'path', 'express', 'socket.io', './routes', './plugins/wakeon
 	app.get('/js/socket.io.min.js', function(req, res) {
 		res.sendfile(__dirname + '/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js');
 	});
-	
-	
-	console.log(wakeonlan);
 	
 	wakeonlan.init(app);
 	

@@ -11,6 +11,7 @@
     "requirejs": ">= 2.1.4",
     "amdefine": ">= 0.0.4",
     "socket.io": ">= 0.9.13",
-    "rasp2c": ">= 0.0.1"
+    "rasp2c": ">= 0.0.1",
+    "heimcontrol-wakeonlan": "https://github.com/heimcontroljs/plugin-wakeonlan/tarball/master"
   }
 }
