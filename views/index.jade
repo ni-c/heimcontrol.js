@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  div.container  
+    div.plugin-container.plugin-wol
+      button.btn.btn-large.ping(type="button",data-host:"curiosity") curiosity 
+        span.muted [Bc:5f:f4:5d:7c:08]
+      span.label.label-success.pull-right.hide.online(data-host="curiosity") Online
+      span.label.label-important.pull-right.offline(data-host="curiosity") Offline

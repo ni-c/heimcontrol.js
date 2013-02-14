@@ -1,0 +1,16 @@
+{
+  "name": "heimcontrol.js",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "start": "node heimcontrol.js"
+  },
+  "dependencies": {
+    "express": ">= 3.1.0",
+    "jade": ">= 0.28.1",
+    "requirejs": ">= 2.1.4",
+    "amdefine": ">= 0.0.4",
+    "socket.io": ">= 0.9.13",
+    "rasp2c": ">= 0.0.1"
+  }
+}

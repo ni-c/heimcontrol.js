@@ -1,0 +1,31 @@
+doctype 5
+html
+  head
+    title heimcontrol.js
+    link(rel='stylesheet', href='/css/bootstrap.min.css') 
+    link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/css/heimcontrol.css')
+    link(rel='icon', href='/favicon.ico', type='image/x-icon')
+    script(data-main='/js/main', src='/js/require-jquery.js')
+    meta(name="viewport",content="width=device-width, initial-scale=1.0")
+  body
+    div.navbar.navbar-inverse.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          button.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.brand(href="/") heimcontrol.js
+          div.nav-collapse.collapse
+            ul.nav#bar-menu-left
+              li.active
+                a(href="/")
+                  i.icon-home
+                  |  Home
+              li
+                a(href="/settings")
+                  i.icon-cogs
+                  |  Settings
+    block content
