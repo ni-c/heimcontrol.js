@@ -1,5 +1,5 @@
 /**
- * heimcontrol.js (https://github.com/ni-c/heimcontroljs)
+ * heimcontrol.js (https://github.com/heimcontroljs/heimcontroljs)
  *
  * @file routes/index.js
  * @brief heimcontrol.js

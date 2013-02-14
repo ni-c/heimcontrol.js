@@ -1,5 +1,5 @@
 /**
- * heimcontrol.js (https://github.com/ni-c/heimcontrol.js)
+ * heimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)
  *
  * @file heimcontrol.js
  * @brief Heimcontrol.js - Homeautomation in node.js
