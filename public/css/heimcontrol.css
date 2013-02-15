@@ -3,6 +3,15 @@
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
   }
 }
+@media (max-width: 979px) {
+  input {
+    width: 125px;
+  }
+}
+
+.buttons button {
+  margin-right: 6px;
+}
 
 .plugin-container:after {
   background-color: #F5F5F5;
@@ -25,12 +34,4 @@
   margin: 15px 0;
   padding: 39px 19px 14px;
   position: relative;
-}
-
-.plugin-wol:after {
-  content: "Wake on LAN";
-}
-
-.plugin-wol span {
-  margin-top: 13px;
 }

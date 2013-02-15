@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  div.container  
+    div#settings
+      div.plugin-container.plugin-wol#curiosity
+        label(for="description") Description (optional):
+        input#description(type="text", name="description", placeholder="iMac")
+        label(for="host") Hostname / IP:
+        input#host(type="text", name="host", placeholder="hostname", required="1")
+        label(for="mac") MAC-Address:
+        input#mac(type="text", name="mac", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
+        button.btn.btn-danger.pull-right.delete(type="button",data-delete="curiosity")
+          i.icon-trash.icon-large
+          |  Delete
+
+    p.buttons
+      button.btn.btn-info.woladd(type="button") 
+        i.icon-plus.icon-large
+        |  Add
+      
+      button.btn.btn-success.save(type="button") 
+        i.icon-save.icon-large
+        |  Save

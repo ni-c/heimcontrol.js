@@ -1,13 +1,17 @@
 doctype 5
 html
   head
-    title heimcontrol.js
+    title heimcontrol.js | #{title}
     link(rel='stylesheet', href='/css/bootstrap.min.css') 
     link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/css/font-awesome.min.css')
     link(rel='stylesheet', href='/css/heimcontrol.css')
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
     script(data-main='/js/main', src='/js/require-jquery.js')
+
+    link(rel='stylesheet', href='/plugin/wakeonlan.css')
+    script(data-main='/js/main', src='/plugin/wakeonlan.js')
+
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
   body
     div.navbar.navbar-inverse.navbar-fixed-top
@@ -20,11 +24,11 @@ html
           a.brand(href="/") heimcontrol.js
           div.nav-collapse.collapse
             ul.nav#bar-menu-left
-              li.active
+              li(class=(title === 'Home' ? 'active' : ''))                
                 a(href="/")
                   i.icon-home
                   |  Home
-              li
+              li(class=(title === 'Settings' ? 'active' : ''))                
                 a(href="/settings")
                   i.icon-cogs
                   |  Settings

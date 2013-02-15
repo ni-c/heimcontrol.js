@@ -18,8 +18,17 @@ define(function() {
 	 * /
 	 */
 	routes.index = function(req, res) {
-		return res.render('index');
+		res.render('index', {
+			title : 'Home'
+		});
 	};
-	
+	/**
+	 * /settings
+	 */
+	routes.settings = function(req, res) {
+		res.render('settings', {
+			title : 'Settings'
+		});
+	};
 	return routes;
 });
