@@ -26,9 +26,16 @@ define(function() {
 	 * /settings
 	 */
 	routes.settings = function(req, res) {
-		res.render('settings', {
-			title : 'Settings'
-		});
+		if (req.params.plugin) {
+			res.render('settings-plugin', {
+				plugin: req.params.plugin,
+				title : 'Settings'
+			});
+		} else {
+			res.render('settings', {
+				title : 'Settings'
+			});
+		}
 	};
 	return routes;
 });
