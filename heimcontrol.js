@@ -23,8 +23,8 @@ requirejs.config({
 requirejs(['http', 'path', 'express', 'socket.io', 'jade', './routes', 'heimcontrol-wakeonlan'], function(http, path, express, socketio, jade, routes, wakeonlan) {
 	var app = express();
 
-	var server = http.createServer(app).listen(80, function() {
-		console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', 80);
+	var server = http.createServer(app).listen(8080, function() {
+		console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', 8080);
 	});
 	var io = socketio.listen(server);
 	io.set('log level', 0);
