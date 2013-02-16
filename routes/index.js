@@ -33,6 +33,7 @@ define(function() {
 			});
 		} else {
 			res.render('settings', {
+				plugins: req.app.get('plugins'),
 				title : 'Settings'
 			});
 		}

@@ -20,7 +20,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', './routes'], function(http, mongo, path, express, socketio, jade, routes) {
+requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './routes'], function(http, mongo, path, express, socketio, jade, fs, routes) {
 	var app = express();
 
 	var db = new mongo.Db('heimcontroljs', new mongo.Server('127.0.0.1', 27017, {}, {
@@ -73,14 +73,32 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', './routes'
 				}
 			});
 
+			// Get socket.io file
 			app.get('/js/socket.io.min.js', function(req, res) {
 				res.sendfile(__dirname + '/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js');
 			});
 
-			requirejs(['heimcontrol-wakeonlan'], function(wakeonlan) {
-				wakeonlan.init(app);
-			});
-			
+			// Read plugins
+			var plugins = [];
+		  fs.readdir(__dirname + '/node_modules', function(err, files) {
+		  	files.forEach(function(file) {
+		  		if (file.indexOf('heimcontrol-') == 0) {
+		  			var plugin = {
+		  				id: file,
+		  				name: file.replace('heimcontrol-', '')
+		  			}
+		  			// Initialize
+						requirejs([plugin.id], function(p) {
+							p.init(app);
+							plugin.instance = p;
+						});
+						
+		  			plugins.push(plugin);
+		  		}
+		  	});
+		  	app.set('plugins', plugins);
+		  });
+
 		}
 	});
 });

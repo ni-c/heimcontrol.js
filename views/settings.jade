@@ -3,4 +3,5 @@ extends layout
 block content
   div.container
     div#settings
-      a.btn.btn-large(href="/settings/wakeonlan") wakeonlan-plugin
+      each plugin in plugins
+        a.btn.btn-large(href="/settings/#{plugin.name}") #{plugin.name}-plugin
