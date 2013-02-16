@@ -15,28 +15,54 @@ define(function() {
 	var routes = {};
 
 	/**
+	 * Build index page from plugins
+	 */
+	function getIndexFromPlugins(app, plugins, i, content, callback) {
+		plugins[i].instance.getIndex(app, function(err, result) {
+			content = content + result;
+			i++;
+			if(i < plugins.length) {
+				getIndexFromPlugins(plugins, i, content, callback);
+			} else {
+				callback(null, content);
+			}
+		});
+	}
+
+	/**
 	 * /
 	 */
 	routes.index = function(req, res) {
-		res.render('index', {
-			title : 'Home'
+		var content = getIndexFromPlugins(req.app, req.app.get('plugins'), 0, "", function(err, content) {
+			res.render('index', {
+				title : 'Home',
+				content : content
+			});
 		});
 	};
+	
 	/**
 	 * /settings
 	 */
 	routes.settings = function(req, res) {
-		if (req.params.plugin) {
-			res.render('settings-plugin', {
-				plugin: req.params.plugin,
-				title : 'Settings'
-			});
+		if(req.params.plugin) {
+			req.app.get('plugins').forEach(function(plugin) {
+				if (plugin.name == req.params.plugin) {
+					plugin.instance.getSettings(req.app, function(err, result) {
+						return res.render('settings-plugin', {
+							content : result,
+							plugin: req.params.plugin,
+							title : req.params.plugin + ' Settings'
+						});
+					});
+				}
+			})
 		} else {
-			res.render('settings', {
-				plugins: req.app.get('plugins'),
+			return res.render('settings', {
 				title : 'Settings'
 			});
 		}
 	};
 	return routes;
+
 });

@@ -92,10 +92,10 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 							p.init(app);
 							plugin.instance = p;
 						});
-						
 		  			plugins.push(plugin);
 		  		}
 		  	});
+				app.locals.plugins = plugins;
 		  	app.set('plugins', plugins);
 		  });
 

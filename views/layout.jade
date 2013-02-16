@@ -9,8 +9,9 @@ html
     link(rel='icon', href='/favicon.ico', type='image/x-icon')
     script(data-main='/js/main', src='/js/require-jquery.js')
 
-    link(rel='stylesheet', href='/plugin/wakeonlan.css')
-    script(data-main='/js/main', src='/plugin/wakeonlan.js')
+    each plugin in plugins
+      link(rel='stylesheet', href='/plugin/#{plugin.name}.css')
+      script(data-main='/js/main', src='/plugin/#{plugin.name}.js')
 
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
   body
