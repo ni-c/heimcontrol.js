@@ -49,6 +49,19 @@ scons
 sudo scons --prefix=/opt/mongo install
 ```` 
 
+Add the PATH to the mongodb binaries. Open the file `/etc/environment`:
+
+````bash
+sudo vi /etc/environment
+````
+
+and add the following:
+
+````bash
+PATH=$PATH:/opt/mongo/bin/
+export PATH
+````
+
 #### Register mongodb as a service
 
 Create user `mongodb`:
