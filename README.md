@@ -2,6 +2,72 @@
 
 Homeautomation in node.js
 
+## Installation
+
+### Git and Essentials
+
+````bash
+sudo apt-get update
+sudo apt-get install git-core build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+````
+
+### node.js
+
+Build and install node.js:
+
+````bash
+wget http://nodejs.org/dist/v0.8.20/node-v0.8.20.tar.gz
+tar -zxf node-v0.8.20.tar.gz
+cd node-v0.8.20
+./configure
+make
+sudo make install
+```` 
+
+### mongodb
+
+On the Raspberry PI with 256 MB of RAM you have to increase the size of the swapfile. Open the file `/etc/dphys-swapfile`:
+
+````bash
+vi /etc/dphys-swapfile
+````
+
+and change the value of `CONF_SWAPSIZE` to 200:
+
+````bash
+CONF_SWAPSIZE=200
+````
+
+Build and install mongodb:
+
+````bash
+git clone git://github.com/RickP/mongopi.git
+cd mongopi
+scons
+sudo scons --prefix=/opt/mongo install
+```` 
+
+#### Install mongodb as service
+
+Create user `mongodb`:
+
+````bash
+sudo useradd mongodb
+````
+
+Create the database directory:
+
+````bash
+sudo mkdir /var/lib/mongodb
+sudo chown mongodb:mongodb /var/lib/mongodb
+```` 
+
+Register upstart init script:
+
+````bash
+sudo update-rc.d mongodb defaults
+````
+
 ## MIT License
 
 Copyright (c) 2013 Willi Thiel (ni-c@ni-c.de)
