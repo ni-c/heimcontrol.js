@@ -4,7 +4,7 @@ Homeautomation in node.js
 
 ## MIT License
 
-Copyright (c) 2013 Willi Thiel (thiel.willi@web.de)
+Copyright (c) 2013 Willi Thiel (ni-c@ni-c.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
