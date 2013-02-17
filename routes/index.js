@@ -22,7 +22,7 @@ define(function() {
 			content = content + result;
 			i++;
 			if(i < plugins.length) {
-				getIndexFromPlugins(plugins, i, content, callback);
+				getIndexFromPlugins(app, plugins, i, content, callback);
 			} else {
 				callback(null, content);
 			}

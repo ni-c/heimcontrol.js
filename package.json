@@ -13,6 +13,7 @@
     "amdefine": ">= 0.0.4",
     "socket.io": ">= 0.9.13",
     "rasp2c": ">= 0.0.1",
-    "heimcontrol-wakeonlan": "https://github.com/heimcontroljs/plugin-wakeonlan/tarball/master"
+    "heimcontrol-wakeonlan": "https://github.com/heimcontroljs/plugin-wakeonlan/tarball/master",
+    "heimcontrol-gpio": "https://github.com/heimcontroljs/plugin-gpio/tarball/master",
   }
 }

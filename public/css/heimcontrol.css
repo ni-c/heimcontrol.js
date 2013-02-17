@@ -1,3 +1,7 @@
+.container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+  max-width: 979px;
+}
+
 @media (min-width: 979px) {
   body {
     padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -5,6 +9,9 @@
 }
 @media (max-width: 979px) {
   input {
+    width: 125px;
+  }
+  select {
     width: 125px;
   }
 }
@@ -57,4 +64,15 @@
 
 #settings {
   padding-top: 25px;
+}
+
+.label-large {
+  padding: 12px 24px;
+  font-size: 17.5px;
+  font-weight: normal;
+  line-height: 21px;
+}
+
+.plugin-container .pull-right {
+  margin-top: 12px;
 }
