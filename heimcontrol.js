@@ -59,7 +59,6 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 			});
 
 			app.get('/', routes.index);
-			app.get('/settings', routes.settings);
 			app.get('/settings/:plugin', routes.settings);
 
 			// Plugin JS and CSS
@@ -91,6 +90,7 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 						requirejs([plugin.id], function(p) {
 							p.init(app);
 							plugin.instance = p;
+							plugin.icon = p.icon;
 						});
 		  			plugins.push(plugin);
 		  		}

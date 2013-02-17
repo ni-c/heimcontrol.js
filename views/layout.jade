@@ -27,12 +27,20 @@ html
             ul.nav#bar-menu-left
               li(class=(title === 'Home' ? 'active' : ''))                
                 a(href="/")
-                  i.icon-home
-                  |  Home
-              li(class=(title === 'Settings' ? 'active' : ''))                
-                a(href="/settings")
-                  i.icon-cogs
-                  |  Settings
+                  i.icon-home  
+                  | &nbsp;Home
+              li.dropdown(class=(title === 'Settings' ? 'active' : ''))                
+                a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
+                  i.icon-cogs 
+                  | &nbsp;Settings&nbsp;
+                  b.caret
+                ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
+                  each plugin in plugins
+                    li
+                      a(href="/settings/#{plugin.name}") 
+                        - if (plugin.icon)
+                          i(class="#{plugin.icon}") &nbsp;
+                        | &nbsp;#{plugin.name}
     block content
     footer.footer
       div.container
@@ -50,4 +58,4 @@ html
           a(href="http://nodejs.org/") node.js 
           | &   
           a(href="http://www.mongodb.org/") mongodb
-          |. 
+          |.           

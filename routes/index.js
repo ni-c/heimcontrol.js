@@ -49,7 +49,7 @@ define(function() {
 			req.app.get('plugins').forEach(function(plugin) {
 				if (plugin.name == req.params.plugin) {
 					plugin.instance.getSettings(req.app, function(err, result) {
-						return res.render('settings-plugin', {
+						return res.render('settings', {
 							content : result,
 							plugin: req.params.plugin,
 							title : req.params.plugin + ' Settings'
@@ -57,10 +57,6 @@ define(function() {
 					});
 				}
 			})
-		} else {
-			return res.render('settings', {
-				title : 'Settings'
-			});
 		}
 	};
 	return routes;

@@ -2,6 +2,4 @@ extends layout
 
 block content
   div.container
-    div#settings
-      each plugin in plugins
-        a.btn.btn-large(href="/settings/#{plugin.name}") #{plugin.name}-plugin
+    div(id="settings-#{plugin}")!= content
