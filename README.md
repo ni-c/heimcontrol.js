@@ -1,6 +1,6 @@
 # Heimcontrol.js
 
-Homeautomation in node.js
+Homeautomation with the Raspberry PI in node.js using websockets.
 
 ## Installation
 
@@ -13,7 +13,9 @@ sudo apt-get install git-core build-essential scons libpcre++-dev xulrunner-dev 
 
 ### node.js
 
-#### Build and install *node.js*:
+Install [node.js](http://nodejs.org/) on the Raspberry PI
+
+#### Build and install
 
 ````bash
 wget http://nodejs.org/dist/v0.8.20/node-v0.8.20.tar.gz
@@ -25,6 +27,8 @@ sudo make install
 ```` 
 
 ### mongodb
+
+Install [mongodb](http://www.mongodb.org/) on the Raspberry PI
 
 #### Increase swap size
 
@@ -108,6 +112,16 @@ After the app has started up (this will take a while), you can access the webint
 ````bash
 node heimcontrol.js
 ````
+
+## Used open-source projects:
+
+- [node.js](https://github.com/joyent/node)
+- [express](https://github.com/visionmedia/express)
+- [requirejs](https://github.com/jrburke/requirejs)
+- [jade](https://github.com/visionmedia/jade)
+- [socket.io](https://github.com/LearnBoost/socket.io)
+- [bootstrap](https://github.com/twitter/bootstrap)
+- [font-awesome](https://github.com/FortAwesome/Font-Awesome)
 
 ## MIT License
 
