@@ -116,7 +116,7 @@ node heimcontrol.js
 ## Used open-source projects:
 
 - [node.js](https://github.com/joyent/node)
-- [mongodb](https://github.com/mongodb/mongo)
+- [mongodb](https://github.com/mongodb/mongo) (Especially the Raspberry PI fork: [mongopi](https://github.com/RickP/mongopi))
 - [express](https://github.com/visionmedia/express)
 - [requirejs](https://github.com/jrburke/requirejs)
 - [jade](https://github.com/visionmedia/jade)
