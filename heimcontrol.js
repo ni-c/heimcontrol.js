@@ -20,19 +20,33 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './routes'], function(http, mongo, path, express, socketio, jade, fs, routes) {
+requirejs(['http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'fs', './routes'], function(http, connect, mongo, path, express, conf, socketio, jade, fs, routes) {
+
+	// Load configuration
+	var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+	var config = conf.load(node_env);
+
+	if(!config.port || !config.secret || !config.mongo || !config.mongo.name || !config.mongo.host || !config.mongo.port || !config.mongo.user) {
+		return console.log('\u001b[31mMissing configuration file \u001b[33mconfig/' + node_env + '.json\u001b[31m. Create configuration file or start with `NODE_ENV=development node heimcontrol.js` to use another configuration file.\033[0m');
+	}
+
+	// Initiate express
 	var app = express();
 
-	var db = new mongo.Db('heimcontroljs', new mongo.Server('127.0.0.1', 27017, {}, {
+	// Load database
+	var db = new mongo.Db(config.mongo.name, new mongo.Server(config.mongo.host, config.mongo.port, config.mongo.user, {
 		native_parser : false
 	}));
+
+	var cookieParser = express.cookieParser(config.secret);
+	var sessionStore = new connect.middleware.session.MemoryStore();
 
 	db.open(function(err, db) {
 		if(err) {
 			return console.log('\u001b[31mFailed to connect to MongoDB: ' + err + '\033[0m');
 		} else {
-			var server = http.createServer(app).listen(8080, function() {
-				console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', 8080);
+			var server = http.createServer(app).listen(config.port, function() {
+				console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', config.port);
 			});
 			var io = socketio.listen(server);
 			io.set('log level', 0);
@@ -45,10 +59,16 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 				app.set('sockets', io.sockets);
 				app.set('mongo', mongo);
 				app.set('db', db);
+				app.set('config', config);
 				app.use(express.favicon());
 				app.use(express.logger('dev'));
 				app.use(express.bodyParser());
 				app.use(express.methodOverride());
+				app.use(cookieParser);
+				app.use(express.session({
+					store : sessionStore,
+					key : 'heimcontrol.js'
+				}));
 				app.use(app.router);
 				app.use(express.static(path.join(__dirname, 'public')));
 				app.use(express.favicon(__dirname + '/public/favicon.ico'));
@@ -58,8 +78,12 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 				app.use(express.errorHandler());
 			});
 
+			app.get('/login', routes.login);
+			app.get('/logout', routes.logout);
+			app.post('/login', routes.performlogin);
 			app.get('/', routes.index);
 			app.get('/settings/:plugin', routes.settings);
+			
 
 			// Plugin JS and CSS
 			app.get('/plugin/:file', function(req, res) {
@@ -71,34 +95,31 @@ requirejs(['http', 'mongodb', 'path', 'express', 'socket.io', 'jade', 'fs', './r
 					res.sendfile(__dirname + '/node_modules/heimcontrol-' + file.substr(0, file.length - 3) + '/js/' + file);
 				}
 			});
-
 			// Get socket.io file
 			app.get('/js/socket.io.min.js', function(req, res) {
 				res.sendfile(__dirname + '/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js');
 			});
-
 			// Read plugins
 			var plugins = [];
-		  fs.readdir(__dirname + '/node_modules', function(err, files) {
-		  	files.forEach(function(file) {
-		  		if (file.indexOf('heimcontrol-') == 0) {
-		  			var plugin = {
-		  				id: file,
-		  				name: file.replace('heimcontrol-', '')
-		  			}
-		  			// Initialize
+			fs.readdir(__dirname + '/node_modules', function(err, files) {
+				files.forEach(function(file) {
+					if(file.indexOf('heimcontrol-') == 0) {
+						var plugin = {
+							id : file,
+							name : file.replace('heimcontrol-', '')
+						}
+						// Initialize
 						requirejs([plugin.id], function(p) {
 							p.init(app);
 							plugin.instance = p;
 							plugin.icon = p.icon;
 						});
-		  			plugins.push(plugin);
-		  		}
-		  	});
+						plugins.push(plugin);
+					}
+				});
 				app.locals.plugins = plugins;
-		  	app.set('plugins', plugins);
-		  });
-
+				app.set('plugins', plugins);
+			});
 		}
 	});
 });

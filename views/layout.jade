@@ -22,23 +22,29 @@ html
             span.icon-bar
           a.brand(href="/") heimcontrol.js
           div.nav-collapse.collapse
-            ul.nav#bar-menu-left
-              li(class=(title === 'Home' ? 'active' : ''))                
-                a(href="/")
-                  i.icon-home  
-                  | &nbsp;Home
-              li.dropdown(class=(title === 'Settings' ? 'active' : ''))                
-                a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
-                  i.icon-cogs 
-                  | &nbsp;Settings&nbsp;
-                  b.caret
-                ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
-                  each plugin in plugins
-                    li
-                      a(href="/settings/#{plugin.name}") 
-                        - if (plugin.icon)
-                          i(class="#{plugin.icon}") &nbsp;
-                        | &nbsp;#{plugin.name}
+            - if (typeof(hide_menubar) == 'undefined')
+              ul.nav#bar-menu-left
+                li(class=(title === 'Home' ? 'active' : ''))                
+                  a(href="/")
+                    i.icon-home  
+                    | &nbsp;Home
+                li.dropdown(class=(title === 'Settings' ? 'active' : ''))                
+                  a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
+                    i.icon-cogs 
+                    | &nbsp;Settings&nbsp;
+                    b.caret
+                  ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
+                    each plugin in plugins
+                      li
+                        a(href="/settings/#{plugin.name}") 
+                          - if (plugin.icon)
+                            i(class="#{plugin.icon}") &nbsp;
+                          | &nbsp;#{plugin.name}
+              ul.nav.pull-right#bar-menu-right
+                li
+                  a.btn-logout(href="/logout") 
+                    i.icon-signout &nbsp;
+                    | Logout
     block content
     footer.footer
       div.container

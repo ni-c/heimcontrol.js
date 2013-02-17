@@ -76,3 +76,7 @@
 .plugin-container .pull-right {
   margin-top: 12px;
 }
+
+input.login {
+  width: 260px;
+}
