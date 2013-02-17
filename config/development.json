@@ -1,0 +1,10 @@
+{
+  "port": 8080,
+  "secret": "YOUR_SECRET_HERE",
+  "mongo": {
+    "host" : "127.0.0.1",
+    "name" : "heimcontroljs",
+    "port" : "27017",
+    "user" : {}
+  }
+}

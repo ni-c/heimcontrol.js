@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.container
+    h1 Login
+    div.row16
+      - if (typeof(error) !== 'undefined')
+        div.alert.alert-error.fade.in.login-error
+          button.close(type="button", data-dismiss="alert") ×
+          strong Error: &nbsp;
+          =error
+      - if (typeof(success) !== 'undefined')
+        div.alert.alert-success.fade.in
+          button.close(type="button", data-dismiss="alert") ×
+          =success
+    div.row16
+      form#loginform(action="/login", method="POST")
+        p
+          label(for="email") Email:
+          input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
+        p
+          label(for="password") Password:
+          input.login#password(type="password", name="password", required="1")
+        p
+          label.checkbox
+            input#rememberme(type="checkbox")
+            | Remember me
+        br
+        p
+          input.btn.btn-success.btn-login(type="submit", value="Login")

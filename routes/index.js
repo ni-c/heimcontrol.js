@@ -30,9 +30,26 @@ define(['crypto'], function(crypto) {
 	}
 
 	/**
+	 * Parse cookies in header
+	 */
+	function parseCookies(req, callback) {
+		var cookies = {};
+		if(req.headers.cookie) {
+			req.headers.cookie.split(';').forEach(function(cookie) {
+				var parts = cookie.split('=');
+				cookies[parts[0].trim()] = decodeURIComponent((parts[1] || '' ).trim());
+			});
+			callback(false, cookies);
+		} else {
+			callback(true, {});
+		}
+	}
+
+	/**
 	 * /
 	 */
 	routes.index = function(req, res) {
+
 		// Login check
 		if(!req.session.user) {
 			return res.redirect('/login');
@@ -50,9 +67,16 @@ define(['crypto'], function(crypto) {
 	 * /login
 	 */
 	routes.login = function(req, res) {
-		res.render('login', {
-			title : 'Login',
-			hide_menubar : true
+		
+		parseCookies(req, function(err, result) {
+			if ((!err) && (result.email) && (result.password)) {
+				return routes.performlogin(req, res);
+			} else {
+				return res.render('login', {
+					title : 'Login',
+					hide_menubar : true
+				});
+			}
 		});
 	};
 	
@@ -64,7 +88,7 @@ define(['crypto'], function(crypto) {
 		res.render('login', {
 			title : 'Login',
 			hide_menubar : true,
-			success: 'You are now logged out.'
+			success : 'You are now logged out.'
 		});
 	};
 	
@@ -72,27 +96,30 @@ define(['crypto'], function(crypto) {
 	 * POST /login
 	 */
 	routes.performlogin = function(req, res) {
-		var email = req.body.email || '';
-		var password = crypto.createHash('sha256').update(req.body.password || '').digest("hex");
-		req.app.get('db').collection('User', function(err, u) {
-			u.find({
-				'email' : email,
-				'password' : password
-			}).toArray(function(err, r) {
-				if (r.length==0) {
-					return res.render('login', {
-						title : 'Login',
-						error: 'Login failed, wrong email/password combination.',
-						hide_menubar : true
-					});
-				} else {
-					req.session.user = r[0];
-					return res.redirect('/');
-				}
+		
+		parseCookies(req, function(err, cookies) {
+			var email = req.body.email || cookies.email || '';
+			var password = crypto.createHash('sha256').update(req.body.password || cookies.password || '').digest("hex");
+			
+			req.app.get('db').collection('User', function(err, u) {
+				u.find({
+					'email' : email,
+					'password' : password
+				}).toArray(function(err, r) {
+					if(r.length == 0) {
+						return res.render('login', {
+							title : 'Login',
+							error : 'Login failed, wrong email/password combination.',
+							hide_menubar : true
+						});
+					} else {
+						req.session.user = r[0];
+						return res.redirect('/');
+					}
+				});
 			});
 		});
 	}
-	
 	/**
 	 * /settings
 	 */

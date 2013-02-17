@@ -132,6 +132,20 @@ After the app has started up (this will take a while), you can access the webint
 node heimcontrol.js
 ````
 
+Use `forever` to run heimcontrol.js in the background:
+
+````bash
+sudo npm install forever
+forever start heimcontrol.js
+````
+
+And to stop heimcontrol.js:
+
+````bash
+forever stop heimcontrol.js
+````
+
+
 ## Used open-source projects:
 
 - [node.js](https://github.com/joyent/node)
