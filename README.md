@@ -105,25 +105,6 @@ The node.js server will listen on port 8080. You can use iptables to route port 
 iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
 ````
 
-#### Login credentials
-
-There is currently no usermanagement in heimcontrol.js. To create an user account you have to create an entry in the MongoDB.
-
-Replace `YOURPASSWORD` with your desired password and run the following command to create a password hash:
-
-````bash
-PASSWORD='YOURPASSWORD' node -e "console.log(require('crypto').createHash('sha256').update(process.env.PASSWORD).digest('hex'));"
-````
-
-Create an entry in the User collection of the MongoDB with your email and the generated passowrd hash:
-
-````hash
-mongo heimcontroljs
-MongoDB shell version: 2.1.1
-connecting to: heimcontroljs
-> db.User.save({email:"YOUREMAIL@EXAMPLE.COM",password:"e3c652f0ba0b4801205814f8b6bc49672c4c74e25b497770bb89b22cdeb4e951"});
-````
-
 #### Run heimcontrol.js
 
 After the app has started up (this will take a while), you can access the webinterface by opening the IP of your Raspberry PI in the browser.

@@ -62,24 +62,31 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	};
-	
 	/**
 	 * /login
 	 */
 	routes.login = function(req, res) {
-		
-		parseCookies(req, function(err, result) {
-			if ((!err) && (result.email) && (result.password)) {
-				return routes.performlogin(req, res);
-			} else {
-				return res.render('login', {
-					title : 'Login',
-					hide_menubar : true
-				});
-			}
+
+		// If no user exists, redirect to register
+		req.app.get('db').collection('User', function(err, u) {
+			u.find({}).toArray(function(err, r) {
+				if(r.length == 0) {
+					return res.redirect('/register');
+				} else {
+					parseCookies(req, function(err, result) {
+						if((!err) && (result.email) && (result.password)) {
+							return routes.performlogin(req, res);
+						} else {
+							return res.render('login', {
+								title : 'Login',
+								hide_menubar : true
+							});
+						}
+					});
+				}
+			});
 		});
 	};
-	
 	/**
 	 * /login
 	 */
@@ -91,16 +98,15 @@ define(['crypto'], function(crypto) {
 			success : 'You are now logged out.'
 		});
 	};
-	
 	/**
 	 * POST /login
 	 */
 	routes.performlogin = function(req, res) {
-		
+
 		parseCookies(req, function(err, cookies) {
 			var email = req.body.email || cookies.email || '';
 			var password = crypto.createHash('sha256').update(req.body.password || cookies.password || '').digest("hex");
-			
+
 			req.app.get('db').collection('User', function(err, u) {
 				u.find({
 					'email' : email,
@@ -121,6 +127,109 @@ define(['crypto'], function(crypto) {
 		});
 	}
 	/**
+	 * POST /settings
+	 */
+	routes.changepassword = function(req, res) {
+
+		// Login check
+		if(!req.session.user) {
+			return res.redirect('/login');
+		}
+
+		var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
+		var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
+		var newpassword2 = crypto.createHash('sha256').update(req.body.repeatnewpassword || '').digest("hex");
+
+		if(newpassword != newpassword2) {
+			return res.render('settings', {
+				title : 'Settings',
+				error : 'New passwords did not match.'
+			});
+		} else {
+			req.app.get('db').collection('User', function(err, u) {
+				u.find({
+					'password' : password
+				}).toArray(function(err, r) {
+					if(r.length == 0) {
+						return res.render('settings', {
+							title : 'Settings',
+							error : 'Old password wrong.'
+						});
+					} else {
+						r[0].password = newpassword;
+						u.save(r[0], function(err, result) {
+							return res.render('settings', {
+								title : 'Settings',
+								success : 'Your password has been changed.'
+							});
+						})
+					}
+				});
+			});
+		}
+	}
+	/**
+	 * /register
+	 */
+	routes.register = function(req, res) {
+		req.app.get('db').collection('User', function(err, u) {
+			u.find({}).toArray(function(err, r) {
+				if(r.length == 0) {
+					return res.render('register', {
+						title : "Register",
+						hide_menubar : true
+					});
+				} else {
+					return res.redirect('/');
+				}
+			});
+		});
+	}
+	/**
+	 * POST /register
+	 */
+	routes.performregister = function(req, res) {
+
+		req.app.get('db').collection('User', function(err, u) {
+			u.find({}).toArray(function(err, r) {
+				if(r.length == 0) {
+					var email = req.body.email || '';
+					var password = crypto.createHash('sha256').update(req.body.password || '').digest("hex");
+					var password2 = crypto.createHash('sha256').update(req.body.repeatpassword || '').digest("hex");
+
+					if(password != password2) {
+						return res.render('register', {
+							title : 'Register',
+							error : 'Passwords did not match.',
+							hide_menubar : true
+						});
+					} else {
+						if(email == '') {
+							return res.render('register', {
+								title : 'Register',
+								error : 'Please enter an email address.',
+								hide_menubar : true
+							});
+						} else {
+							req.app.get('db').collection('User', function(err, u) {
+								u.save({
+									'email' : email,
+									'password' : password
+								}, function(err, result) {
+									return res.render('login', {
+										title : 'Login',
+										success : 'Registration completed. You can now login.',
+										hide_menubar : true
+									});
+								});
+							});
+						}
+					}
+				}
+			});
+		});
+	}
+	/**
 	 * /settings
 	 */
 	routes.settings = function(req, res) {
@@ -133,7 +242,7 @@ define(['crypto'], function(crypto) {
 			req.app.get('plugins').forEach(function(plugin) {
 				if(plugin.name == req.params.plugin) {
 					plugin.instance.getSettings(req.app, function(err, result) {
-						return res.render('settings', {
+						return res.render('settings-plugin', {
 							content : result,
 							plugin : req.params.plugin,
 							title : req.params.plugin + ' Settings'
@@ -141,6 +250,10 @@ define(['crypto'], function(crypto) {
 					});
 				}
 			})
+		} else {
+			return res.render('settings', {
+				title : "Settings"
+			});
 		}
 	};
 	return routes;

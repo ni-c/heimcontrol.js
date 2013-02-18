@@ -34,6 +34,11 @@ html
                     | &nbsp;Settings&nbsp;
                     b.caret
                   ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
+                    li
+                      a(href="/settings")
+                        i.icon-cog &nbsp;
+                        | heimcontrol.js
+                    li.divider(role="presentation")
                     each plugin in plugins
                       li
                         a(href="/settings/#{plugin.name}") 

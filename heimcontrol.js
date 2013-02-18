@@ -78,11 +78,20 @@ requirejs(['http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket
 				app.use(express.errorHandler());
 			});
 
-			app.get('/login', routes.login);
-			app.get('/logout', routes.logout);
-			app.post('/login', routes.performlogin);
+			// Routes
 			app.get('/', routes.index);
+			app.get('/login', routes.login);
+			app.post('/login', routes.performlogin);
+			
+			app.get('/logout', routes.logout);
+			
+			app.get('/settings', routes.settings);
+			app.post('/settings', routes.changepassword);
+
 			app.get('/settings/:plugin', routes.settings);
+			
+			app.get('/register', routes.register);
+			app.post('/register', routes.performregister);
 			
 
 			// Plugin JS and CSS

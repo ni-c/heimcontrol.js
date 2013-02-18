@@ -1,0 +1,10 @@
+div.row16
+  - if (typeof(error) !== 'undefined')
+    div.alert.alert-error.fade.in.login-error
+      button.close(type="button", data-dismiss="alert") ×
+      strong Error: &nbsp;
+      =error
+  - if (typeof(success) !== 'undefined')
+    div.alert.alert-success.fade.in
+      button.close(type="button", data-dismiss="alert") ×
+      =success
