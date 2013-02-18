@@ -126,6 +126,12 @@ And to stop heimcontrol.js:
 forever stop heimcontrol.js
 ````
 
+### Plugins
+
+To make the plugins work properly, you have to configure some stuff on your Raspberry PI. Take a look at the `README.md` files of the plugins.
+
+ - [gpio-plugin](https://github.com/heimcontroljs/plugin-gpio/blob/master/README.md#heimcontrol-gpio)
+
 
 ## Used open-source projects:
 
