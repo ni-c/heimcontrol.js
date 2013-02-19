@@ -17,6 +17,6 @@
     "rasp2c": ">= 0.0.1",
     "heimcontrol-wakeonlan": "https://github.com/heimcontroljs/plugin-wakeonlan/tarball/master",
     "heimcontrol-gpio": "https://github.com/heimcontroljs/plugin-gpio/tarball/master",
-    "heimcontrol-duino": "https://github.com/heimcontroljs/plugin-duino/tarball/master"
+    "heimcontrol-arduino": "https://github.com/heimcontroljs/plugin-arduino/tarball/master"
   }
 }
