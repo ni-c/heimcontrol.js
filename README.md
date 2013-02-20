@@ -16,6 +16,8 @@ Fancy homeautomation with node.js and mongodb on a Raspberry PI.
 
 ## Installation
 
+I recommend that you use [screen](http://linux.die.net/man/1/screen) to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
+
 ### Git and Essentials
 
 ````bash
