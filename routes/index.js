@@ -49,12 +49,6 @@ define(['crypto'], function(crypto) {
 	 * /
 	 */
 	routes.index = function(req, res) {
-
-		// Login check
-		if(!req.session.user) {
-			return res.redirect('/login');
-		}
-
 		var content = getIndexFromPlugins(req.app, req.app.get('plugins'), 0, "", function(err, content) {
 			res.render('index', {
 				title : 'Home',
@@ -62,11 +56,11 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	};
+	
 	/**
 	 * /login
 	 */
 	routes.login = function(req, res) {
-
 		// If no user exists, redirect to register
 		req.app.get('db').collection('User', function(err, u) {
 			u.find({}).toArray(function(err, r) {
@@ -87,6 +81,7 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	};
+	
 	/**
 	 * /login
 	 */
@@ -98,6 +93,7 @@ define(['crypto'], function(crypto) {
 			success : 'You are now logged out.'
 		});
 	};
+	
 	/**
 	 * POST /login
 	 */
@@ -126,15 +122,11 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	}
+	
 	/**
 	 * POST /settings
 	 */
 	routes.changepassword = function(req, res) {
-
-		// Login check
-		if(!req.session.user) {
-			return res.redirect('/login');
-		}
 
 		var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
 		var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
@@ -148,6 +140,7 @@ define(['crypto'], function(crypto) {
 		} else {
 			req.app.get('db').collection('User', function(err, u) {
 				u.find({
+				  'email': req.session.user.email,
 					'password' : password
 				}).toArray(function(err, r) {
 					if(r.length == 0) {
@@ -168,6 +161,7 @@ define(['crypto'], function(crypto) {
 			});
 		}
 	}
+	
 	/**
 	 * /register
 	 */
@@ -185,11 +179,11 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	}
+	
 	/**
 	 * POST /register
 	 */
 	routes.performregister = function(req, res) {
-
 		req.app.get('db').collection('User', function(err, u) {
 			u.find({}).toArray(function(err, r) {
 				if(r.length == 0) {
@@ -233,11 +227,6 @@ define(['crypto'], function(crypto) {
 	 * /settings
 	 */
 	routes.settings = function(req, res) {
-		// Login check
-		if(!req.session.user) {
-			return res.redirect('/login');
-		}
-
 		if(req.params.plugin) {
 			req.app.get('plugins').forEach(function(plugin) {
 				if(plugin.name == req.params.plugin) {
