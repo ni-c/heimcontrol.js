@@ -20,14 +20,14 @@ html
     div.navbar.navbar-inverse.navbar-fixed-top
       div.navbar-inner
         div.container
-          - if (typeof(hide_menubar) == 'undefined')
-            button.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+          - if ((typeof(hide_menubar) == 'undefined') || (hide_menubar == false))
+            button.btn.btn-navbar.navigation(data-toggle="collapse", data-target=".nav-collapse")
               span.icon-bar
               span.icon-bar
               span.icon-bar
           a.brand(href="/") heimcontrol.js
           - if (typeof(hide_menubar) == 'undefined')
-            div.nav-collapse.collapse
+            div.nav-collapse.collapse.navigation
               ul.nav#bar-menu-left
                 li(class=(title === 'Home' ? 'active' : ''))                
                   a(href="/")

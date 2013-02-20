@@ -1,8 +1,7 @@
 /**
  * heimcontrol.js (https://github.com/heimcontroljs/heimcontroljs)
  *
- * @file routes/index.js
- * @brief heimcontrol.js
+ * @file controller/index.js
  * @author Willi Thiel (ni-c@ni-c.de)
  *
  */
@@ -11,8 +10,8 @@ if( typeof define !== 'function') {
 	var define = require('amdefine')(module);
 }
 
-define(['crypto'], function(crypto) {
-	var routes = {};
+define(['crypto', 'cookie'], function(crypto, cookie) {
+	var controller = {};
 
 	/**
 	 * Build index page from plugins
@@ -30,25 +29,9 @@ define(['crypto'], function(crypto) {
 	}
 
 	/**
-	 * Parse cookies in header
-	 */
-	function parseCookies(req, callback) {
-		var cookies = {};
-		if(req.headers.cookie) {
-			req.headers.cookie.split(';').forEach(function(cookie) {
-				var parts = cookie.split('=');
-				cookies[parts[0].trim()] = decodeURIComponent((parts[1] || '' ).trim());
-			});
-			callback(false, cookies);
-		} else {
-			callback(true, {});
-		}
-	}
-
-	/**
 	 * /
 	 */
-	routes.index = function(req, res) {
+	controller.index = function(req, res) {
 		var content = getIndexFromPlugins(req.app, req.app.get('plugins'), 0, "", function(err, content) {
 			res.render('index', {
 				title : 'Home',
@@ -60,23 +43,22 @@ define(['crypto'], function(crypto) {
 	/**
 	 * /login
 	 */
-	routes.login = function(req, res) {
+	controller.login = function(req, res) {
 		// If no user exists, redirect to register
 		req.app.get('db').collection('User', function(err, u) {
 			u.find({}).toArray(function(err, r) {
 				if(r.length == 0) {
 					return res.redirect('/register');
 				} else {
-					parseCookies(req, function(err, result) {
-						if((!err) && (result.email) && (result.password)) {
-							return routes.performlogin(req, res);
-						} else {
-							return res.render('login', {
-								title : 'Login',
-								hide_menubar : true
-							});
-						}
-					});
+					var c = cookie.parse(req.headers.cookie);
+					if((!err) && (c.email) && (c.password)) {
+						return controller.performlogin(req, res);
+					} else {
+						return res.render('login', {
+							title : 'Login',
+							hide_menubar : true
+						});
+					}
 				}
 			});
 		});
@@ -85,7 +67,7 @@ define(['crypto'], function(crypto) {
 	/**
 	 * /login
 	 */
-	routes.logout = function(req, res) {
+	controller.logout = function(req, res) {
 		req.session.user = null;
 		res.render('login', {
 			title : 'Login',
@@ -97,28 +79,27 @@ define(['crypto'], function(crypto) {
 	/**
 	 * POST /login
 	 */
-	routes.performlogin = function(req, res) {
+	controller.performlogin = function(req, res) {
 
-		parseCookies(req, function(err, cookies) {
-			var email = req.body.email || cookies.email || '';
-			var password = crypto.createHash('sha256').update(req.body.password || cookies.password || '').digest("hex");
+		var c = cookie.parse(req.headers.cookie);
+		var email = req.body.email || c.email || '';
+		var password = crypto.createHash('sha256').update(req.body.password || c.password || '').digest("hex");
 
-			req.app.get('db').collection('User', function(err, u) {
-				u.find({
-					'email' : email,
-					'password' : password
-				}).toArray(function(err, r) {
-					if(r.length == 0) {
-						return res.render('login', {
-							title : 'Login',
-							error : 'Login failed, wrong email/password combination.',
-							hide_menubar : true
-						});
-					} else {
-						req.session.user = r[0];
-						return res.redirect('/');
-					}
-				});
+		req.app.get('db').collection('User', function(err, u) {
+			u.find({
+				'email' : email,
+				'password' : password
+			}).toArray(function(err, r) {
+				if(r.length == 0) {
+					return res.render('login', {
+						title : 'Login',
+						error : 'Login failed, wrong email/password combination.',
+						hide_menubar : true
+					});
+				} else {
+					req.session.user = r[0];
+					return res.redirect('/');
+				}
 			});
 		});
 	}
@@ -126,7 +107,7 @@ define(['crypto'], function(crypto) {
 	/**
 	 * POST /settings
 	 */
-	routes.changepassword = function(req, res) {
+	controller.changepassword = function(req, res) {
 
 		var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
 		var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
@@ -140,7 +121,7 @@ define(['crypto'], function(crypto) {
 		} else {
 			req.app.get('db').collection('User', function(err, u) {
 				u.find({
-				  'email': req.session.user.email,
+					'email' : req.session.user.email,
 					'password' : password
 				}).toArray(function(err, r) {
 					if(r.length == 0) {
@@ -165,7 +146,7 @@ define(['crypto'], function(crypto) {
 	/**
 	 * /register
 	 */
-	routes.register = function(req, res) {
+	controller.register = function(req, res) {
 		req.app.get('db').collection('User', function(err, u) {
 			u.find({}).toArray(function(err, r) {
 				if(r.length == 0) {
@@ -183,7 +164,7 @@ define(['crypto'], function(crypto) {
 	/**
 	 * POST /register
 	 */
-	routes.performregister = function(req, res) {
+	controller.performregister = function(req, res) {
 		req.app.get('db').collection('User', function(err, u) {
 			u.find({}).toArray(function(err, r) {
 				if(r.length == 0) {
@@ -223,28 +204,45 @@ define(['crypto'], function(crypto) {
 			});
 		});
 	}
+	
 	/**
 	 * /settings
 	 */
-	routes.settings = function(req, res) {
+	controller.settings = function(req, res, next) {
 		if(req.params.plugin) {
-			req.app.get('plugins').forEach(function(plugin) {
-				if(plugin.name == req.params.plugin) {
-					plugin.instance.getSettings(req.app, function(err, result) {
-						return res.render('settings-plugin', {
-							content : result,
-							plugin : req.params.plugin,
-							title : req.params.plugin + ' Settings'
+			if (req.app.get('plugin_names').indexOf(req.params.plugin) >= 0) {
+				req.app.get('plugins').forEach(function(plugin) {
+					if(plugin.name == req.params.plugin) {
+						plugin.instance.getSettings(req.app, function(err, result) {
+							return res.render('settings-plugin', {
+								content : result,
+								plugin : req.params.plugin,
+								title : req.params.plugin + ' Settings'
+							});
 						});
-					});
-				}
-			})
+					}
+				})
+			} else {
+				return next();
+			}
 		} else {
 			return res.render('settings', {
 				title : "Settings"
 			});
 		}
 	};
-	return routes;
+
+  /**
+   * Error 404
+   */
+	controller.notfound = function(req, res) {
+		res.status(404).render('404', {
+			title : '404 Not Found',
+			hide_menubar : req.session.user
+		});
+	};
+ 
+	
+	return controller;
 
 });
