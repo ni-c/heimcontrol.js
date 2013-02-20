@@ -1,6 +1,18 @@
 # Heimcontrol.js
 
-Homeautomation with the Raspberry PI in node.js using websockets.
+Fancy homeautomation with node.js and mongodb on a Raspberry PI.
+
+## Features
+
+- Authentication
+- Websockets
+- Plugins
+
+## Plugins
+
+- Sending Wake-On-LAN packets
+- The GPIO ports on the Raspberry PI
+- Controlling an attached Arduino
 
 ## Installation
 
@@ -143,6 +155,7 @@ To make the plugins work properly, you have to configure some stuff on your Rasp
 - [socket.io](https://github.com/LearnBoost/socket.io)
 - [bootstrap](https://github.com/twitter/bootstrap)
 - [font-awesome](https://github.com/FortAwesome/Font-Awesome)
+- and a hell of a lot small projects.
 
 ## MIT License
 

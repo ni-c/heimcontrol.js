@@ -20,19 +20,20 @@ html
     div.navbar.navbar-inverse.navbar-fixed-top
       div.navbar-inner
         div.container
-          button.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
+          - if (typeof(hide_menubar) == 'undefined')
+            button.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
           a.brand(href="/") heimcontrol.js
-          div.nav-collapse.collapse
-            - if (typeof(hide_menubar) == 'undefined')
+          - if (typeof(hide_menubar) == 'undefined')
+            div.nav-collapse.collapse
               ul.nav#bar-menu-left
                 li(class=(title === 'Home' ? 'active' : ''))                
                   a(href="/")
                     i.icon-home  
                     | &nbsp;Home
-                li.dropdown(class=(title === 'Settings' ? 'active' : ''))                
+                li.dropdown(class=(title.indexOf('Settings')!==-1 ? 'active' : ''))                
                   a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
                     i.icon-cogs 
                     | &nbsp;Settings&nbsp;
@@ -67,14 +68,14 @@ html
           |, 
           a(href="http://twitter.github.com/bootstrap/") Bootstrap 
           | & 
-          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome 
+          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome
           |.
         p Running with 
           a(href="http://nodejs.org/") node.js 
           | , 
           a(href="http://socket.io/") socket.io 
           | ,   
-          a(href="http://expressjs.com/") exoress 
+          a(href="http://expressjs.com/") express 
           | ,   
           a(href="http://www.mongodb.org/") mongodb
         p and a hell of a lot of other open source projects.
