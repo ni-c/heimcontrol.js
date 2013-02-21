@@ -49,7 +49,7 @@ Install [mongodb](http://www.mongodb.org/) on the Raspberry PI
 On the Raspberry PI with 256MB RAM you have to increase the size of the swapfile. Open the file `/etc/dphys-swapfile`:
 
 ````bash
-vi /etc/dphys-swapfile
+sudo nano /etc/dphys-swapfile
 ````
 
 Change the value of `CONF_SWAPSIZE` to 200:
@@ -76,7 +76,7 @@ sudo scons --prefix=/opt/mongo install
 Add the PATH to the mongodb binaries. Open the file `/etc/environment`:
 
 ````bash
-sudo vi /etc/environment
+sudo nano /etc/environment
 ````
 
 and add the following:
@@ -101,9 +101,12 @@ sudo mkdir /var/lib/mongodb
 sudo chown mongodb:mongodb /var/lib/mongodb
 ```` 
 
-Register upstart init script:
+Download and register upstart init script:
 
 ````bash
+cd /etc/init.d
+sudo wget https://raw.github.com/heimcontroljs/heimcontrol.js/master/contrib/mongodb
+sudo chmod +x mongodb
 sudo update-rc.d mongodb defaults
 ````
 
