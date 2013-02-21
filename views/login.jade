@@ -10,14 +10,17 @@ block content
       form#loginform(action="/login", method="POST")
         p
           label(for="email") Email:
-          input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
+          div.hint.hint--right.hint--rounded.hint--input(data-hint="Please enter your Email")
+            input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
         p
           label(for="password") Password:
-          input.login#password(type="password", name="password", required="1")
+          div.hint.hint--right.hint--rounded.hint--input(data-hint="Please enter your password")
+            input.login#password(type="password", name="password", required="1")
         p
           label.checkbox
-            input#rememberme(type="checkbox")
-            | Remember me
+            div.hint.hint--right.hint--rounded.hint--input(data-hint="Remember me on this device")
+              input#rememberme(type="checkbox")
+              | Remember me
         br
         p
           input.btn.btn-success.btn-login(type="submit", value="Login")

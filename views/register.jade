@@ -2,19 +2,27 @@ extends layout
 
 block content
   div.container
-    h1 Register account
+    h1 Create an account
     include includes/messages
+    p
+      strong heimcontrol.js 
+      | is up and running. To prevent unauthorized access to your installation, you have to create an account on your  
+      strong heimcontrol.js 
+      | server.
     div.row16
       form(action="/register", method="POST")
         p
           label(for="email") Email:
-          input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
+          div.hint.hint--right.hint--rounded.hint--input(data-hint="Your Email address")
+            input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
         p
           label(for="password") Password:
-          input.login#password(type="password", name="password", required="1")
+          div.hint.hint--right.hint--rounded.hint--input(data-hint="Choose a password")
+            input.login#password(type="password", name="password", required="1")
         p
           label(for="repeatpassword") Repeat password:
-          input.login#repeatpassword(type="password", name="repeatpassword", required="1")
+          div.hint.hint--right.hint--rounded.hint--input(data-hint="Repeat your password")
+            input.login#repeatpassword(type="password", name="repeatpassword", required="1")
         br
         p
           input.btn.btn-success.btn-login(type="submit", value="Register")

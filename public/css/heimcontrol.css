@@ -80,3 +80,7 @@
 input.login {
   width: 260px;
 }
+
+.hint--input:before, .hint--input:after {
+    bottom: 65%;
+}
