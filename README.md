@@ -22,7 +22,7 @@ I recommend that you use [screen](http://linux.die.net/man/1/screen) to install 
 
 ````bash
 sudo apt-get update
-sudo apt-get install git-core git build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+sudo apt-get install git-core git scons build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
 ````
 
 ### node.js
@@ -58,7 +58,7 @@ Change the value of `CONF_SWAPSIZE` to 200:
 CONF_SWAPSIZE=200
 ````
 
-and reboot your Raspberry PI.
+And reboot your Raspberry PI.
 
 ````bash
 sudo reboot
