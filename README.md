@@ -22,7 +22,7 @@ I recommend that you use [screen](http://linux.die.net/man/1/screen) to install 
 
 ````bash
 sudo apt-get update
-sudo apt-get install git-core build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+sudo apt-get install git-core git build-essential scons libpcre++-dev xulrunner-dev libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
 ````
 
 ### node.js
@@ -52,10 +52,16 @@ On the Raspberry PI with 256MB RAM you have to increase the size of the swapfile
 vi /etc/dphys-swapfile
 ````
 
-and change the value of `CONF_SWAPSIZE` to 200:
+Change the value of `CONF_SWAPSIZE` to 200:
 
 ````bash
 CONF_SWAPSIZE=200
+````
+
+and reboot your Raspberry PI.
+
+````bash
+sudo reboot
 ````
 
 #### Build and install
