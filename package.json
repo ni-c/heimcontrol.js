@@ -15,6 +15,7 @@
     "socket.io": ">= 0.9.13",
     "node-conf": ">= 0.0.4",
     "rasp2c": ">= 0.0.1",
-    "cookie": ">= 0.0.5"
+    "cookie": ">= 0.0.5",
+    "duino": "https://github.com/ni-c/duino/tarball/master"
   }
 }

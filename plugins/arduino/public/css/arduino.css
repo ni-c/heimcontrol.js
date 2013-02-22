@@ -1,0 +1,3 @@
+.plugin-container.arduino:after {
+  content: "Arduino";
+}
