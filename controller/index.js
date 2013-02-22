@@ -43,8 +43,8 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   function getIndexFromPlugins(app, plugins, i, content, callback) {
     plugins[i].instance.getIndex(app, function(err, result) {
       content.append(result);
-      if (i < plugins.length) {
-        getIndexFromPlugins(app, plugins, ++i, content, callback);
+      if (++i < plugins.length) {
+        getIndexFromPlugins(app, plugins, i, content, callback);
       } else {
         callback(null, content);
       }
@@ -58,7 +58,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param res The response
    */
   controller.index = function(req, res) {
-    var content = StringBuffer();
+    var content = new StringBuffer();
     getIndexFromPlugins(req.app, req.app.get('plugins'), 0, content, function(err, content) {
       res.render('index', {
         title: 'Home',

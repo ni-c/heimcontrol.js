@@ -13,16 +13,13 @@ block content
       form(action="/register", method="POST")
         p
           label(for="email") Email:
-          div.hint.hint--right.hint--rounded.hint--input(data-hint="Your Email address")
-            input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
+          input.login#email(type="email", name="email", placeholder="john.doe@example.com", required="1")
         p
           label(for="password") Password:
-          div.hint.hint--right.hint--rounded.hint--input(data-hint="Choose a password")
-            input.login#password(type="password", name="password", placeholder="**********", required="1")
+          input.login#password(type="password", name="password", placeholder="**********", required="1")
         p
           label(for="repeatpassword") Repeat password:
-          div.hint.hint--right.hint--rounded.hint--input(data-hint="Repeat your password")
-            input.login#repeatpassword(type="password", name="repeatpassword", placeholder="**********", required="1")
+          input.login#repeatpassword(type="password", name="repeatpassword", placeholder="**********", required="1")
         br
         p
           input.btn.btn-success.btn-login(type="submit", value="Register")
