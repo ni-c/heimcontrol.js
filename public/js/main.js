@@ -1,19 +1,70 @@
 // Delete buttons
-function register_delete() {
+function registerDeleteButtons() {
 	$('.delete').unbind('click');
 	$('.delete').click(function() {
 		var e = $('#' + $(this).attr('data-delete'));
 		e.slideToggle(500, function() {
-			e.remove()
+			e.remove();
 		});
 	});
 }
 
+function registerMacInput() {
+  $('.mac').unbind('mac');
+  $('.mac').keyup(function() {
+    var e = $(this);
+    var value = e.val();
+    value = value.toUpperCase();
+    value = value.replace('-', ':').replace('.', ':');
+    e.val(value);
+});  
+}
+
+// Socket buttons
+function registerSocketButtons(socket) {
+  $('.socket').unbind('click');
+  $('.socket').click(function() {
+    var e = $(this);
+    var data = {
+        id: e.data('id'),
+        value: e.data('value')
+    };
+    socket.emit(e.data('socket'), data);
+  });
+}
+
 require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function() {
-	register_delete();
 
 	var socket = io.connect();
 
+  registerDeleteButtons();
+
+  registerSocketButtons(socket);
+
+  registerMacInput();
+  
+  if ($('#template').length) {
+    var i = 0;
+    $('.add').click(function() {
+      // Clone and fade element
+      var element = $('#template').clone();
+      $('#' + $(this).data('target')).append(element);
+      element.attr('id', i);
+      element.children('.delete').attr('data-delete', i++);
+      element.slideToggle();
+      $('html, body').animate({
+        scrollTop : $('html, body').height()
+      }, 800);
+      // Call callback
+      if ($(this).attr('data-callback')) {
+        eval($(this).attr('data-callback'));
+      }
+      registerDeleteButtons();
+      registerMacInput();
+    });
+  }
+  
+	// Socket disconnect
   socket.on('disconnect', function () {
   	setTimeout(function() {
 	    $('.navigation').remove();
@@ -22,6 +73,7 @@ require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function(
   	}, 1000);
   });
 
+  // Set login cookie
 	require(["/js/jquery.cookie.js"], function() {
 		if($('.btn-login').length > 0) {
 			$('.btn-login').click(function() {
@@ -32,7 +84,7 @@ require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function(
 					$.cookie("email", null);
 					$.cookie("password", null);
 				}
-			})
+			});
 			$('#email').focus();
 		}
 		if($('.login-error').length > 0) {

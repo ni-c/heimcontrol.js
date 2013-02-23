@@ -13,8 +13,8 @@ html
     link(rel='apple-touch.icon', sizes='144x144', href='/apple-touch.icon-144x144.png')
     script(data-main='/js/main', src='/js/require-jquery.js')
     each plugin in plugins
-      link(rel='stylesheet', href='/plugin/#{plugin.name}.css')
-      script(data-main='/js/main', src='/plugin/#{plugin.name}.js')
+      link(rel='stylesheet', href='/plugin/#{plugin.id}.css')
+      script(data-main='/js/main', src='/plugin/#{plugin.id}.js')
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
   body
     div.navbar.navbar-inverse.navbar-fixed-top
@@ -46,7 +46,7 @@ html
                     li.divider(role="presentation")
                     each plugin in plugins
                       li
-                        a(href="/settings/#{plugin.name}") 
+                        a(href="/settings/#{plugin.id}") 
                           - if (plugin.icon)
                             i(class="#{plugin.icon}") &nbsp;
                           | &nbsp;#{plugin.name}
@@ -67,10 +67,8 @@ html
           a(href="http://jade-lang.com/") Jade
           | , 
           a(href="http://twitter.github.com/bootstrap/") Bootstrap
-          | , 
-          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome 
           | & 
-          a(href="http://kushagragour.in/lab/hint/") hint.css
+          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome 
           |.
         p Running with 
           a(href="http://nodejs.org/") node.js

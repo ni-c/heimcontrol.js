@@ -1,0 +1,80 @@
+div.container
+  h1 Settings
+  h2 GPIO
+  - if (typeof(success) !== 'undefined')
+    div.alert.alert-success.fade.in
+      button.close(type="button", data-dismiss="alert") ×
+      =success
+  div.row16
+    form(action="/settings/gpio", method="post")
+      div#gpio
+        each item in items
+          div.plugin-container.gpio.settings(id="#{item._id}")
+            label(for="description") Description (optional):
+            input(type="text", name="data[description][]", placeholder="Light", value=(item.description ? item.description : ''))
+            label(for="direction") Direction:
+            div.btn-group.direction(data-toggle="buttons-radio")
+              button.btn.gpio.toggle(type="button", data-value="output", class=(item.direction == 'output' ? 'active' : ''))
+                i.icon-signout &nbsp;
+                | Output
+              button.btn.btn-inverse.gpio.toggle(type="button", data-value="input", class=(item.direction == 'input' ? 'active' : '')) 
+                i.icon-signin &nbsp;
+                | Input
+              input(type="hidden", name="data[direction][]", value="#{item.direction}")
+            br
+            br
+            label(for="pin") GPIO Pin:
+            select(name="data[pin][]")
+              option(disabled="disabled",selected=(item.pin == '0')) Choose PIN
+              option(value="7",selected=(item.pin == '7')) PIN 7
+              option(value="11",selected=(item.pin == '11')) PIN 11
+              option(value="12",selected=(item.pin == '12')) PIN 12
+              option(value="13",selected=(item.pin == '13')) PIN 13
+              option(value="15",selected=(item.pin == '15')) PIN 15
+              option(value="16",selected=(item.pin == '16')) PIN 16
+              option(value="18",selected=(item.pin == '18')) PIN 18
+              option(value="22",selected=(item.pin == '22')) PIN 22
+            input(type="hidden", name="data[_id][]", value="#{item._id}")
+            input(type="hidden", name="data[value][]", value="0")
+            button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
+              i.icon-trash.icon-large
+              |  Delete
+          
+      p.gpio.buttons
+        button.btn.btn-info.add(data-target="gpio", type="button", data-callback="registerGpioToggles()") 
+          i.icon-plus.icon-large
+          |  Add
+      
+        button.btn.btn-success.save(type="submit") 
+          i.icon-save.icon-large
+          |  Save
+      
+div.plugin-container.gpio.settings#template(style="display: none;")
+  label(for="description") Description (optional):
+  input(type="text", name="data[description][]", placeholder="Light")
+  label(for="direction") Direction:
+  div.btn-group.direction(data-toggle="buttons-radio")
+    button.btn.gpio.toggle(type="button", data-value="output", class="active")
+      i.icon-signout &nbsp;
+      | Output
+    button.btn.btn-inverse.gpio.toggle(type="button", data-value="input") 
+      i.icon-signin &nbsp;
+      | Input
+    input(type="hidden", name="data[direction][]", value="output")
+  br
+  br
+  label(for="pin") GPIO Pin:
+  select(name="data[pin][]")
+    option(disabled="disabled",selected=true) Choose PIN
+    option(value="7") PIN 7
+    option(value="11") PIN 11
+    option(value="12") PIN 12
+    option(value="13") PIN 13
+    option(value="15") PIN 15
+    option(value="16") PIN 16
+    option(value="18") PIN 18
+    option(value="22") PIN 22
+  input(type="hidden", name="data[value][]", value="0")
+  button.btn.btn-danger.pull-right.delete(type="button")
+    i.icon-trash.icon-large
+    |  Delete

@@ -1,0 +1,23 @@
+each item in items
+  div.plugin-container.gpio(class=item.direction)
+    p.description
+      - direction = item.direction.charAt(0).toUpperCase() + item.direction.slice(1);
+      - if (item.description)
+        span.muted #{direction}: 
+        strong #{item.description} 
+        small.muted (PIN #{item.pin}) 
+      - else 
+        span.muted #{direction}:  
+        strong PIN #{item.pin} 
+    -if (item.direction == 'input') 
+      div
+        span.label.label-success.label-large.gpiostatus(data-id="#{item._id}", data-value="1", class=(item.value == '0' ? 'hide' : ''))
+          i.icon-circle&nbsp;&nbsp;Up
+        span.label.label-important.label-large.gpiostatus(data-id="#{item._id}", data-value="0", class=(item.value == '1' ? 'hide' : ''))
+          i.icon-circle-blank&nbsp;&nbsp;Down
+    - else
+      div.btn-group(data-toggle="buttons-radio")
+        button.btn.btn-large.socket(type="button", data-socket="gpio-toggle", data-id="#{item._id}", data-value="1", class=(item.value == '1' ? 'active' : ''))
+          i.icon-circle&nbsp;&nbsp;On
+        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="gpio-toggle", data-id="#{item._id}", data-value="0", class=(item.value == '0' ? 'active' : ''))
+          i.icon-circle-blank&nbsp;&nbsp;Off
