@@ -30,7 +30,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   function renderPluginItems(app, type, i, html, callback) {
     var plugins = app.get('plugins');
     var plugin = plugins[i];
-    app.get('db').collection(plugin.name, function(err, collection) {
+    app.get('db').collection(plugin.collection, function(err, collection) {
       if (err) {
         return callback(err);
       }
@@ -50,7 +50,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
           });
         }
         if (++i < plugins.length) {
-          renderPluginItems(app, i, html, callback);
+          renderPluginItems(app, type, i, html, callback);
         } else {
           return callback(null, html);
         }
@@ -93,7 +93,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
       if (pluginList.indexOf(req.params.plugin) >= 0) {
         req.app.get('plugins').forEach(function(plugin) {
           if (plugin.id == req.params.plugin) {
-            req.app.get('db').collection(plugin.name, function(err, collection) {
+            req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.find({}).toArray(function(err, items) {
                 req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
                   items: items
@@ -173,7 +173,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
 
             // TODO: Each plugin should have a "validate()" method to check if the items-data is valid
 
-            req.app.get('db').collection(plugin.name, function(err, collection) {
+            req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
                 saveMultiple(collection, items, function(err, result) {
                   collection.find({}).toArray(function(err, items) {

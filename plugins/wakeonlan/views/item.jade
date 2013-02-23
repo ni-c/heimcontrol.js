@@ -1,0 +1,10 @@
+each item in items        
+  div.plugin-container.wakeonlan
+    button.btn.btn-large.wakeonlan(type="button", data-host="#{item.host}", data-mac="#{item.mac}")
+      i.icon-off.icon-large&nbsp;&nbsp;
+        - if (typeof(item.description) != 'undefined')
+          | #{item.description}
+        - else
+          | #{item.host}
+    span.label.label-success.pull-right.hide.online(data-host="#{item.host}") Online
+    span.label.label-important.pull-right.offline(data-host="#{item.host}") Offline

@@ -14,6 +14,7 @@ define([ 'duino' ], function(duino) {
   var Arduino = function(app) {
 
     this.name = 'Arduino';
+    this.collection = 'Arduino';
     this.icon = 'icon-external-link';
 
     this.app = app;
@@ -43,7 +44,7 @@ define([ 'duino' ], function(duino) {
     var id = new ObjectID(data.id);
 
     var that = this;
-    this.app.get('db').collection('Arduino', function(err, collection) {
+    this.app.get('db').collection(this.collection, function(err, collection) {
       collection.find({
         _id: id
       }).toArray(function(err, result) {
