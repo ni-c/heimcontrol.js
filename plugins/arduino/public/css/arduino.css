@@ -1,3 +1,6 @@
-.plugin-container.arduino:after {
-  content: "Arduino";
+.plugin-container.arduino.rcswitch:after {
+  content: "Arduino RC Switch";
+}
+.plugin-container.arduino.sensor:after {
+  content: "Arduino Sensor";
 }

@@ -28,7 +28,7 @@ define([], function() {
     var ObjectID = this.app.get('mongo').ObjectID;
     this.app.get('db').collection(plugin, function(err, collection) {
       collection.find({
-        _id: new ObjectID(id)
+        _id: new ObjectID(id + '')
       }).toArray(function(err, result) {
         if ((!err) && (result.length == 1)) {
           var item = result[0];

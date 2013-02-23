@@ -1,12 +1,21 @@
 each item in items
-  div.plugin-container.arduino
-    p.description
-      span.muted RC Switch:&nbsp;
-      strong #{item.description} 
-    div.btn-group(data-toggle="buttons-radio")
-      button.btn.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="1", data-id="#{item._id}", class=(item.status == 1 ? 'active' : ''))
-        i.icon-circle
-        | &nbsp;&nbsp;On
-      button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="0", data-id="#{item._id}", class=(item.status == 0 ? 'active' : '')) 
-        i.icon-circle-blank
-        | &nbsp;&nbsp;Off
+  div.plugin-container.arduino(class=item.method)
+    - if (item.method == 'rcswitch')
+      p.description
+        span.muted RC Switch:&nbsp;
+        strong #{item.description} 
+      div.btn-group(data-toggle="buttons-radio")
+        button.btn.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="1", data-id="#{item._id}", class=(item.status == 1 ? 'active' : ''))
+          i.icon-circle
+          | &nbsp;&nbsp;On
+        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="0", data-id="#{item._id}", class=(item.status == 0 ? 'active' : '')) 
+          i.icon-circle-blank
+          | &nbsp;&nbsp;Off
+    - if (item.method == 'sensor')
+      p.description
+        strong #{item.description}&nbsp; 
+        span.muted PIN #{item.pin}
+      div.large
+        p
+          span.value(data-id="#{item._id}")  
+          | &nbsp;#{item.unit}

@@ -10,24 +10,35 @@ div.container
       div#arduino
         each item in items
           div.plugin-container.arduino.settings(id="#{item._id}")
-            label(for="description") Description (optional):
-            input(type="text", name="data[description][]", placeholder="Macbook", value="#{item.description}")
-            label(for="method") Method:
-            select(name="data[method][]")
-              option(disabled="disabled",selected=(item.method == '')) Choose Method
-              option(value="rcswitch",selected=(item.method == 'rcswitch')) rc-switch
-            label(for="pin") Arduino PIN:
-            input(type="text", name="data[pin][]", placeholder="10", required="1", value="#{item.pin}")
-            label(for="val") Method Value:
-            input(type="text", name="data[val][]", placeholder="0FFF0FFF", required="1", value="#{item.val}")
-            input(type="hidden", name="data[_id][]", value="#{item._id}")
-            input(type="hidden", name="data[status][]", value="#{item.status}")
             button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
               i.icon-trash.icon-large
               |  Delete
+            label(for="description") Description (optional):
+            input(type="text", name="data[description][]", placeholder="Temperature", value="#{item.description}")
+            label(for="pin") Arduino PIN:
+            input(type="text", name="data[pin][]", placeholder="10", required="1", value="#{item.pin}")
+            div.switch
+              label(for="method") Method:
+              select(name="data[method][]")
+                option(disabled="disabled",selected=(item.method == '')) Choose Method
+                option(value="rcswitch",selected=(item.method == 'rcswitch')) rc-switch
+                option(value="sensor",selected=(item.method == 'sensor')) sensor
+              div.switch-container
+                div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
+                  label(for="code") Tristate-Code:
+                  input(type="text", name="data[code][]", placeholder="FF0F0FFF", value=(item.code ? item.code : ''))
+              
+                div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
+                  label(for="formula") Formula
+                  input(type="text", name="data[formula][]", placeholder="x*100-3.14", value=(item.formula ? item.formula : ''))
+                  label(for="unit") Unit:
+                  input(type="text", name="data[unit][]", placeholder="°F", value=(item.unit ? item.unit : ''))
+
+            input(type="hidden", name="data[_id][]", value="#{item._id}")
+            input(type="hidden", name="data[status][]", value="#{item.status}")
           
       p.arduino.buttons
-        button.btn.btn-info.add(data-target="arduino", type="button") 
+        button.btn.btn-info.add(data-target="arduino", type="button", data-callback="registerSelectSwitch()") 
           i.icon-plus.icon-large
           |  Add
       
@@ -36,17 +47,28 @@ div.container
           |  Save
       
 div.plugin-container.arduino.settings#template(style="display: none;")
-  label(for="description") Description (optional):
-  input(type="text", name="data[description][]", placeholder="Macbook")
-  label(for="method") Method:
-  select(name="data[method][]")
-    option(disabled="disabled",selected=true) Choose Method
-    option(value="rcswitch") rc-switch
-  label(for="pin") Arduino PIN:
-  input(type="text", name="data[pin][]", placeholder="10", required="1")
-  label(for="val") Method Value:
-  input(type="text", name="data[val][]", placeholder="0FFF0FFF", required="1")
-  input(type="hidden", name="data[status][]", value="0")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
     |  Delete
+  label(for="description") Description (optional):
+  input(type="text", name="data[description][]", placeholder="Temperature")
+  label(for="pin") Arduino PIN:
+  input(type="text", name="data[pin][]", placeholder="10", required="1")
+  div.switch
+    label(for="method") Method:
+    select(name="data[method][]")
+      option(disabled="disabled",selected=true) Choose Method
+      option(value="rcswitch") rc-switch
+      option(value="sensor") sensor
+    div.switch-container
+      div.rcswitch.hidden
+        label(for="code") Tristate-Code:
+        input(type="text", name="data[code][]", placeholder="FF0F0FFF")
+      
+      div.sensor.hidden
+        label(for="formula") Formula:
+        input(type="text", name="data[formula][]", placeholder="x*100-3.14")
+        label(for="unit") Unit:
+        input(type="text", name="data[unit][]", placeholder="°F")
+
+  input(type="hidden", name="data[status][]", value="0")

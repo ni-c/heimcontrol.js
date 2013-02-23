@@ -179,6 +179,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
                 saveMultiple(collection, items, function(err, result) {
+                  (plugin.refresh) && plugin.refresh();
                   collection.find({}).toArray(function(err, items) {
                     req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
                       items: items,

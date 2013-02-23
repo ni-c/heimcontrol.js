@@ -79,3 +79,13 @@
 input.login {
   width: 260px;
 }
+
+.large {
+  margin: 10px 0px 0px 0px;
+}
+
+.large p {
+  font-size: 36px;
+  font-weight: bold;
+}
+

@@ -10,6 +10,9 @@ div.container
       div#gpio
         each item in items
           div.plugin-container.gpio.settings(id="#{item._id}")
+            button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
+              i.icon-trash.icon-large
+              |  Delete
             label(for="description") Description (optional):
             input(type="text", name="data[description][]", placeholder="Light", value=(item.description ? item.description : ''))
             label(for="direction") Direction:
@@ -36,9 +39,6 @@ div.container
               option(value="22",selected=(item.pin == '22')) PIN 22
             input(type="hidden", name="data[_id][]", value="#{item._id}")
             input(type="hidden", name="data[value][]", value="0")
-            button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
-              i.icon-trash.icon-large
-              |  Delete
           
       p.gpio.buttons
         button.btn.btn-info.add(data-target="gpio", type="button", data-callback="registerGpioToggles()") 
@@ -50,6 +50,9 @@ div.container
           |  Save
       
 div.plugin-container.gpio.settings#template(style="display: none;")
+  button.btn.btn-danger.pull-right.delete(type="button")
+    i.icon-trash.icon-large
+    |  Delete
   label(for="description") Description (optional):
   input(type="text", name="data[description][]", placeholder="Light")
   label(for="direction") Direction:
@@ -75,6 +78,3 @@ div.plugin-container.gpio.settings#template(style="display: none;")
     option(value="18") PIN 18
     option(value="22") PIN 22
   input(type="hidden", name="data[value][]", value="0")
-  button.btn.btn-danger.pull-right.delete(type="button")
-    i.icon-trash.icon-large
-    |  Delete
