@@ -19,7 +19,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'fs', './routes' ], function(http, connect, mongo, path, express, conf, socketio, jade, cookie, fs, routes) {
+requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'fs', './routes', './libs/PluginHelper.js' ], function(http, connect, mongo, path, express, conf, socketio, jade, cookie, fs, routes, PluginHelper) {
 
   // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -81,6 +81,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('mongo', mongo);
         app.set('db', db);
         app.set('config', config);
+        app.set('pluginHelper', new PluginHelper(app));
         app.use(express.favicon());
         app.use(express.logger('dev'));
         app.use(express.bodyParser());

@@ -21,12 +21,16 @@ define([ 'duino' ], function(duino) {
     this.id = this.name.toLowerCase();
     this.board = new duino.Board();
     this.pins = {};
+    this.pluginHelper = app.get('pluginHelper');
 
     var that = this;
     app.get('sockets').on('connection', function(socket) {
+
+      // Arduino toggle
       socket.on('arduino-toggle', function(data) {
         that.toggle(data);
       });
+
     });
   };
 
@@ -40,36 +44,32 @@ define([ 'duino' ], function(duino) {
    */
   Arduino.prototype.toggle = function(data) {
 
-    var ObjectID = this.app.get('mongo').ObjectID;
-    var id = new ObjectID(data.id);
-
     var that = this;
-    this.app.get('db').collection(this.collection, function(err, collection) {
-      collection.find({
-        _id: id
-      }).toArray(function(err, result) {
-        if ((!err) && (result.length == 1)) {
-          var item = result[0];
-          // Create RC object
-          if (!that.pins[item.pin]) {
-            that.pins[item.pin] = new duino.RC({
-              board: that.board,
-              pin: parseInt(item.pin)
-            });
-          }
+    this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
 
-          // Send RC code
-          if (parseInt(data.value)) {
-            that.pins[item.pin].triState(item.val + "FF0F");
-          } else {
-            that.pins[item.pin].triState(item.val + "FF00");
-          }
+      item.status = (parseInt(data.value));
 
-          that.app.get('sockets').emit('arduino-toggle', data);
-        }
-      });
+      // Save status to db
+      collection.save(item);
+
+      // Inform clients over websockets
+      that.app.get('sockets').emit('arduino-toggle', data);
+
+      // Create RC object
+      if (!that.pins[item.pin]) {
+        that.pins[item.pin] = new duino.RC({
+          board: that.board,
+          pin: parseInt(item.pin)
+        });
+      }
+
+      // Send RC code
+      if (item.status) {
+        that.pins[item.pin].triState(item.val + "FF0F");
+      } else {
+        that.pins[item.pin].triState(item.val + "FF00");
+      }
     });
-
   };
 
   return Arduino;

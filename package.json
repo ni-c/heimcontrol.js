@@ -16,6 +16,8 @@
     "node-conf": ">= 0.0.4",
     "rasp2c": ">= 0.0.1",
     "cookie": ">= 0.0.5",
+    "ping": ">= 0.1.1",
+    "wake_on_lan": ">= 0.0.3",
     "duino": "https://github.com/ni-c/duino/tarball/master"
   }
 }
