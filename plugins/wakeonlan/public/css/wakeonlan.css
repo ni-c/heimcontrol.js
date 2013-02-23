@@ -1,0 +1,3 @@
+.plugin-container.wakeonlan:after {
+  content: "Wake-on-LAN";
+}

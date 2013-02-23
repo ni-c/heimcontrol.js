@@ -19,7 +19,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'fs', './controller' ], function(http, connect, mongo, path, express, conf, socketio, jade, cookie, fs, controller) {
+requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'fs', './routes', './libs/PluginHelper.js' ], function(http, connect, mongo, path, express, conf, socketio, jade, cookie, fs, routes, PluginHelper) {
 
   // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -71,7 +71,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         });
       });
 
-      // express
+      // Express
       app.configure(function() {
         app.set('views', __dirname + '/views');
         app.set('view engine', 'jade');
@@ -81,6 +81,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('mongo', mongo);
         app.set('db', db);
         app.set('config', config);
+        app.set('pluginHelper', new PluginHelper(app));
         app.use(express.favicon());
         app.use(express.logger('dev'));
         app.use(express.bodyParser());
@@ -95,73 +96,58 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(app.router);
       });
 
-      app.configure('development', function() {
-        app.use(express.errorHandler());
-      });
-
       // Permission check
-      var is_authorized = function(req, res, next) {
+      var isAuthorized = function(req, res, next) {
         if (!req.session.user) {
           return res.redirect('/login');
         } else {
           next();
         }
       };
-
+      
       // Routes
-      app.get('/register', controller.register);
-      app.post('/register', controller.performregister);
+      app.get('/register', routes.showRegister);
+      app.post('/register', routes.doRegister);
 
-      app.get('/login', controller.login);
-      app.post('/login', controller.performlogin);
+      app.get('/login', routes.showLogin);
+      app.post('/login', routes.doLogin);
 
-      app.get('/', is_authorized, controller.index);
+      app.get('/', isAuthorized, routes.index);
 
-      app.get('/settings', is_authorized, controller.settings);
-      app.post('/settings', is_authorized, controller.changepassword);
+      app.get('/settings', isAuthorized, routes.settings);
+      app.post('/settings', isAuthorized, routes.changePassword);
 
-      app.get('/settings/:plugin', is_authorized, controller.settings, controller.notfound);
+      app.get('/settings/:plugin', isAuthorized, routes.settings, routes.notFound);
+      app.post('/settings/:plugin', isAuthorized, routes.saveSettings, routes.notFound);
 
-      app.get('/logout', controller.logout);
+      app.get('/logout', routes.logout);
+
+      // Parse plugins
+      var plugins = [];
+      var pluginFolder = __dirname + '/plugins';
+      fs.readdir(pluginFolder, function(err, files) {
+        files.forEach(function(file) {
+          requirejs([pluginFolder + '/' + file + '/index.js'], function(Plugin) {
+            plugins.push(new Plugin(app));
+          });
+        });
+      });
+      app.set('plugins', plugins);
+      app.locals.plugins = plugins;
 
       // Plugin JS and CSS
       app.get('/plugin/:file', function(req, res) {
         var file = req.params.file;
         if (file.indexOf('.css', file.length - 4) !== -1) {
-          res.sendfile(__dirname + '/node_modules/heimcontrol-' + file.substr(0, file.length - 4) + '/css/' + file);
+          res.sendfile(__dirname + '/plugins/' + file.substr(0, file.length - 4) + '/public/css/' + file);
         }
         if (file.indexOf('.js', file.length - 3) !== -1) {
-          res.sendfile(__dirname + '/node_modules/heimcontrol-' + file.substr(0, file.length - 3) + '/js/' + file);
+          res.sendfile(__dirname + '/plugins/' + file.substr(0, file.length - 3) + '/public/js/' + file);
         }
-      });
-
-      // Read plugins
-      var plugins = [];
-      var plugin_names = [];
-      fs.readdir(__dirname + '/node_modules', function(err, files) {
-        files.forEach(function(file) {
-          if (file.indexOf('heimcontrol-') === 0) {
-            var plugin = {
-              id: file,
-              name: file.replace('heimcontrol-', '')
-            };
-            // Initialize
-            requirejs([ plugin.id ], function(p) {
-              p.init(app);
-              plugin.instance = p;
-              plugin.icon = p.icon;
-            });
-            plugin_names.push(plugin.name);
-            plugins.push(plugin);
-          }
-        });
-        app.locals.plugins = plugins;
-        app.set('plugins', plugins);
-        app.set('plugin_names', plugin_names);
-      });
-
+      });      
+      
       // 404 Not found
-      app.all('*', controller.notfound);
+      app.all('*', routes.notFound);
 
     }
   });
