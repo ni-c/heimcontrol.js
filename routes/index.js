@@ -161,14 +161,17 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
              * Recursive function to save items to collections
              */
             function saveMultiple(collection, items, callback) {
-              console.log(items);
-              collection.save(items.shift(), function(err, result) {
-                if (items.length > 0) {
-                  saveMultiple(collection, items, callback);
-                } else {
-                  callback(null, true);
-                }
-              });
+              if (items.length) {
+                collection.save(items.shift(), function(err, result) {
+                  if (items.length > 0) {
+                    saveMultiple(collection, items, callback);
+                  } else {
+                    callback(null, true);
+                  }
+                });
+              } else {
+                callback(null, true);
+              }
             }
 
             // TODO: Each plugin should have a "validate()" method to check if the items-data is valid

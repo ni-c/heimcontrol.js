@@ -63,7 +63,8 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
    * Wake on LAN
    * 
    * @method wake
-   * @param {data} data The websocket data
+   * @param {Object} data The websocket data
+   * @param {String} data.id The ID of the database entry
    */
   Wakeonlan.prototype.wake = function(data) {
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {

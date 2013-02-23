@@ -1,0 +1,3 @@
+.plugin-container.gpio:after {
+  content: "GPIO";
+}

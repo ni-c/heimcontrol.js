@@ -9,6 +9,17 @@ function registerDeleteButtons() {
 	});
 }
 
+function registerMacInput() {
+  $('.mac').unbind('mac');
+  $('.mac').keyup(function() {
+    var e = $(this);
+    var value = e.val();
+    value = value.toUpperCase();
+    value = value.replace('-', ':').replace('.', ':');
+    e.val(value);
+});  
+}
+
 // Socket buttons
 function registerSocketButtons(socket) {
   $('.socket').unbind('click');
@@ -30,9 +41,12 @@ require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function(
 
   registerSocketButtons(socket);
 
+  registerMacInput();
+  
   if ($('#template').length) {
     var i = 0;
     $('.add').click(function() {
+      // Clone and fade element
       var element = $('#template').clone();
       $('#' + $(this).data('target')).append(element);
       element.attr('id', i);
@@ -41,7 +55,12 @@ require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function(
       $('html, body').animate({
         scrollTop : $('html, body').height()
       }, 800);
+      // Call callback
+      if ($(this).attr('data-callback')) {
+        eval($(this).attr('data-callback'));
+      }
       registerDeleteButtons();
+      registerMacInput();
     });
   }
   

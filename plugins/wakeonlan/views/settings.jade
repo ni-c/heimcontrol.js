@@ -15,7 +15,7 @@ div.container
             label(for="host") Hostname / IP:
             input(type="text", name="data[host][]", placeholder="hostname", required="1", value="#{item.host}")
             label(for="mac") MAC-Address:
-            input(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$", value="#{item.mac}")
+            input.uppercase(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", value="#{item.mac}", maxlength="17")
             input(type="hidden", name="data[_id][]", value="#{item._id}")
             button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
               i.icon-trash.icon-large
@@ -36,7 +36,7 @@ div.plugin-container.wakeonlan.settings#template(style="display: none;")
   label(for="host") Hostname / IP:
   input(type="text", name="data[host][]", placeholder="hostname", required="1")
   label(for="mac") MAC-Address:
-  input(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
+  input.mac(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
     |  Delete
