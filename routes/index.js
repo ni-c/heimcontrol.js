@@ -174,22 +174,8 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
       if (pluginList.indexOf(req.params.plugin) >= 0) {
         req.app.get('plugins').forEach(function(plugin) {
           if (plugin.id == req.params.plugin) {
-            var items = [];
-            for (key in req.body.data) {
-              var i = 0;
-              req.body.data[key].forEach(function(e) {
-                if (!items[i]) {
-                  items[i] = {};
-                }
-                if (key == '_id') {
-                  var ObjectID = req.app.get('mongo').ObjectID;
-                  items[i][key] = new ObjectID(e);
-                } else {
-                  items[i][key] = e;
-                }
-                i++;
-              });
-            }
+            
+            var items = req.body.data;
 
             /**
              * Recursive function to save items to collections

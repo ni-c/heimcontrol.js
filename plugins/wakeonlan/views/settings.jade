@@ -8,18 +8,18 @@ div.container
   div.row16
     form(action="/settings/wakeonlan", method="post")
       div#wakeonlan
-        each item in items
+        each item, i in items
           div.plugin-container.wakeonlan(id="#{item._id}", style=(item.mac == '' ? 'display: none;' : ''))
             button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
               i.icon-trash.icon-large
               |  Delete
             label(for="description") Description (optional):
-            input(type="text", name="data[description][]", placeholder="iMac", value=(typeof(item.description) == 'undefined' ? '' : item.description))
+            input(type="text", name="data[#{i}][description]", placeholder="iMac", value=(typeof(item.description) == 'undefined' ? '' : item.description))
             label(for="host") Hostname / IP:
-            input(type="text", name="data[host][]", placeholder="hostname", required="1", value="#{item.host}")
+            input(type="text", name="data[#{i}][host]", placeholder="hostname", required="1", value="#{item.host}")
             label(for="mac") MAC-Address:
-            input.uppercase(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", value="#{item.mac}", maxlength="17")
-            input(type="hidden", name="data[_id][]", value="#{item._id}")
+            input.uppercase(type="text", name="data[#{i}][mac]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", value="#{item.mac}", maxlength="17")
+            input(type="hidden", name="data[#{i}][_id]", value="#{item._id}")
           
       p.wakeonlan.buttons
         button.btn.btn-info.add(data-target="wakeonlan", type="button") 
@@ -30,12 +30,14 @@ div.container
           i.icon-save.icon-large
           |  Save
       
+input(type="hidden", name="iterator", id="iterator", value=(items.length))
+      
 div.plugin-container.wakeonlan.settings#template(style="display: none;")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
     |  Delete  label(for="description") Description (optional):
-  input(type="text", name="data[description][]", placeholder="iMac", value=" ")
+  input(type="text", name="data[%i][description]", placeholder="iMac")
   label(for="host") Hostname / IP:
-  input(type="text", name="data[host][]", placeholder="hostname", required="1", value=" ")
+  input(type="text", name="data[%i][host]", placeholder="hostname", required="1")
   label(for="mac") MAC-Address:
-  input.mac(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17", value=" ")
+  input.mac(type="text", name="data[%i][mac]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17")

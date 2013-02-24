@@ -9,6 +9,7 @@ function registerDeleteButtons() {
 	});
 }
 
+// Mac address to uppercase
 function registerMacInput() {
   $('.mac').unbind('mac');
   $('.mac').keyup(function() {
@@ -44,23 +45,41 @@ require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function(
   registerMacInput();
   
   if ($('#template').length) {
-    var i = 0;
     $('.add').click(function() {
-      // Clone and fade element
+
+      // Get current iterator
+      var i = $('#iterator').val();
+      
+      // Clone element
       var element = $('#template').clone();
       $('#' + $(this).data('target')).append(element);
+      
+      // Set ids
       element.attr('id', i);
-      element.children('.delete').attr('data-delete', i++);
+      
+      element.find('input, select').each(function() {
+        $(this).attr('name', $(this).attr('name').replace('%i%', i));
+      });
+      
+      element.find('.delete').attr('data-delete', i);
+      
+      // Fade in
       element.slideToggle();
       $('html, body').animate({
         scrollTop : $('html, body').height()
       }, 800);
+      
       // Call callback
       if ($(this).attr('data-callback')) {
         eval($(this).attr('data-callback'));
       }
+      
+      // Register Events
       registerDeleteButtons();
       registerMacInput();
+
+      // Set new iterator
+      $('#iterator').val(++i);
     });
   }
   

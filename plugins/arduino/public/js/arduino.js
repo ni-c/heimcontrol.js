@@ -1,16 +1,23 @@
 function registerSelectSwitch() {
   $('.switch').children('select').change(function() {
     var e = $(this).parent('.switch');
-    e.children('.switch-container').children('div').addClass('hidden');
-    e.children('.switch-container').children('div').children('input').val(' ');
-    e.children('.switch-container').children('.' + $(this).val()).removeClass('hidden');
+    e.find('.switch-container').find('div').addClass('hidden');
+    e.find('.switch-container').find('input').val('');
+    e.find('.switch-container').find('input').removeAttr('required', '0');
+    e.find('.switch-container').find('.' + $(this).val()).each(function() {
+      var e = $(this);
+      e.removeClass('hidden');
+      if (e.attr('data-required')=='1') {
+        e.attr('required', 'required');
+      }
+    });
   });
 };
 
 require([ "jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js" ], function() {
 
   registerSelectSwitch();
-  
+
   var socket = io.connect();
 
   /**

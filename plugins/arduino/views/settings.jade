@@ -8,34 +8,34 @@ div.container
   div.row16
     form(action="/settings/arduino", method="post")
       div#arduino
-        each item in items
+        each item, i in items
           div.plugin-container.arduino.settings(id="#{item._id}")
             button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
               i.icon-trash.icon-large
               |  Delete
             label(for="description") Description (optional):
-            input(type="text", name="data[description][]", placeholder="Temperature", value="#{item.description}")
+            input(type="text", name="data[#{i}][description]", placeholder="Temperature", value="#{item.description}")
             label(for="pin") Arduino PIN:
-            input(type="text", name="data[pin][]", placeholder="10", required="1", value="#{item.pin}")
+            input(type="text", name="data[#{i}][pin]", placeholder="10", required="1", value="#{item.pin}")
             div.switch
               label(for="method") Method:
-              select(name="data[method][]")
+              select(name="data[#{i}][method]")
                 option(disabled="disabled",selected=(item.method == '')) Choose Method
                 option(value="rcswitch",selected=(item.method == 'rcswitch')) rc-switch
                 option(value="sensor",selected=(item.method == 'sensor')) sensor
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
                   label(for="code") Tristate-Code:
-                  input(type="text", name="data[code][]", placeholder="FF0F0FFF", value=(item.code ? item.code : ''))
+                  input(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", value=(item.code ? item.code : ''))
               
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
-                  input(type="text", name="data[formula][]", placeholder="x*100-3.14", value=(item.formula ? item.formula : ''))
+                  input(type="text", name="data[#{i}][formula]", placeholder="x*100-3.14", value=(item.formula ? item.formula : ''))
                   label(for="unit") Unit:
-                  input(type="text", name="data[unit][]", placeholder="°F", value=(item.unit ? item.unit : ''))
+                  input(type="text", name="data[#{i}][unit]", placeholder="°F", value=(item.unit ? item.unit : ''))
 
-            input(type="hidden", name="data[_id][]", value="#{item._id}")
-            input(type="hidden", name="data[status][]", value="#{item.status}")
+            input(type="hidden", name="data[#{i}][_id]", value="#{item._id}")
+            input(type="hidden", name="data[#{i}][status]", value="#{item.status}")
           
       p.arduino.buttons
         button.btn.btn-info.add(data-target="arduino", type="button", data-callback="registerSelectSwitch()") 
@@ -45,30 +45,32 @@ div.container
         button.btn.btn-success.save(type="submit") 
           i.icon-save.icon-large
           |  Save
-      
+          
+input(type="hidden", name="iterator", id="iterator", value=(items.length))
+
 div.plugin-container.arduino.settings#template(style="display: none;")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
     |  Delete
   label(for="description") Description (optional):
-  input(type="text", name="data[description][]", placeholder="Temperature")
+  input(type="text", name="data[%i%][description]", placeholder="Temperature")
   label(for="pin") Arduino PIN:
-  input(type="text", name="data[pin][]", placeholder="10", required="1")
+  input(type="text", name="data[%i%][pin]", placeholder="10", required="1")
   div.switch
     label(for="method") Method:
-    select(name="data[method][]")
+    select(name="data[%i%][method]")
       option(disabled="disabled",selected=true) Choose Method
       option(value="rcswitch") rc-switch
       option(value="sensor") sensor
     div.switch-container
       div.rcswitch.hidden
         label(for="code") Tristate-Code:
-        input(type="text", name="data[code][]", placeholder="FF0F0FFF")
+        input(type="text", name="data[%i%][code]", placeholder="FF0F0FFF", data-required="1")
       
       div.sensor.hidden
         label(for="formula") Formula:
-        input(type="text", name="data[formula][]", placeholder="x*100-3.14", value=" ")
-        label(for="unit") Unit:
-        input(type="text", name="data[unit][]", placeholder="°F", value=" ")
+        input(type="text", name="data[%i%][formula]", placeholder="x*3.14-100", data-required="1")
+        label(for="unit") Unit (optional):
+        input(type="text", name="data[%i%][unit]", placeholder="°F", data-required="0")
 
-  input(type="hidden", name="data[status][]", value="0")
+  input(type="hidden", name="data[%i%][status]", value="0")
