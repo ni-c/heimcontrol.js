@@ -1,3 +1,3 @@
-require(["jquery", "/js/bootstrap.min.js"], function() {
+require(["jquery", url + "js/bootstrap.min.js"], function() {
 
 });
