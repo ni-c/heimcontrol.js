@@ -22,11 +22,11 @@ html
           div.nav-collapse.collapse.navigation
             ul.nav#bar-menu-left
               li(class=(page.title === 'Home' ? 'active' : ''))                
-                a(href="/")
+                a(href="/heimcontrol.js/")
                   i.icon-home  
                   | &nbsp;Home
               li(class=(page.title === 'Get Started' ? 'active' : ''))                
-                a(href="/get-started.html")
+                a(href="/heimcontrol.js/get-started.html")
                   i.icon-thumbs-up  
                   | &nbsp;Get Started
               li.dropdown(class=(page.title.indexOf('Settings')!==-1 ? 'active' : ''))                
@@ -36,15 +36,15 @@ html
                   b.caret
                 ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
                   li
-                    a(href="/plugins/gpio.html") 
+                    a(href="/heimcontrol.js/plugins/gpio.html") 
                       i.icon-lightbulb
                       | &nbsp;GPIO
                   li
-                    a(href="/plugins/arduino.html") 
+                    a(href="/heimcontrol.js/plugins/arduino.html") 
                       i.icon-external-link
                       | &nbsp;Arduino
                   li
-                    a(href="/plugins/wakeonlan.html") 
+                    a(href="/heimcontrol.js/plugins/wakeonlan.html") 
                       i.icon-off
                       | &nbsp;Wake-on-LAN
             ul.nav.pull-right#bar-menu-right
@@ -60,7 +60,7 @@ html
         p Created by 
           a(href="http://about.ni-c.de") Willi Thiel
           | , licensed under 
-          a(href="https://github.com/heimcontroljs/heimcontrol.js/blob/master/LICENSE") MIT License
+          a(href="https://github.com/ni-c/heimcontrol.js/blob/master/LICENSE") MIT License
           | .
         p Crafted using  
           a(href="http://jade-lang.com/") Jade
