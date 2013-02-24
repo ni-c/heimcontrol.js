@@ -28,7 +28,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
   if (!config.port || !config.secret || !config.mongo || !config.mongo.name || !config.mongo.host || !config.mongo.port || !config.mongo.user) {
     return console.log('\u001b[31mMissing configuration file \u001b[33mconfig/' + node_env + '.json\u001b[31m. Create configuration file or start with `NODE_ENV=development node heimcontrol.js` to use another configuration file.\033[0m');
   }
-
+  
   // Initiate express
   var app = express();
 
@@ -48,7 +48,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       var server = http.createServer(app).listen(config.port, function() {
         console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', config.port);
       });
-
+      
       // socket.io
       var io = socketio.listen(server);
       io.configure(function() {
@@ -148,7 +148,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       
       // 404 Not found
       app.all('*', routes.notFound);
-
     }
   });
 });

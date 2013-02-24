@@ -25,9 +25,12 @@ define([ 'duino' ], function(duino) {
     this.pluginHelper = app.get('pluginHelper');
 
     this.sensorList = [];
-    this.initSensors();
+    this.sensors = {};
+
+    this.init();
 
     var that = this;
+
     app.get('sockets').on('connection', function(socket) {
 
       // Arduino toggle
@@ -44,7 +47,7 @@ define([ 'duino' ], function(duino) {
    * @method refresh
    */
   Arduino.prototype.refresh = function() {
-    this.initSensors();
+    this.init();
   };
 
   /**
@@ -88,9 +91,9 @@ define([ 'duino' ], function(duino) {
   /**
    * Initialize the sensors attached to the Arduino
    * 
-   * @method initSensors
+   * @method init
    */
-  Arduino.prototype.initSensors = function() {
+  Arduino.prototype.init = function() {
 
     var that = this;
     this.sensorList.forEach(function(sensor) {
@@ -98,12 +101,14 @@ define([ 'duino' ], function(duino) {
     });
     this.sensorList = [];
 
+    this.sensors = {};
     this.app.get('db').collection(this.collection, function(err, collection) {
       collection.find({
         method: 'sensor'
       }).toArray(function(err, result) {
         if ((!err) && (result.length > 0)) {
           result.forEach(function(item) {
+            that.sensors[item._id] = item;
             var sensor = new duino.Sensor({
               board: that.board,
               pin: item.pin,
@@ -111,19 +116,15 @@ define([ 'duino' ], function(duino) {
             });
             sensor._id = item._id;
             sensor.on('read', function(err, value) {
-              value = +value;
-              var id = this._id + '';
-              that.pluginHelper.findItem(that.collection, id, function(err, item, collection) {
-                if (isNaN(item.value)) {
-                  item.value = 0;
-                }
-                var val = parseFloat(eval(item.formula.replace('x', value)));
-                item.value = parseFloat(((item.value + val) / 2).toFixed(2));
-                collection.save(item);
-                that.app.get('sockets').emit('arduino-sensor', {
-                  id: id,
-                  value: item.value
-                });
+              item = that.sensors[this._id + ''];
+              if (isNaN(item.value)) {
+                item.value = 0;
+              }
+              var val = parseFloat(eval(item.formula.replace('x', +value)));
+              item.value = parseFloat(((item.value + val) / 2).toFixed(2));
+              that.app.get('sockets').emit('arduino-sensor', {
+                id: item._id,
+                value: item.value
               });
             });
             that.sensorList.push(sensor);

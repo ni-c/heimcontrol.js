@@ -27,7 +27,7 @@ define([ 'pi-gpio' ], function(gpio) {
     setInterval(function() {
       that.parse();
     }, 100);
-    
+
     app.get('sockets').on('connection', function(socket) {
 
       // GPIO toggle
@@ -76,24 +76,20 @@ define([ 'pi-gpio' ], function(gpio) {
   Gpio.prototype.parse = function() {
     var that = this;
     this.app.get('db').collection(this.collection, function(err, collection) {
-      collection.find({}).toArray(function(err, result) {
+      collection.find({
+        direction: 'input'
+      }).toArray(function(err, result) {
         result.forEach(function(item) {
-          if (item.direction == 'input') {
-            gpio.setDirection(parseInt(item.pin), "input", function(err) {
-              gpio.read(parseInt(item.pin), function(err, status) {
-                if (!err) {
-                  if (item.value != status + '') {
-                    item.value = status + '';
-                    collection.save(item);
-                    that.app.get('sockets').emit('gpio-input', {
-                      id: item._id,
-                      value: item.value
-                    });
-                  }
-                }
-              });
+          gpio.setDirection(parseInt(item.pin), "input", function(err) {
+            gpio.read(parseInt(item.pin), function(err, status) {
+              if (!err) {
+                that.app.get('sockets').emit('gpio-input', {
+                  id: item._id,
+                  value: status + ''
+                });
+              }
             });
-          }
+          });
         });
       });
     });
