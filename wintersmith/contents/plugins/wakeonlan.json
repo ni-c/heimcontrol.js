@@ -1,0 +1,4 @@
+{
+  "title": "Arduino Wake-on-LAN",
+  "template": "plugins/wakeonlan.jade"
+}

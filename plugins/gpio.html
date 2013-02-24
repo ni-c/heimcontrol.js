@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>heimcontrol.js | Arduino GPIO</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/heimcontrol.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script data-main="/js/heimcontrol" src="/js/require-jquery.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  </head>
+  <body><a href="https://github.com/ni-c/heimcontrol.js"><img style="z-index: 2000; position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar navigation"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+          <div class="nav-collapse collapse navigation">
+            <ul id="bar-menu-left" class="nav">
+              <li class="">               <a href="/"><i class="icon-home"> </i>&nbsp;Home</a></li>
+              <li class="">               <a href="/get-started.html"><i class="icon-thumbs-up"> </i>&nbsp;Get Started</a></li>
+              <li class="dropdown ">               <a href="#" data-toggle="dropdown" role="button" id="dropdown" class="dropdown-toggle"><i class="icon-cogs"> </i>&nbsp;Plugins&nbsp;<b class="caret"></b></a>
+                <ul role="menu" aria-labelledby="dropdown" class="dropdown-menu">
+                  <li><a href="/plugins/gpio.html"> <i class="icon-lightbulb"></i>&nbsp;GPIO</a></li>
+                  <li><a href="/plugins/arduino.html"> <i class="icon-external-link"></i>&nbsp;Arduino</a></li>
+                  <li><a href="/plugins/wakeonlan.html"> <i class="icon-off"></i>&nbsp;Wake-on-LAN</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul id="bar-menu-right" class="nav pull-right">
+              <li><a href="mailto:ni-c@ni-c.de" class="btn-logout"> <i class="icon-envelope"></i>&nbsp;Me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <undefined></undefined>
+    <div class="container">
+      <header id="overview" class="jumbotron subhead">
+        <h1>GPIO Plugin</h1>
+        <p class="lead">Control the GPIO ports on your Raspberry PI </p>
+      </header>
+      <section>
+        <h4 class="page-header">What it does</h4>
+        <p>The GPIO plugin is able to control the GPIO ports of the Raspberry PI. It uses the great&nbsp;<a href="https://github.com/rakeshpai/pi-gpio">pi-gpio</a>%nbsp;tool to access the GPIO pins of the Raspberry Pi.</p>
+        <h4 class="page-header">Installation</h4>
+        <p>To get around being root to access the Raspberry Pi's GPIO pins, you should use&nbsp;<a https://github.com/quick2wire/quick2wire-gpio-admin>quick2wire-gpio-admin</a>:</p>
+        <script src="https://gist.github.com/ni-c/1242b3fe7b4645a0c7b4.js"></script>
+      </section>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p>Created by <a href="http://about.ni-c.de">Willi Thiel</a>, licensed under <a href="https://github.com/heimcontroljs/heimcontrol.js/blob/master/LICENSE">MIT License</a>.</p>
+        <p>Crafted using  <a href="http://jade-lang.com/">Jade</a>, <a href="http://twitter.github.com/bootstrap/">Bootstrap </a>& <a href="http://fortawesome.github.com/Font-Awesome/">font-awesome </a>.</p>
+      </div>
+    </footer>
+  </body>
+</html>

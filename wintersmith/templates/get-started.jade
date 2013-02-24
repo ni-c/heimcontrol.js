@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  header.jumbotron.subhead#overview
+    h1 Get started
+    p.lead Get started with heimcontrol.js on your Raspberry PI 
+    
+   section
+    h2.page-header Installation
+    | Howto install heimcontrol.js on your Raspberry PI
+    
+    h4.page-header Screen
+    | I recommend that you use&nbsp;
+    a(href="http://linux.die.net/man/1/screen) screen
+    | &nbsp;to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
+    
+    h4.page-header Git and Essentials
+    p First you have to install the required debian packages:
+    script(src="https://gist.github.com/ni-c/b2420a2d6b087466b034.js")
+
+    h4.page-header Node.js
+    p The next step is to install&nbsp;
+      a(href="http://nodejs.org/") Node.js 
+      | &nbsp;on your Raspberry PI:
+    script(src="https://gist.github.com/ni-c/f8684abbe0fd0b7b78de.js")
+
+    h4.page-header MongoDB
+    p If you are using a Raspberry PI with 256MB RAM, then you have to edit the file 
+      code /etc/dphys-swapfile  
+      | and change the value of&nbsp; 
+      code CONF_SWAPSIZE 
+      | &nbsp;from&nbsp;
+      strong 100  
+      | &nbsp;to&nbsp;
+      strong 200. 
+     
+    p You can find a Raspberry PI version for
+      a(href="http://www.mongodb.org") MongoDB 
+      | on GitHub. With the following command you can build an install it:
+    script(src="https://gist.github.com/ni-c/b760c210d4ec2ac6c106.js")
+    
+    p Now add the PATH to the MongoDB binaries. Open the file&nbsp;
+      code /etc/environment
+      | &nbsp;and add the following:
+    script(src="https://gist.github.com/ni-c/9396c0e2d7bdcef92db0.js")
+    
+    p Finally you have to create a MongoDB user, the MongoDB database directory and register an upstart script:
+    script(src="https://gist.github.com/ni-c/e3660f0a954b282b8bb8.js")
+    
+    h4.page-header heimcontrol.js
+    p You only have to clone the GitHub repository and run&nbsp;
+      code npm install
+      | &nbsp;to install homecontrol.js
+    script(src="https://gist.github.com/ni-c/3fc75069276ddf0fb90b.js")
+    
+    p Now you can run heimcontrol.js by typing&nbsp;
+      code node heimcontrol.js
+      | &nbsp;.
+      

@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  header.jumbotron.subhead#overview
+    h1 Arduino Plugin
+    p.lead With the Arduino plugin heimcontrol.js can communicate with an attached Arduino. 
+    
+   section
+    h4.page-header What it does
+    p The Arduino plugin builds upon the&nbsp;
+      a(href="https://github.com/ni-c/duino") duino
+      | &nbsp;library and allows the Raspberry PI to communicate over the USB port to an attached Arduino.
+    h4.page-header Implemented
+    p The following methods are implemented:
+     ul
+       li 
+         strong rc-switch
+         | &nbsp; Use your Arduino to operate remote radio controlled devices. This will most likely work with all popular low cost power outlet sockets. (see:&nbsp;
+         a(href="http://code.google.com/p/rc-switch/") http://code.google.com/p/rc-switch/
+         | ) 
+       li 
+         strong sensor
+         | &nbsp; Read the value from sensors attached to the Arduino
+    
