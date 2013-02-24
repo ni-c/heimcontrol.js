@@ -8,7 +8,6 @@ if (typeof define !== 'function') {
  * @class PluginHelper
  * @constructor 
  */
-
 define([], function() {
 
   var PluginHelper = function(app) {

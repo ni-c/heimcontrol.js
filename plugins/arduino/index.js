@@ -46,7 +46,7 @@ define([ 'duino' ], function(duino) {
   Arduino.prototype.refresh = function() {
     this.initSensors();
   };
-  
+
   /**
    * Toggle an Arduino port
    * 
@@ -61,8 +61,6 @@ define([ 'duino' ], function(duino) {
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
 
       item.status = (parseInt(data.value));
-
-      console.log(item);
 
       // Save status to db
       collection.save(item);
@@ -116,9 +114,15 @@ define([ 'duino' ], function(duino) {
               value = +value;
               var id = this._id + '';
               that.pluginHelper.findItem(that.collection, id, function(err, item, collection) {
+                if (isNaN(item.value)) {
+                  item.value = 0;
+                }
+                var val = parseFloat(eval(item.formula.replace('x', value)));
+                item.value = parseFloat(((item.value + val) / 2).toFixed(2));
+                collection.save(item);
                 that.app.get('sockets').emit('arduino-sensor', {
                   id: id,
-                  value: parseFloat(eval(item.formula.replace('x', value))).toFixed(2)
+                  value: item.value
                 });
               });
             });

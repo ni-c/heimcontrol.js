@@ -2,11 +2,20 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
+/**
+ * Route-Controller
+ *
+ * @class controller
+ * @constructor 
+ */
 define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   var controller = {};
 
   /**
-   * StringBuffer object
+   * Helper class to concat strings
+   *
+   * @class StringBuffer
+   * @constructor 
    */
   var StringBuffer = function() {
     this.buffer = [];
@@ -14,18 +23,38 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   };
 
   StringBuffer.prototype = {
+    /** 
+     * Append a string at the end of the StringBuffer 
+     * 
+     * @method append
+     * @param {String} s The string to append
+     */
     append: function(s) {
       this.buffer[this.index++] = s;
       return this;
     },
 
+    /**
+     * Return the string representation of the StringBuffer
+     * 
+     * @method toString
+     */
     toString: function() {
       return this.buffer.join("");
     }
   };
 
   /** 
-   * Render the plugin items
+   * Recursive function to render all plugin items to on page to show them on the startpage. 
+   * 
+   * @method renderPluginItems
+   * @param {Object} app The express app
+   * @param {String} res The type to render ('settings' or 'view')
+   * @param {Integer} i The iterator for the plugins
+   * @paran {String} html A string containing the already rendered plugin items
+   * @param {Function} callback The callback method to execute after rendering
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {String} callback.result The rendered HTML string
    */
   function renderPluginItems(app, type, i, html, callback) {
     var plugins = app.get('plugins');
@@ -61,8 +90,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * GET /
    * 
-   * @param req The request
-   * @param res The response
+   * @method index
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.index = function(req, res) {
     var html = new StringBuffer();
@@ -81,8 +111,10 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * GET /settings
    * 
-   * @param req The request
-   * @param res The response
+   * @method settings
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next Next route
    */
   controller.settings = function(req, res, next) {
     if (req.params.plugin) {
@@ -128,8 +160,10 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * POST /settings
    * 
-   * @param req The request
-   * @param res The response
+   * @method saveSettings
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next Next route
    */
   controller.saveSettings = function(req, res, next) {
     if (req.params.plugin) {
@@ -215,8 +249,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * GET /register
    * 
-   * @param req The request
-   * @param res The response
+   * @method register
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.showRegister = function(req, res) {
     req.app.get('db').collection('User', function(err, u) {
@@ -236,8 +271,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * POST /register
    * 
-   * @param req The request
-   * @param res The response
+   * @method doRegister
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.doRegister = function(req, res) {
     req.app.get('db').collection('User', function(err, u) {
@@ -283,8 +319,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * GET /login
    * 
-   * @param req The request
-   * @param res The response
+   * @method showLogin
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.showLogin = function(req, res) {
     // If no user exists, redirect to register
@@ -310,8 +347,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * POST /login
    * 
-   * @param req The request
-   * @param res The response
+   * @method doLogin
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.doLogin = function(req, res) {
 
@@ -341,8 +379,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * GET /logout
    * 
-   * @param req The request
-   * @param res The response
+   * @method logout
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.logout = function(req, res) {
     req.session.user = null;
@@ -356,8 +395,9 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   /**
    * POST /settings
    * 
-   * @param req The request
-   * @param res The response
+   * @method changePassword
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.changePassword = function(req, res) {
 
@@ -397,14 +437,15 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
 
   /**
    * Error 404
-   * 
-   * @param req The request
-   * @param res The response
+   *
+   * @method notFound
+   * @param {Object} req The request
+   * @param {Object} res The response
    */
   controller.notFound = function(req, res) {
     res.status(404).render('404', {
       title: '404 Not Found',
-      hide_menubar: req.session.user
+      hide_menubar: ((req.session) && (req.session.user))
     });
   };
 

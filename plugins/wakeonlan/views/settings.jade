@@ -34,8 +34,8 @@ div.plugin-container.wakeonlan.settings#template(style="display: none;")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
     |  Delete  label(for="description") Description (optional):
-  input(type="text", name="data[description][]", placeholder="iMac")
+  input(type="text", name="data[description][]", placeholder="iMac", value=" ")
   label(for="host") Hostname / IP:
-  input(type="text", name="data[host][]", placeholder="hostname", required="1")
+  input(type="text", name="data[host][]", placeholder="hostname", required="1", value=" ")
   label(for="mac") MAC-Address:
-  input.mac(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17")
+  input.mac(type="text", name="data[mac][]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17", value=" ")
