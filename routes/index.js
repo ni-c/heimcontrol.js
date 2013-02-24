@@ -180,11 +180,16 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
             /**
              * Recursive function to save items to collections
              */
-            function saveMultiple(collection, items, callback) {
-              if (items.length) {
-                collection.save(items.shift(), function(err, result) {
+            function saveMultiple(app, collection, items, callback) {
+              if ((items) && (items.length > 0)) {
+                var item = items.shift();
+                if (item._id) {
+                  var ObjectID = app.get('mongo').ObjectID;
+                  item._id = new ObjectID(item._id + '');
+                }
+                collection.save(item, function(err, result) {
                   if (items.length > 0) {
-                    saveMultiple(collection, items, callback);
+                    saveMultiple(app, collection, items, callback);
                   } else {
                     callback(null, true);
                   }
@@ -198,7 +203,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
 
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
-                saveMultiple(collection, items, function(err, result) {
+                saveMultiple(req.app, collection, items, function(err, result) {
                   (plugin.refresh) && plugin.refresh();
                   collection.find({}).toArray(function(err, items) {
                     req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {

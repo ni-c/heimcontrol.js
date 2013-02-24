@@ -13,7 +13,7 @@ define([], function() {
   var PluginHelper = function(app) {
     this.app = app;
   };
-  
+
   /**
    * Gets the plugin item from the database
    * 
@@ -23,17 +23,16 @@ define([], function() {
    * @param {Function} callback The callback function to execute after find
    */
   PluginHelper.prototype.findItem = function(plugin, id, callback) {
-
     var ObjectID = this.app.get('mongo').ObjectID;
     this.app.get('db').collection(plugin, function(err, collection) {
       collection.find({
         _id: new ObjectID(id + '')
       }).toArray(function(err, result) {
-        if ((!err) && (result.length == 1)) {
+        if ((!err) && (result.length != 0)) {
           var item = result[0];
           callback(null, item, collection);
         } else {
-          callback((err) ? err : 'Item not found');
+          callback((err) ? err : 'Item not found (ID: "' + id + '")');
         }
       });
     });

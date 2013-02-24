@@ -61,29 +61,29 @@ define([ 'duino' ], function(duino) {
   Arduino.prototype.toggle = function(data) {
 
     var that = this;
-    this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        item.status = (parseInt(data.value));
 
-      item.status = (parseInt(data.value));
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-toggle', data);
 
-      // Save status to db
-      collection.save(item);
+        // Create RC object
+        if (!that.pins[item.pin]) {
+          that.pins[item.pin] = new duino.RC({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+        }
 
-      // Inform clients over websockets
-      that.app.get('sockets').emit('arduino-toggle', data);
-
-      // Create RC object
-      if (!that.pins[item.pin]) {
-        that.pins[item.pin] = new duino.RC({
-          board: that.board,
-          pin: parseInt(item.pin)
-        });
-      }
-
-      // Send RC code
-      if (item.status) {
-        that.pins[item.pin].triState(item.code + "FF0F");
+        // Send RC code
+        if (item.status) {
+          that.pins[item.pin].triState(item.code + "FF0F");
+        } else {
+          that.pins[item.pin].triState(item.code + "FF00");
+        }
       } else {
-        that.pins[item.pin].triState(item.code + "FF00");
+        console.log(err);
       }
     });
   };
@@ -102,7 +102,7 @@ define([ 'duino' ], function(duino) {
     this.sensorList = [];
 
     this.sensors = {};
-    this.app.get('db').collection(this.collection, function(err, collection) {
+    this.app.get('db').collection(that.collection, function(err, collection) {
       collection.find({
         method: 'sensor'
       }).toArray(function(err, result) {
@@ -112,7 +112,7 @@ define([ 'duino' ], function(duino) {
             var sensor = new duino.Sensor({
               board: that.board,
               pin: item.pin,
-              throttle: 1000
+              throttle: 500
             });
             sensor._id = item._id;
             sensor.on('read', function(err, value) {
