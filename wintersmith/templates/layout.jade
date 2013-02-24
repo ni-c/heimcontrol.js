@@ -1,7 +1,7 @@
 doctype 5
 html
   head
-    title heimcontrol.js | #{page.title}
+    title heimcontrol.js - Home automation in Node.js with the Raspberry PI
     link(rel='stylesheet', href='#{url}css/bootstrap.min.css') 
     link(rel='stylesheet', href='#{url}css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='#{url}css/font-awesome.min.css')
@@ -27,11 +27,11 @@ html
                 a(href="#{url}")
                   i.icon-home  
                   | &nbsp;Home
-              li(class=(page.title === 'Get Started' ? 'active' : ''))                
+              li(class=(page.title === 'Get started' ? 'active' : ''))                
                 a(href="#{url}get-started.html")
                   i.icon-thumbs-up  
                   | &nbsp;Get Started
-              li.dropdown(class=(page.title.indexOf('Settings')!==-1 ? 'active' : ''))                
+              li.dropdown(class=(page.title.indexOf('Plugin')!==-1 ? 'active' : ''))                
                 a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
                   i.icon-cogs 
                   | &nbsp;Plugins&nbsp;

@@ -1,4 +1,4 @@
 {
-  "title": "Arduino GPIO",
+  "title": "GPIO Plugin",
   "template": "plugins/gpio.jade"
 }
