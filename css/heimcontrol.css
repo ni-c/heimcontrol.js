@@ -23,3 +23,12 @@
 pre {
   white-space: pre;
 }
+
+img.shadow {
+  border: 1px solid #000000;
+  box-shadow: 0 0 15px #000000;
+}
+
+img.title {
+  margin: 20px 0px 30px 0px;
+}

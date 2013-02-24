@@ -2,12 +2,12 @@ doctype 5
 html
   head
     title heimcontrol.js | #{page.title}
-    link(rel='stylesheet', href='/heimcontrol.js/css/bootstrap.min.css') 
-    link(rel='stylesheet', href='/heimcontrol.js/css/bootstrap-responsive.min.css')
-    link(rel='stylesheet', href='/heimcontrol.js/css/font-awesome.min.css')
-    link(rel='stylesheet', href='/heimcontrol.js/css/heimcontrol.css')
-    link(rel='icon', href='favicon.ico', type='image/x-icon')
-    script(data-main='/heimcontrol.js/js/heimcontrol', src='/heimcontrol.js/js/require-jquery.js')
+    link(rel='stylesheet', href='#{url}css/bootstrap.min.css') 
+    link(rel='stylesheet', href='#{url}css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='#{url}css/font-awesome.min.css')
+    link(rel='stylesheet', href='#{url}css/heimcontrol.css')
+    link(rel='icon', href='#{url}favicon.ico', type='image/x-icon')
+    script(data-main='#{url}js/heimcontrol', src='#{url}js/require-jquery.js')
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
   body
     a(href="https://github.com/ni-c/heimcontrol.js")
@@ -22,11 +22,11 @@ html
           div.nav-collapse.collapse.navigation
             ul.nav#bar-menu-left
               li(class=(page.title === 'Home' ? 'active' : ''))                
-                a(href="/heimcontrol.js/")
+                a(href="#{url}")
                   i.icon-home  
                   | &nbsp;Home
               li(class=(page.title === 'Get Started' ? 'active' : ''))                
-                a(href="/heimcontrol.js/get-started.html")
+                a(href="#{url}get-started.html")
                   i.icon-thumbs-up  
                   | &nbsp;Get Started
               li.dropdown(class=(page.title.indexOf('Settings')!==-1 ? 'active' : ''))                
@@ -36,15 +36,15 @@ html
                   b.caret
                 ul.dropdown-menu(role="menu",aria-labelledby="dropdown")
                   li
-                    a(href="/heimcontrol.js/plugins/gpio.html") 
+                    a(href="#{url}plugins/gpio.html") 
                       i.icon-lightbulb
                       | &nbsp;GPIO
                   li
-                    a(href="/heimcontrol.js/plugins/arduino.html") 
+                    a(href="#{url}plugins/arduino.html") 
                       i.icon-external-link
                       | &nbsp;Arduino
                   li
-                    a(href="/heimcontrol.js/plugins/wakeonlan.html") 
+                    a(href="#{url}plugins/wakeonlan.html") 
                       i.icon-off
                       | &nbsp;Wake-on-LAN
             ul.nav.pull-right#bar-menu-right
@@ -59,13 +59,13 @@ html
       div.container
         p Created by 
           a(href="http://about.ni-c.de") Willi Thiel
-          | , licensed under 
+          | , licensed under&nbsp;
           a(href="https://github.com/ni-c/heimcontrol.js/blob/master/LICENSE") MIT License
           | .
         p Crafted using  
           a(href="http://jade-lang.com/") Jade
-          | , 
-          a(href="http://twitter.github.com/bootstrap/") Bootstrap 
-          | & 
-          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome 
-          |.
+          | ,&nbsp;
+          a(href="http://twitter.github.com/bootstrap/") Bootstrap
+          | &nbsp;&&nbsp;
+          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome
+          | .
