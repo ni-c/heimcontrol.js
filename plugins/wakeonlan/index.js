@@ -29,12 +29,10 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
     }, 1000);
 
     app.get('sockets').on('connection', function(socket) {
-
       // Wake on LAN socket
       socket.on('wakeonlan-wake', function(data) {
         that.wake(data);
       });
-
     });
   };
 

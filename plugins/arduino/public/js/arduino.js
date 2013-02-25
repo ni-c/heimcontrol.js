@@ -21,9 +21,9 @@ require([ "jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js" ], functio
   var socket = io.connect();
 
   /**
-   * Arduino button has been toggled
+   * Arduino RC button has been switched
    */
-  socket.on('arduino-toggle', function(data) {
+  socket.on('arduino-rcswitch', function(data) {
     $('*[data-id="' + data.id + '"]').removeClass('active');
     $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
   });

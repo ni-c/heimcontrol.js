@@ -2,15 +2,15 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-/**
- * Arduino Plugin. This plugin is able to control an Arduino that is attached to the USB port of the Raspberry PI
- *
- * @class Arduino
- * @constructor 
- */
-
 define([ 'duino' ], function(duino) {
 
+  /**
+   * Arduino Plugin. This plugin is able to control an Arduino that is attached to the USB port of the Raspberry PI
+   *
+   * @class Arduino
+   * @param {Object} app The express application
+   * @constructor 
+   */
   var Arduino = function(app) {
 
     this.name = 'Arduino';
@@ -31,18 +31,21 @@ define([ 'duino' ], function(duino) {
 
     var that = this;
 
-    app.get('sockets').on('connection', function(socket) {
-
-      // Arduino toggle
-      socket.on('arduino-toggle', function(data) {
-        that.toggle(data);
-      });
-
+    app.get('events').on('settings-saved', function() {
+      that.refresh();
     });
+    
+    app.get('sockets').on('connection', function(socket) {
+      // Arduino toggle
+      socket.on('arduino-rcswitch', function(data) {
+        that.rcswitch(data);
+      });
+    });
+    
   };
 
   /**
-   * Refreshes the plugin. Is called by the application when the settings have been changed
+   * Refreshes the plugin.
    * 
    * @method refresh
    */
@@ -53,12 +56,12 @@ define([ 'duino' ], function(duino) {
   /**
    * Toggle an Arduino port
    * 
-   * @method toggle
-   * @param {Object} data The websocket data
-   * @param {String} data.id The ID of the database entry
-   * @param {String} data.value The value to set
+   * @method rcswitch
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the RC switch to use
+   * @param {String} data.value The value to set (0 or 1)
    */
-  Arduino.prototype.toggle = function(data) {
+  Arduino.prototype.rcswitch = function(data) {
 
     var that = this;
     this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
@@ -66,7 +69,7 @@ define([ 'duino' ], function(duino) {
         item.status = (parseInt(data.value));
 
         // Inform clients over websockets
-        that.app.get('sockets').emit('arduino-toggle', data);
+        that.app.get('sockets').emit('arduino-rcswitch', data);
 
         // Create RC object
         if (!that.pins[item.pin]) {

@@ -1,0 +1,9 @@
+{
+  "name": "heimcontrol.js",
+  "description": "heimcontrol.js: Home automation with Node.js",
+  "version": "0.0.1",
+  "url": "http://ni-c.github.com/homecontrol.js",
+  "options": {
+    "outdir": "./docs"
+  }
+}

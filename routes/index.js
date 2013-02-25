@@ -2,14 +2,7 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-/**
- * Route-Controller
- *
- * @class controller
- * @constructor 
- */
 define([ 'crypto', 'cookie' ], function(crypto, cookie) {
-  var controller = {};
 
   /**
    * Helper class to concat strings
@@ -43,6 +36,14 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
       return this.buffer.join("");
     }
   };
+  
+  /**
+   * Route-Controller
+   *
+   * @class Controller
+   * @constructor 
+   */
+  var Controller = {};
 
   /** 
    * Recursive function to render all plugin items to on page to show them on the startpage. 
@@ -94,7 +95,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.index = function(req, res) {
+  Controller.index = function(req, res) {
     var html = new StringBuffer();
     renderPluginItems(req.app, 'item', 0, html, function(err, html) {
       if (!err) {
@@ -116,7 +117,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} res The response
    * @param {Object} next Next route
    */
-  controller.settings = function(req, res, next) {
+  Controller.settings = function(req, res, next) {
     if (req.params.plugin) {
       var pluginList = [];
       req.app.get('plugins').forEach(function(plugin) {
@@ -165,7 +166,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} res The response
    * @param {Object} next Next route
    */
-  controller.saveSettings = function(req, res, next) {
+  Controller.saveSettings = function(req, res, next) {
     if (req.params.plugin) {
       var pluginList = [];
       req.app.get('plugins').forEach(function(plugin) {
@@ -200,11 +201,10 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
             }
 
             // TODO: Each plugin should have a "validate()" method to check if the items-data is valid
-
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
                 saveMultiple(req.app, collection, items, function(err, result) {
-                  (plugin.refresh) && plugin.refresh();
+                  req.app.get('events').trigger('settings-saved');
                   collection.find({}).toArray(function(err, items) {
                     req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
                       items: items,
@@ -244,7 +244,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.showRegister = function(req, res) {
+  Controller.showRegister = function(req, res) {
     req.app.get('db').collection('User', function(err, u) {
       u.find({}).toArray(function(err, r) {
         if (r.length == 0) {
@@ -266,7 +266,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.doRegister = function(req, res) {
+  Controller.doRegister = function(req, res) {
     req.app.get('db').collection('User', function(err, u) {
       u.find({}).toArray(function(err, r) {
         if (r.length == 0) {
@@ -314,7 +314,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.showLogin = function(req, res) {
+  Controller.showLogin = function(req, res) {
     // If no user exists, redirect to register
     req.app.get('db').collection('User', function(err, u) {
       u.find({}).toArray(function(err, r) {
@@ -323,7 +323,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
         } else {
           var c = cookie.parse(req.headers.cookie);
           if ((!err) && (c.email) && (c.password)) {
-            return controller.doLogin(req, res);
+            return Controller.doLogin(req, res);
           } else {
             return res.render('login', {
               title: 'Login',
@@ -342,12 +342,11 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.doLogin = function(req, res) {
+  Controller.doLogin = function(req, res) {
 
     var c = cookie.parse(req.headers.cookie);
     var email = req.body.email || c.email || '';
     var password = crypto.createHash('sha256').update(req.body.password || c.password || '').digest("hex");
-
     req.app.get('db').collection('User', function(err, u) {
       u.find({
         'email': email,
@@ -374,7 +373,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.logout = function(req, res) {
+  Controller.logout = function(req, res) {
     req.session.user = null;
     res.render('login', {
       title: 'Login',
@@ -390,7 +389,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.changePassword = function(req, res) {
+  Controller.changePassword = function(req, res) {
 
     var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
     var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
@@ -433,13 +432,13 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  controller.notFound = function(req, res) {
+  Controller.notFound = function(req, res) {
     res.status(404).render('404', {
       title: '404 Not Found',
       hide_menubar: ((req.session) && (req.session.user))
     });
   };
 
-  return controller;
+  return Controller;
 
 });

@@ -2,15 +2,15 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-/**
- * Gpio Plugin. Can control the GPIO on the Raspberry PI
- *
- * @class GPio
- * @constructor 
- */
-
 define([ 'pi-gpio' ], function(gpio) {
 
+  /**
+   * Gpio Plugin. Can access the GPIO on the Raspberry PI
+   *
+   * @class Gpio
+   * @param {Object} app The express application
+   * @constructor 
+   */
   var Gpio = function(app) {
 
     this.name = 'GPIO';
@@ -69,7 +69,7 @@ define([ 'pi-gpio' ], function(gpio) {
   };
 
   /**
-   * Parse GPIO ports
+   * Parse GPIO the ports that are used as input and send the result to the client websocket
    * 
    * @method parse
    */

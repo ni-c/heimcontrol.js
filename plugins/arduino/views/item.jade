@@ -4,11 +4,11 @@ each item in items
       p.description
         span.muted RC Switch:&nbsp;
         strong #{item.description} 
-      div.btn-group(data-toggle="buttons-radio")
-        button.btn.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="1", data-id="#{item._id}", class=(item.status == 1 ? 'active' : ''))
+      div.btn-group(data-rcswitch="buttons-radio")
+        button.btn.btn-large.socket(type="button", data-socket="arduino-rcswitch", data-value="1", data-id="#{item._id}", class=(item.status == 1 ? 'active' : ''))
           i.icon-circle
           | &nbsp;&nbsp;On
-        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-toggle", data-value="0", data-id="#{item._id}", class=(item.status == 0 ? 'active' : '')) 
+        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-rcswitch", data-value="0", data-id="#{item._id}", class=(item.status == 0 ? 'active' : '')) 
           i.icon-circle-blank
           | &nbsp;&nbsp;Off
     - if (item.method == 'sensor')
