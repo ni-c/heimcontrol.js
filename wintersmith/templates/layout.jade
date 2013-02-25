@@ -13,7 +13,7 @@ html
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
   body
     a(href="https://github.com/ni-c/heimcontrol.js")
-      img(style="z-index: 2000; position: absolute; top: 0; right: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png", alt="Fork me on GitHub")
+      img(style="z-index: 2000; position: absolute; top: 0; left: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png", alt="Fork me on GitHub")
     div.navbar.navbar-inverse.navbar-fixed-top
       div.navbar-inner
         div.container
@@ -31,6 +31,10 @@ html
                 a(href="#{url}get-started.html")
                   i.icon-thumbs-up  
                   | &nbsp;Get Started
+              li(class=(page.title === 'Documentation' ? 'active' : ''))                
+                a(href="#{url}documentation.html")
+                  i.icon-file-alt
+                  | &nbsp;Documentation
               li.dropdown(class=(page.title.indexOf('Plugin')!==-1 ? 'active' : ''))                
                 a.dropdown-toggle(href="#",data-toggle="dropdown",role="button",id="dropdown")
                   i.icon-cogs 
@@ -51,9 +55,9 @@ html
                       | &nbsp;Wake-on-LAN
             ul.nav.pull-right#bar-menu-right
               li
-                a.btn-logout(href="mailto:ni-c@ni-c.de") 
-                  i.icon-envelope
-                  | &nbsp;Me
+                a.btn-logout(href="https://github.com/ni-c/heimcontrol.js") 
+                  i.icon-github
+                  | &nbsp;Fork it!&nbsp;
     #{page.meta}
     div.container
       block content

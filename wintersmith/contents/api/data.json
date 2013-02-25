@@ -1,0 +1,1278 @@
+{
+    "project": {},
+    "files": {
+        "libs/PluginHelper.js": {
+            "name": "libs/PluginHelper.js",
+            "modules": {},
+            "classes": {
+                "PluginHelper": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/arduino/public/js/arduino.js": {
+            "name": "plugins/arduino/public/js/arduino.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/arduino/index.js": {
+            "name": "plugins/arduino/index.js",
+            "modules": {},
+            "classes": {
+                "Arduino": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/gpio/public/js/gpio.js": {
+            "name": "plugins/gpio/public/js/gpio.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/gpio/index.js": {
+            "name": "plugins/gpio/index.js",
+            "modules": {},
+            "classes": {
+                "Gpio": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/wakeonlan/public/js/wakeonlan.js": {
+            "name": "plugins/wakeonlan/public/js/wakeonlan.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/wakeonlan/index.js": {
+            "name": "plugins/wakeonlan/index.js",
+            "modules": {},
+            "classes": {
+                "Wakeonlan": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/js/require-jquery.js": {
+            "name": "public/js/require-jquery.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "routes/index.js": {
+            "name": "routes/index.js",
+            "modules": {},
+            "classes": {
+                "StringBuffer": 1,
+                "Controller": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "heimcontrol.js": {
+            "name": "heimcontrol.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "PluginHelper": {
+            "name": "PluginHelper",
+            "shortname": "PluginHelper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "libs/PluginHelper.js",
+            "line": 5,
+            "description": "The PluginHelper provides helper function for handling plugins.",
+            "is_constructor": 1
+        },
+        "Arduino": {
+            "name": "Arduino",
+            "shortname": "Arduino",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "plugins/arduino/index.js",
+            "line": 7,
+            "description": "Arduino Plugin. This plugin is able to control an Arduino that is attached to the USB port of the Raspberry PI",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "The express application",
+                    "type": "Object"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "Gpio": {
+            "name": "Gpio",
+            "shortname": "Gpio",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "plugins/gpio/index.js",
+            "line": 7,
+            "description": "Gpio Plugin. Can access the GPIO on the Raspberry PI",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "The express application",
+                    "type": "Object"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "Wakeonlan": {
+            "name": "Wakeonlan",
+            "shortname": "Wakeonlan",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "plugins/wakeonlan/index.js",
+            "line": 5,
+            "description": "Wake-on-LAN Plugin. This plugin is able to wake devices via WOL packets",
+            "is_constructor": 1
+        },
+        "StringBuffer": {
+            "name": "StringBuffer",
+            "shortname": "StringBuffer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "routes/index.js",
+            "line": 7,
+            "description": "Helper class to concat strings",
+            "is_constructor": 1
+        },
+        "Controller": {
+            "name": "Controller",
+            "shortname": "Controller",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "routes/index.js",
+            "line": 40,
+            "description": "Route-Controller",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "libs/PluginHelper.js",
+            "line": 17,
+            "description": "Gets the plugin item from the database",
+            "itemtype": "method",
+            "name": "findItem",
+            "params": [
+                {
+                    "name": "plugin",
+                    "description": "The id of the plugin",
+                    "type": "String"
+                },
+                {
+                    "name": "id",
+                    "description": "The id of the item to find",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback function to execute after find",
+                    "type": "Function"
+                }
+            ],
+            "class": "PluginHelper"
+        },
+        {
+            "file": "plugins/arduino/public/js/arduino.js",
+            "line": 23,
+            "description": "Arduino RC button has been switched",
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/public/js/arduino.js",
+            "line": 31,
+            "description": "Arduino sensor data received",
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/index.js",
+            "line": 47,
+            "description": "Refreshes the plugin.",
+            "itemtype": "method",
+            "name": "refresh",
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/index.js",
+            "line": 56,
+            "description": "Toggle an Arduino port",
+            "itemtype": "method",
+            "name": "rcswitch",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The websocket data from the client",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The ID of the database entry from the RC switch to use",
+                            "type": "String"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The value to set (0 or 1)",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/index.js",
+            "line": 94,
+            "description": "Initialize the sensors attached to the Arduino",
+            "itemtype": "method",
+            "name": "init",
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/gpio/public/js/gpio.js",
+            "line": 15,
+            "description": "GPIO input change",
+            "class": "Gpio"
+        },
+        {
+            "file": "plugins/gpio/public/js/gpio.js",
+            "line": 23,
+            "description": "GPIO output change",
+            "class": "Gpio"
+        },
+        {
+            "file": "plugins/gpio/index.js",
+            "line": 41,
+            "description": "Toggle a GPIO port",
+            "itemtype": "method",
+            "name": "toggle",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The websocket data",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The ID of the database entry",
+                            "type": "String"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The value to set",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "Gpio"
+        },
+        {
+            "file": "plugins/gpio/index.js",
+            "line": 71,
+            "description": "Parse GPIO the ports that are used as input and send the result to the client websocket",
+            "itemtype": "method",
+            "name": "parse",
+            "class": "Gpio"
+        },
+        {
+            "file": "plugins/wakeonlan/public/js/wakeonlan.js",
+            "line": 5,
+            "description": "Host status has been changed",
+            "class": "Wakeonlan"
+        },
+        {
+            "file": "plugins/wakeonlan/index.js",
+            "line": 39,
+            "description": "Ping all hosts and send changes to sockets",
+            "itemtype": "method",
+            "name": "ping",
+            "class": "Wakeonlan"
+        },
+        {
+            "file": "plugins/wakeonlan/index.js",
+            "line": 60,
+            "description": "Wake on LAN",
+            "itemtype": "method",
+            "name": "wake",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The websocket data",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The ID of the database entry",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "Wakeonlan"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1,
+            "license": "RequireJS 2.1.4 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/jrburke/requirejs for details",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 49,
+            "description": "Helper function for iterating over an array. If the func returns\na true value, it will break out of the loop.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 64,
+            "description": "Helper function for iterating over an array backwards. If the func\nreturns a true value, it will break out of the loop.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 87,
+            "description": "Cycles over properties in an object and calls a function for each\nproperty value. If the function returns a truthy value, then the\niteration is stopped.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 103,
+            "description": "Simple function to mix in properties from source into target,\nbut only if target does not already have a property of the same name.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 150,
+            "description": "Constructs an error with a pointer to an URL with more information.",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "the error ID that maps to an ID on a web page.",
+                    "type": "String"
+                },
+                {
+                    "name": "message",
+                    "description": "human readable error.",
+                    "type": "String"
+                },
+                {
+                    "name": "err",
+                    "description": "the original error, if there is one.",
+                    "type": "Error",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Error"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 210,
+            "description": "Trims the . and .. from an array of path segments.\nIt will keep a leading path segment if a .. will become\nthe first path segment, to help with module name lookups,\nwhich act like paths, but can be remapped. But the end result,\nall paths that use this function should look normalized.\nNOTE: this method MODIFIES the input array.",
+            "params": [
+                {
+                    "name": "ary",
+                    "description": "the array of path segments.",
+                    "type": "Array"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 243,
+            "description": "Given a relative module name, like ./something, normalize it to\na real name that can be mapped to a path.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the relative name",
+                    "type": "String"
+                },
+                {
+                    "name": "baseName",
+                    "description": "a real name that the name arg is relative\nto.",
+                    "type": "String"
+                },
+                {
+                    "name": "applyMap",
+                    "description": "apply the map config to the value. Should\nonly be done if this normalization is for a dependency ID.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "normalized name",
+                "type": "String"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 389,
+            "description": "Creates a module mapping that includes plugin prefix, module\nname, and path. If parentModuleMap is provided it will\nalso normalize the name via require.normalize()",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the module name",
+                    "type": "String"
+                },
+                {
+                    "name": "parentModuleMap",
+                    "description": "parent module map\nfor the module name, used to resolve relative names.",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "isNormalized:",
+                    "description": "is the ID already normalized.\nThis is true if this call is done for a define() module ID.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "applyMap:",
+                    "description": "apply the map config to the ID.\nShould only be true if this map is for a dependency.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 526,
+            "description": "Internal method to transfer globalQueue items to this context's\ndefQueue.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 807,
+            "description": "Checks is the module is ready to define itself, and if so,\ndefine it.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1160,
+            "description": "Given an event from a script node, get the requirejs info from it,\nand then removes the event listeners on the node.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "",
+                    "type": "Event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1212,
+            "description": "Set a configuration for the context.",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "config object to integrate.",
+                    "type": "Object"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1393,
+            "description": "Converts a module name + .extension into an URL path.\n*Requires* the use of a module name. It does not support using\nplain URLs like nameToUrl.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1456,
+            "description": "Called to enable a module if it is still in the registry\nawaiting enablement. A second arg, parent, the parent module,\nis passed in for context, when this method is overriden by\nthe optimizer. Not shown here to keep code compact.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1469,
+            "description": "Internal method used by environment adapters to complete a load event.\nA load event could be a script load or just a load pass from a synchronous\nload call.",
+            "params": [
+                {
+                    "name": "moduleName",
+                    "description": "the name of the module to potentially complete.",
+                    "type": "String"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1525,
+            "description": "Converts a module name to a file path. Supports cases where\nmoduleName may actually be just an URL.\nNote that it **does not** call normalize on the moduleName,\nit is assumed to have already been normalized. This is an\ninternal API, not a public one. Use toUrl for the public API.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1596,
+            "description": "Executes a module callack function. Broken out as a separate function\nsolely to allow the build system to sequence the files in the built\nlayer in the right sequence.",
+            "access": "private",
+            "tagname": "",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1607,
+            "description": "callback for script loads, used to check status of loading.",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "the event from the browser for the script\nthat was loaded.",
+                    "type": "Event"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1629,
+            "description": "Callback for script errors.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1644,
+            "description": "Main entry point.\n\nIf the only argument to require is a string, then the module that\nis represented by that string is fetched for the appropriate context.\n\nIf the first argument is an array, then it will be treated as an array\nof dependency string names to fetch. An optional function callback can\nbe specified to execute when all of those dependencies are available.\n\nMake a local req variable to help Caja compliance (it assumes things\non a require that are not standardized), and to give a short\nname for minification/local scope use.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1694,
+            "description": "Support require.config() to make it easier to cooperate with other\nAMD loaders on globally agreed names.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1702,
+            "description": "Execute something after the current tick\nof the event loop. Override for other envs\nthat have a better solution than setTimeout.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "function to execute later.",
+                    "type": "Function"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1712,
+            "description": "Export require as a global, but only if it does not already exist.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1759,
+            "description": "Any errors that require explicitly generates will be passed to this\nfunction. Intercept/override it if you want custom error handling.",
+            "params": [
+                {
+                    "name": "err",
+                    "description": "the error object.",
+                    "type": "Error"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1768,
+            "description": "Does the request to load a module for the browser case.\nMake this a separate function to allow other environments\nto override it.",
+            "params": [
+                {
+                    "name": "context",
+                    "description": "the require context to find state.",
+                    "type": "Object"
+                },
+                {
+                    "name": "moduleName",
+                    "description": "the name of the module.",
+                    "type": "String"
+                },
+                {
+                    "name": "url",
+                    "description": "the URL to the module.",
+                    "type": "Object"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1914,
+            "description": "The function that handles definitions of modules. Differs from\nrequire() in that a string for the module should be the first argument,\nand the function to execute after dependencies are loaded should\nreturn a value to define the module corresponding to the first argument's\nname.",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 1987,
+            "description": "Executes the text. Normally just uses eval, but can be modified\nto use a better, environment-specific call. Only used for transpiling\nloader plugins, not for plain JS modules.",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "the text to execute/evaluate.",
+                    "type": "String"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 5837,
+            "description": "For feature detection",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "The function to test for native support",
+                    "type": "Function"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 5845,
+            "description": "Create key-value caches of limited size",
+            "return": {
+                "description": "Returns the Object data after storing it on itself with\n\tproperty name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)\n\tdeleting the oldest entry",
+                "type": "Function(string, Object)"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 5865,
+            "description": "Mark a function for special use by Sizzle",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "The function to mark",
+                    "type": "Function"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 5874,
+            "description": "Support testing using an element",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "Passed the created div and expects a boolean result",
+                    "type": "Function"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 6001,
+            "description": "Detect xml",
+            "params": [
+                {
+                    "name": "elem",
+                    "description": "An element or a document",
+                    "type": "Element|Object"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 6012,
+            "description": "Sets document-related variables once based on the current document",
+            "params": [
+                {
+                    "name": "doc",
+                    "description": "An element or document object to use to set the document",
+                    "type": "Element|Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "Returns the current document",
+                "type": "Object"
+            },
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/require-jquery.js",
+            "line": 6505,
+            "description": "Utility function for retrieving the text value of an array of DOM nodes",
+            "params": [
+                {
+                    "name": "elem",
+                    "description": "",
+                    "type": "Array|Element"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 19,
+            "description": "Append a string at the end of the StringBuffer",
+            "itemtype": "method",
+            "name": "append",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "The string to append",
+                    "type": "String"
+                }
+            ],
+            "class": "StringBuffer"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 30,
+            "description": "Return the string representation of the StringBuffer",
+            "itemtype": "method",
+            "name": "toString",
+            "class": "StringBuffer"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 48,
+            "description": "Recursive function to render all plugin items to on page to show them on the startpage.",
+            "itemtype": "method",
+            "name": "renderPluginItems",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "The express app",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The type to render ('settings' or 'view')",
+                    "type": "String"
+                },
+                {
+                    "name": "i",
+                    "description": "The iterator for the plugins",
+                    "type": "Integer"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback method to execute after rendering",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "null if no error occured, otherwise the error",
+                            "type": "String"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The rendered HTML string",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "paran": "{String} html A string containing the already rendered plugin items",
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 91,
+            "description": "GET /",
+            "itemtype": "method",
+            "name": "index",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 112,
+            "description": "GET /settings",
+            "itemtype": "method",
+            "name": "settings",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                },
+                {
+                    "name": "next",
+                    "description": "Next route",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 161,
+            "description": "POST /settings",
+            "itemtype": "method",
+            "name": "saveSettings",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                },
+                {
+                    "name": "next",
+                    "description": "Next route",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 181,
+            "description": "Recursive function to save items to collections",
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 241,
+            "description": "GET /register",
+            "itemtype": "method",
+            "name": "register",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 263,
+            "description": "POST /register",
+            "itemtype": "method",
+            "name": "doRegister",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 311,
+            "description": "GET /login",
+            "itemtype": "method",
+            "name": "showLogin",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 339,
+            "description": "POST /login",
+            "itemtype": "method",
+            "name": "doLogin",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 371,
+            "description": "GET /logout",
+            "itemtype": "method",
+            "name": "logout",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 387,
+            "description": "POST /settings",
+            "itemtype": "method",
+            "name": "changePassword",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 430,
+            "description": "Error 404",
+            "itemtype": "method",
+            "name": "notFound",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "heimcontrol.js",
+            "line": 1,
+            "description": "heimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)",
+            "brief": "heimcontrol.js - Homeautomation in node.js with the Raspberry PI",
+            "author": "Willi Thiel (ni-c@ni-c.de)",
+            "class": ""
+        },
+        {
+            "file": "heimcontrol.js",
+            "line": 9,
+            "description": "RequireJS",
+            "see": [
+                "http://requirejs.org/docs/node.html"
+            ],
+            "class": ""
+        },
+        {
+            "file": "heimcontrol.js",
+            "line": 18,
+            "description": "Express",
+            "see": [
+                "http://expressjs.com/guide.html"
+            ],
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: license",
+            "line": " public/js/require-jquery.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:150"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:243"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:389"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:1160"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:5845"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/js/require-jquery.js:6012"
+        },
+        {
+            "message": "unknown tag: paran",
+            "line": " routes/index.js:48"
+        },
+        {
+            "message": "unknown tag: brief",
+            "line": "  heimcontrol.js:1"
+        },
+        {
+            "message": "Missing item type\nArduino RC button has been switched",
+            "line": " plugins/arduino/public/js/arduino.js:23"
+        },
+        {
+            "message": "Missing item type\nArduino sensor data received",
+            "line": " plugins/arduino/public/js/arduino.js:31"
+        },
+        {
+            "message": "Missing item type\nGPIO input change",
+            "line": " plugins/gpio/public/js/gpio.js:15"
+        },
+        {
+            "message": "Missing item type\nGPIO output change",
+            "line": " plugins/gpio/public/js/gpio.js:23"
+        },
+        {
+            "message": "Missing item type\nHost status has been changed",
+            "line": " plugins/wakeonlan/public/js/wakeonlan.js:5"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/require-jquery.js:1"
+        },
+        {
+            "message": "Missing item type\nHelper function for iterating over an array. If the func returns\na true value, it will break out of the loop.",
+            "line": " public/js/require-jquery.js:49"
+        },
+        {
+            "message": "Missing item type\nHelper function for iterating over an array backwards. If the func\nreturns a true value, it will break out of the loop.",
+            "line": " public/js/require-jquery.js:64"
+        },
+        {
+            "message": "Missing item type\nCycles over properties in an object and calls a function for each\nproperty value. If the function returns a truthy value, then the\niteration is stopped.",
+            "line": " public/js/require-jquery.js:87"
+        },
+        {
+            "message": "Missing item type\nSimple function to mix in properties from source into target,\nbut only if target does not already have a property of the same name.",
+            "line": " public/js/require-jquery.js:103"
+        },
+        {
+            "message": "Missing item type\nConstructs an error with a pointer to an URL with more information.",
+            "line": " public/js/require-jquery.js:150"
+        },
+        {
+            "message": "Missing item type\nTrims the . and .. from an array of path segments.\nIt will keep a leading path segment if a .. will become\nthe first path segment, to help with module name lookups,\nwhich act like paths, but can be remapped. But the end result,\nall paths that use this function should look normalized.\nNOTE: this method MODIFIES the input array.",
+            "line": " public/js/require-jquery.js:210"
+        },
+        {
+            "message": "Missing item type\nGiven a relative module name, like ./something, normalize it to\na real name that can be mapped to a path.",
+            "line": " public/js/require-jquery.js:243"
+        },
+        {
+            "message": "Missing item type\nCreates a module mapping that includes plugin prefix, module\nname, and path. If parentModuleMap is provided it will\nalso normalize the name via require.normalize()",
+            "line": " public/js/require-jquery.js:389"
+        },
+        {
+            "message": "Missing item type\nInternal method to transfer globalQueue items to this context's\ndefQueue.",
+            "line": " public/js/require-jquery.js:526"
+        },
+        {
+            "message": "Missing item type\nChecks is the module is ready to define itself, and if so,\ndefine it.",
+            "line": " public/js/require-jquery.js:807"
+        },
+        {
+            "message": "Missing item type\nGiven an event from a script node, get the requirejs info from it,\nand then removes the event listeners on the node.",
+            "line": " public/js/require-jquery.js:1160"
+        },
+        {
+            "message": "Missing item type\nSet a configuration for the context.",
+            "line": " public/js/require-jquery.js:1212"
+        },
+        {
+            "message": "Missing item type\nConverts a module name + .extension into an URL path.\n*Requires* the use of a module name. It does not support using\nplain URLs like nameToUrl.",
+            "line": " public/js/require-jquery.js:1393"
+        },
+        {
+            "message": "Missing item type\nCalled to enable a module if it is still in the registry\nawaiting enablement. A second arg, parent, the parent module,\nis passed in for context, when this method is overriden by\nthe optimizer. Not shown here to keep code compact.",
+            "line": " public/js/require-jquery.js:1456"
+        },
+        {
+            "message": "Missing item type\nInternal method used by environment adapters to complete a load event.\nA load event could be a script load or just a load pass from a synchronous\nload call.",
+            "line": " public/js/require-jquery.js:1469"
+        },
+        {
+            "message": "Missing item type\nConverts a module name to a file path. Supports cases where\nmoduleName may actually be just an URL.\nNote that it **does not** call normalize on the moduleName,\nit is assumed to have already been normalized. This is an\ninternal API, not a public one. Use toUrl for the public API.",
+            "line": " public/js/require-jquery.js:1525"
+        },
+        {
+            "message": "Missing item type\nExecutes a module callack function. Broken out as a separate function\nsolely to allow the build system to sequence the files in the built\nlayer in the right sequence.",
+            "line": " public/js/require-jquery.js:1596"
+        },
+        {
+            "message": "Missing item type\ncallback for script loads, used to check status of loading.",
+            "line": " public/js/require-jquery.js:1607"
+        },
+        {
+            "message": "Missing item type\nCallback for script errors.",
+            "line": " public/js/require-jquery.js:1629"
+        },
+        {
+            "message": "Missing item type\nMain entry point.\n\nIf the only argument to require is a string, then the module that\nis represented by that string is fetched for the appropriate context.\n\nIf the first argument is an array, then it will be treated as an array\nof dependency string names to fetch. An optional function callback can\nbe specified to execute when all of those dependencies are available.\n\nMake a local req variable to help Caja compliance (it assumes things\non a require that are not standardized), and to give a short\nname for minification/local scope use.",
+            "line": " public/js/require-jquery.js:1644"
+        },
+        {
+            "message": "Missing item type\nSupport require.config() to make it easier to cooperate with other\nAMD loaders on globally agreed names.",
+            "line": " public/js/require-jquery.js:1694"
+        },
+        {
+            "message": "Missing item type\nExecute something after the current tick\nof the event loop. Override for other envs\nthat have a better solution than setTimeout.",
+            "line": " public/js/require-jquery.js:1702"
+        },
+        {
+            "message": "Missing item type\nExport require as a global, but only if it does not already exist.",
+            "line": " public/js/require-jquery.js:1712"
+        },
+        {
+            "message": "Missing item type\nAny errors that require explicitly generates will be passed to this\nfunction. Intercept/override it if you want custom error handling.",
+            "line": " public/js/require-jquery.js:1759"
+        },
+        {
+            "message": "Missing item type\nDoes the request to load a module for the browser case.\nMake this a separate function to allow other environments\nto override it.",
+            "line": " public/js/require-jquery.js:1768"
+        },
+        {
+            "message": "Missing item type\nThe function that handles definitions of modules. Differs from\nrequire() in that a string for the module should be the first argument,\nand the function to execute after dependencies are loaded should\nreturn a value to define the module corresponding to the first argument's\nname.",
+            "line": " public/js/require-jquery.js:1914"
+        },
+        {
+            "message": "Missing item type\nExecutes the text. Normally just uses eval, but can be modified\nto use a better, environment-specific call. Only used for transpiling\nloader plugins, not for plain JS modules.",
+            "line": " public/js/require-jquery.js:1987"
+        },
+        {
+            "message": "Missing item type\nFor feature detection",
+            "line": " public/js/require-jquery.js:5837"
+        },
+        {
+            "message": "Missing item type\nCreate key-value caches of limited size",
+            "line": " public/js/require-jquery.js:5845"
+        },
+        {
+            "message": "Missing item type\nMark a function for special use by Sizzle",
+            "line": " public/js/require-jquery.js:5865"
+        },
+        {
+            "message": "Missing item type\nSupport testing using an element",
+            "line": " public/js/require-jquery.js:5874"
+        },
+        {
+            "message": "Missing item type\nDetect xml",
+            "line": " public/js/require-jquery.js:6001"
+        },
+        {
+            "message": "Missing item type\nSets document-related variables once based on the current document",
+            "line": " public/js/require-jquery.js:6012"
+        },
+        {
+            "message": "Missing item type\nUtility function for retrieving the text value of an array of DOM nodes",
+            "line": " public/js/require-jquery.js:6505"
+        },
+        {
+            "message": "Missing item type\nRecursive function to save items to collections",
+            "line": " routes/index.js:181"
+        },
+        {
+            "message": "Missing item type\nheimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)",
+            "line": " heimcontrol.js:1"
+        },
+        {
+            "message": "Missing item type\nRequireJS",
+            "line": " heimcontrol.js:9"
+        },
+        {
+            "message": "Missing item type\nExpress",
+            "line": " heimcontrol.js:18"
+        }
+    ]
+}

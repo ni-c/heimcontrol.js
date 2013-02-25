@@ -3,7 +3,7 @@ extends layout
 block content
   header.jumbotron.subhead#overview
     h1 heimcontrol.js
-    p.lead Awesome home automation with Raspberry PI and Arduino using Node.js, HTML5 and Websockets.
+    p.lead Awesome home automation with Raspberry PI and Arduino using Node.js, MongoDB, HTML5 and Websockets.
     img.shadow.title(src="#{url}img/heimcontrol.jpg", alt="heimcontrol")
     
   div.row
@@ -23,6 +23,25 @@ block content
         | &nbsp;Extendable
       p An elaborated plugin system makes it easy to extend the application with your own plugins.
 
-  section
-    h2.page-header Screenshot
+  section.features
+    h2.page-header Features
+    | heimcontrol.js was created to gain experience in Node.js, MongoDB, Websockets and a lot of other great technologies that were used in the project. Take a look in the&nbsp;
+    code package.json
+    | &nbsp;for a full list of used open source projects. The project is in active development and a very early prototype, so use it at your own risk! 
+    div.row
+      span.span5
+        h3 Hardware
+        ul
+          li Full access to the GPIO of the Raspberry Pi
+          li Communication with an attached Arduino
+          li Wake-on-LAN (not really hardware, but at least it wakes up hardware)
+      span.span5
+        h3 Software
+        ul
+          li Responsive design for all devices
+          li HTML5, CSS3 and Websockets
+          li Jade templating
+    
+  section.screenshots
+    h2.page-header Screenshots
     img(src="img/screenshot.png", alt="Screenshot")

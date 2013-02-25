@@ -11,7 +11,7 @@
     <script>var url = "http://ni-c.github.com/heimcontrol.js/";</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
-  <body><a href="https://github.com/ni-c/heimcontrol.js"><img style="z-index: 2000; position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  <body><a href="https://github.com/ni-c/heimcontrol.js"><img style="z-index: 2000; position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -20,6 +20,7 @@
             <ul id="bar-menu-left" class="nav">
               <li class="">               <a href="http://ni-c.github.com/heimcontrol.js/"><i class="icon-home"> </i>&nbsp;Home</a></li>
               <li class="active">               <a href="http://ni-c.github.com/heimcontrol.js/get-started.html"><i class="icon-thumbs-up"> </i>&nbsp;Get Started</a></li>
+              <li class="">               <a href="http://ni-c.github.com/heimcontrol.js/documentation.html"><i class="icon-file-alt"></i>&nbsp;Documentation</a></li>
               <li class="dropdown ">               <a href="#" data-toggle="dropdown" role="button" id="dropdown" class="dropdown-toggle"><i class="icon-cogs"> </i>&nbsp;Plugins&nbsp;<b class="caret"></b></a>
                 <ul role="menu" aria-labelledby="dropdown" class="dropdown-menu">
                   <li><a href="http://ni-c.github.com/heimcontrol.js/plugins/gpio.html"> <i class="icon-lightbulb"></i>&nbsp;GPIO</a></li>
@@ -29,7 +30,7 @@
               </li>
             </ul>
             <ul id="bar-menu-right" class="nav pull-right">
-              <li><a href="mailto:ni-c@ni-c.de" class="btn-logout"> <i class="icon-envelope"></i>&nbsp;Me</a></li>
+              <li><a href="https://github.com/ni-c/heimcontrol.js" class="btn-logout"> <i class="icon-github"></i>&nbsp;Fork it!&nbsp;</a></li>
             </ul>
           </div>
         </div>
@@ -42,15 +43,15 @@
         <p class="lead">Get started with heimcontrol.js on your Raspberry PI </p>
       </header>
       <section>
-        <h2 class="page-header">Installation</h2>How to install heimcontrol.js on your Raspberry PI
-        <h4 class="page-header">Screen</h4>I recommend that you use&nbsp;<a>screen</a>&nbsp;to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
+        <h2 class="page-header">Installation</h2>How to install Node.js, MongoDB and heimcontrol.js on your Raspberry PI
+        <h3 class="page-header">Screen</h3>I recommend that you use&nbsp;<a>screen</a>&nbsp;to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
         <h4 class="page-header">Git and Essentials</h4>
         <p>First you have to install the required debian packages:</p>
         <script src="https://gist.github.com/ni-c/b2420a2d6b087466b034.js"></script>
-        <h4 class="page-header">Node.js</h4>
+        <h3 class="page-header">Node.js</h3>
         <p>The next step is to install&nbsp;<a href="http://nodejs.org/">Node.js </a>&nbsp;on your Raspberry PI:</p>
         <script src="https://gist.github.com/ni-c/f8684abbe0fd0b7b78de.js"></script>
-        <h4 class="page-header">MongoDB</h4>
+        <h3 class="page-header">MongoDB</h3>
         <p>If you are using a Raspberry PI with 256MB RAM, then you have to edit the file <code>/etc/dphys-swapfile  </code>and change the value of&nbsp; <code>CONF_SWAPSIZE </code>&nbsp;from&nbsp;<strong>100  </strong>&nbsp;to&nbsp;<strong>200. </strong></p>
         <p>You can find a Raspberry PI version for<a href="http://www.mongodb.org">MongoDB </a>on GitHub. With the following command you can build an install it:</p>
         <script src="https://gist.github.com/ni-c/b760c210d4ec2ac6c106.js"></script>
@@ -58,7 +59,7 @@
         <script src="https://gist.github.com/ni-c/9396c0e2d7bdcef92db0.js"></script>
         <p>Finally you have to create a MongoDB user, the MongoDB database directory and register an upstart script:</p>
         <script src="https://gist.github.com/ni-c/e3660f0a954b282b8bb8.js"></script>
-        <h4 class="page-header">heimcontrol.js</h4>
+        <h3 class="page-header">heimcontrol.js</h3>
         <p>You only have to clone the GitHub repository and run&nbsp;<code>npm install</code>&nbsp;to install homecontrol.js</p>
         <script src="https://gist.github.com/ni-c/3fc75069276ddf0fb90b.js"></script>
         <p>Now you can run heimcontrol.js by typing&nbsp;<code>node heimcontrol.js</code>&nbsp;.</p>
