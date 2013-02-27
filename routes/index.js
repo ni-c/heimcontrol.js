@@ -204,7 +204,7 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
                 saveMultiple(req.app, collection, items, function(err, result) {
-                  req.app.get('events').trigger('settings-saved');
+                  req.app.get('events').emit('settings-saved');
                   collection.find({}).toArray(function(err, items) {
                     req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
                       items: items,
