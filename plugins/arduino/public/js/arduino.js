@@ -13,12 +13,12 @@ function registerSelectSwitch() {
     });
   });
 };
-
-require([ "jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js" ], function() {
-
-  registerSelectSwitch();
+  
+require([ "jquery", "/socket.io/socket.io.js" ], function() {
 
   var socket = io.connect();
+
+  registerSelectSwitch();
 
   /**
    * Arduino RC button has been switched

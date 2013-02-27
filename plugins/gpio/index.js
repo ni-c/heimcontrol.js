@@ -19,7 +19,9 @@ define([ 'pi-gpio' ], function(gpio) {
 
     this.app = app;
     this.id = this.name.toLowerCase();
-    this.pluginHelper = app.get('pluginHelper');
+    this.pluginHelper = app.get('plugin helper');
+
+    this.values = {};
 
     var that = this;
 
@@ -59,6 +61,7 @@ define([ 'pi-gpio' ], function(gpio) {
       gpio.open(parseInt(item.pin), "output", function(err) {
         gpio.write(parseInt(item.pin), parseInt(item.value), function() {
           gpio.close(parseInt(item.pin));
+          that.values[item._id] = item.value;
           that.app.get('sockets').emit('gpio-output', {
             id: item._id,
             value: item.value
@@ -81,11 +84,12 @@ define([ 'pi-gpio' ], function(gpio) {
       }).toArray(function(err, result) {
         result.forEach(function(item) {
           gpio.setDirection(parseInt(item.pin), "input", function(err) {
-            gpio.read(parseInt(item.pin), function(err, status) {
+            gpio.read(parseInt(item.pin), function(err, value) {
               if (!err) {
+                that.values[item._id] = value;
                 that.app.get('sockets').emit('gpio-input', {
                   id: item._id,
-                  value: status + ''
+                  value: value
                 });
               }
             });
@@ -94,6 +98,22 @@ define([ 'pi-gpio' ], function(gpio) {
       });
     });
   };
+
+  /**
+   * Manipulate the items array before render
+   *
+   * @param {Array} items An array containing the items to be rendered
+   * @param {Function} callback The callback method to execute after manipulation
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result The manipulated items
+   */
+  Gpio.prototype.beforeRender = function(items, callback) {
+    var that = this;
+    items.forEach(function(item) {
+      item.value = that.values[item._id] ? that.values[item._id] : 0;
+    });
+    return callback(null, items);
+  }
 
   return Gpio;
 

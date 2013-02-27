@@ -8,10 +8,11 @@ if (typeof define !== 'function') {
  * @class PluginHelper
  * @constructor 
  */
-define([], function() {
+define([ 'fs' ], function( Fs ) {
 
   var PluginHelper = function(app) {
     this.app = app;
+    this.pluginFolder = app.get('plugin folder');
   };
 
   /**
@@ -38,6 +39,29 @@ define([], function() {
     });
   };
 
-  return PluginHelper;
+  /**
+   * Parse all plugins into an array
+   * 
+   * @method getPluginList
+   * @param {Function} callback The callback method to execute after parsing
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result An array containing the plugins
+   */
+  PluginHelper.prototype.getPluginList = function(callback) {
+    var pluginList = [];
+    var that = this;
+    Fs.readdir(that.pluginFolder, function(err, files) {
+      files.forEach(function(file) {
+        requirejs([that.pluginFolder + '/' + file + '/index.js'], function(Plugin) {
+          pluginList.push(new Plugin(that.app));
+        });
+      });
+    });
+    return callback(null, pluginList);
+  };
+
+  var exports = PluginHelper;
+
+  return exports;
 
 });

@@ -19,7 +19,9 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
     this.icon = 'icon-off';
 
     this.app = app;
-    this.pluginHelper = app.get('pluginHelper');
+    this.pluginHelper = app.get('plugin helper');
+
+    this.values = {};
 
     var that = this;
 
@@ -46,10 +48,11 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
     this.app.get('db').collection(this.collection, function(err, collection) {
       collection.find({}).toArray(function(err, result) {
         result.forEach(function(item) {
-          ping.sys.probe(item.host, function(alive) {
+          ping.sys.probe(item.host, function(value) {
+            that.values[item._id] = value;
             that.app.get('sockets').emit('wakeonlan-ping', {
               id: item._id,
-              alive: alive
+              alive: value
             });
           });
         });
@@ -66,10 +69,25 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
    */
   Wakeonlan.prototype.wake = function(data) {
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
-      // Wake on LAN
       wol.wake(item.mac);
     });
   };
+
+  /**
+   * Manipulate the items array before render
+   *
+   * @param {Array} items An array containing the items to be rendered
+   * @param {Function} callback The callback method to execute after manipulation
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result The manipulated items
+   */
+  Wakeonlan.prototype.beforeRender = function(items, callback) {
+    var that = this;
+    items.forEach(function(item) {
+      item.value = that.values[item._id] ? that.values[item._id] : 0;
+    });
+    return callback(null, items);
+  }
 
   return Wakeonlan;
 

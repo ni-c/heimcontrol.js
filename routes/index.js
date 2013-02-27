@@ -2,7 +2,7 @@ if (typeof define !== 'function') {
   var define = require('amdefine')(module);
 }
 
-define([ 'crypto', 'cookie' ], function(crypto, cookie) {
+define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
 
   /**
    * Helper class to concat strings
@@ -69,15 +69,28 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
           return callback(err);
         }
         if (items.length > 0) {
-          app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/' + type + '.jade', {
-            items: items
-          }, function(err, result) {
-            if (!err) {
-              html.append(result);
-            } else {
-              console.log(err);
-            }
-          });
+
+          function render(items) {
+            app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/' + type + '.jade', {
+              items: items
+            }, function(err, result) {
+              if (!err) {
+                html.append(result);
+              } else {
+                console.log(err);
+              }
+            });
+          }
+
+          // If the plugin has a beforeRender() method, call it
+          if (plugin.beforeRender) {
+            plugin.beforeRender(items, function(err, result) {
+              render(result);
+            });
+          } else {
+            render(items);
+          }
+
         }
         if (++i < plugins.length) {
           renderPluginItems(app, type, i, html, callback);
@@ -85,6 +98,38 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
           return callback(null, html);
         }
       });
+    });
+  }
+
+  /** 
+   * Recursive function to combine javascript and css files from the plugins
+   * 
+   * @method combinePluginFiles
+   * @param {Object} fileList An array containing the files to combine
+   * @param {String} fileList.name The name of the file to combine
+   * @param {String} fileList.type The type of the file (e.g. 'js' or 'css')
+   * @param {Function} callback The callback method to execute after rendering
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {String} callback.result The rendered HTML string
+   * @param {Object} sb *optional* StringBuffer containing the already combined files
+   */
+  function combinePluginFiles(fileList, callback, sb) {
+    if (!sb) {
+      sb = new StringBuffer();
+    }
+    var file = fileList.pop();
+    var filename = __dirname + '/../plugins/' + file.name + '/public/' + file.type + '/' + file.name + '.' + file.type;
+    fs.readFile(filename, 'utf8', function(err, data) {
+      if (!err) {
+        sb.append(data);
+      } else {
+        console.log(err);
+      }
+      if (fileList.length > 0) {
+        combinePluginFiles(fileList, callback, sb);
+      } else {
+        return callback(null, sb.toString());
+      }
     });
   }
 
@@ -426,6 +471,66 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
   };
 
   /**
+   * GET /js/plugins.js
+   * 
+   * Load the plugin javascripts into one file and returns it
+   *
+   * @method pluginsJs
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.pluginsJs = function(req, res) {
+    var fileList = [];
+    req.app.get('plugins').forEach(function(plugin) {
+      fileList.push(
+        {
+          name: plugin.id,
+          type: 'js'
+        }
+      );
+    });
+    if (fileList.length > 0) {
+      combinePluginFiles(fileList, function(err, result) {
+        res.charset = 'utf-8';
+        res.setHeader('Content-Type', 'text/javascript');
+        return res.send(200, result);
+      });
+    } else {
+      return res.send(200, '');
+    }
+  }
+
+  /**
+   * GET /js/plugins.css
+   * 
+   * Load the plugin css into one file and returns it
+   *
+   * @method pluginsCss
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.pluginsCss = function(req, res) {
+    var fileList = [];
+    req.app.get('plugins').forEach(function(plugin) {
+      fileList.push(
+        {
+          name: plugin.id,
+          type: 'css'
+        }
+      );
+    });
+    if (fileList.length > 0) {
+      combinePluginFiles(fileList, function(err, result) {
+        res.charset = 'utf-8';
+        res.setHeader('Content-Type', 'text/css');
+        return res.send(200, result);
+      });
+    } else {
+      return res.send(200, '');
+    }
+  }
+
+  /**
    * Error 404
    *
    * @method notFound
@@ -439,6 +544,24 @@ define([ 'crypto', 'cookie' ], function(crypto, cookie) {
     });
   };
 
-  return Controller;
+  /**
+   * Authorization chec
+   *
+   * @method isAuthorized
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next The next route
+   */
+  Controller.isAuthorized = function(req, res, next) {
+    if (!req.session.user) {
+      return res.redirect('/login');
+    } else {
+      next();
+    }
+  };
+
+  var exports = Controller;
+
+  return exports;
 
 });

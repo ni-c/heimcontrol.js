@@ -19,7 +19,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'fs', 'events', './routes', './libs/PluginHelper.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Fs, Events, Routes, PluginHelper) {
+requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'events', './routes', './libs/PluginHelper.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper) {
 
   // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -82,7 +82,8 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('mongo', Mongo);
         app.set('db', db);
         app.set('config', config);
-        app.set('pluginHelper', new PluginHelper(app));
+        app.set('plugin folder', __dirname + '/plugins');
+        app.set('plugin helper', new PluginHelper(app));
         app.use(Express.favicon());
         app.use(Express.logger('dev'));
         app.use(Express.bodyParser());
@@ -97,15 +98,11 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(app.router);
       });
 
-      // Permission check
-      var isAuthorized = function(req, res, next) {
-        if (!req.session.user) {
-          return res.redirect('/login');
-        } else {
-          next();
-        }
-      };
-      
+      app.get('plugin helper').getPluginList(function(err, plugins) {
+        app.locals.plugins = plugins;
+        app.set('plugins', plugins);
+      });
+
       // Routes
       app.get('/register', Routes.showRegister);
       app.post('/register', Routes.doRegister);
@@ -113,39 +110,18 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/login', Routes.showLogin);
       app.post('/login', Routes.doLogin);
 
-      app.get('/', isAuthorized, Routes.index);
+      app.get('/', Routes.isAuthorized, Routes.index);
 
-      app.get('/settings', isAuthorized, Routes.settings);
-      app.post('/settings', isAuthorized, Routes.changePassword);
+      app.get('/settings', Routes.isAuthorized, Routes.settings);
+      app.post('/settings', Routes.isAuthorized, Routes.changePassword);
 
-      app.get('/settings/:plugin', isAuthorized, Routes.settings, Routes.notFound);
-      app.post('/settings/:plugin', isAuthorized, Routes.saveSettings, Routes.notFound);
+      app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
+      app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
 
       app.get('/logout', Routes.logout);
 
-      // Parse plugins
-      var plugins = [];
-      var pluginFolder = __dirname + '/plugins';
-      Fs.readdir(pluginFolder, function(err, files) {
-        files.forEach(function(file) {
-          requirejs([pluginFolder + '/' + file + '/index.js'], function(Plugin) {
-            plugins.push(new Plugin(app));
-          });
-        });
-      });
-      app.set('plugins', plugins);
-      app.locals.plugins = plugins;
-
-      // Plugin JS and CSS
-      app.get('/plugin/:file', function(req, res) {
-        var file = req.params.file;
-        if (file.indexOf('.css', file.length - 4) !== -1) {
-          res.sendfile(__dirname + '/plugins/' + file.substr(0, file.length - 4) + '/public/css/' + file);
-        }
-        if (file.indexOf('.js', file.length - 3) !== -1) {
-          res.sendfile(__dirname + '/plugins/' + file.substr(0, file.length - 3) + '/public/js/' + file);
-        }
-      });      
+      app.get('/js/plugins.js', Routes.pluginsJs);
+      app.get('/js/plugins.css', Routes.pluginsCss);
       
       // 404 Not found
       app.all('*', Routes.notFound);

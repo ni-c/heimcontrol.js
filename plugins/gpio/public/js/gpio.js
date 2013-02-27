@@ -1,3 +1,6 @@
+/**
+ * GPIO on/off toggles
+ */
 function registerGpioToggles() {
   $('button.gpio.toggle').unbind('click.toggle');
   $('button.gpio.toggle').bind('click.toggle', function()  {
@@ -6,11 +9,11 @@ function registerGpioToggles() {
   }); 
 }
 
-require(["jquery", "/js/bootstrap.min.js", "/socket.io/socket.io.js"], function() {
-
-  registerGpioToggles();
+require([ "jquery", "/socket.io/socket.io.js" ], function() {
 
   var socket = io.connect();
+
+  registerGpioToggles();
 
   /**
    * GPIO input change

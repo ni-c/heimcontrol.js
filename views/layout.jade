@@ -6,15 +6,13 @@ html
     link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/css/font-awesome.min.css')
     link(rel='stylesheet', href='/css/heimcontrol.css')
+    link(rel='stylesheet', href='/css/plugins.css')
     link(rel='icon', href='/heimcontrol.ico', type='image/x-icon')
     link(rel='apple-touch.icon', sizes='57x57', href='/apple-touch.icon-57x57.png')
     link(rel='apple-touch.icon', sizes='72x72', href='/apple-touch.icon-72x72.png')
     link(rel='apple-touch.icon', sizes='114x114', href='/apple-touch.icon-114x114.png')
     link(rel='apple-touch.icon', sizes='144x144', href='/apple-touch.icon-144x144.png')
     script(data-main='/js/main', src='/js/require-jquery.js')
-    each plugin in plugins
-      link(rel='stylesheet', href='/plugin/#{plugin.id}.css')
-      script(data-main='/js/main', src='/plugin/#{plugin.id}.js')
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
   body
     div.navbar.navbar-inverse.navbar-fixed-top
@@ -60,22 +58,23 @@ html
       div.container
         p Created by 
           a(href="http://about.ni-c.de") Willi Thiel
-          | , licensed under 
+          | , licensed under&nbsp;
           a(href="https://github.com/heimcontroljs/heimcontrol.js/blob/master/LICENSE") MIT License
           | .
         p Crafted using  
           a(href="http://jade-lang.com/") Jade
-          | , 
-          a(href="http://twitter.github.com/bootstrap/") Bootstrap
-          | & 
-          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome 
+          | ,&nbsp;
+          a(href="http://twitter.github.com/bootstrap/") Bootstrap&nbsp;
+          | &amp;&nbsp;
+          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome
           |.
-        p Running with 
+        p Running with&nbsp;
           a(href="http://nodejs.org/") node.js
-          | , 
+          | ,&nbsp;
           a(href="http://socket.io/") socket.io
-          | ,   
+          | ,&nbsp;
           a(href="http://expressjs.com/") express
-          | ,   
+          | ,&nbsp;
           a(href="http://www.mongodb.org/") mongodb
-        p and a hell of a lot of other open source projects.
+          | .
+        p And a hell of a lot of other open source projects.

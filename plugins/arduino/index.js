@@ -22,7 +22,9 @@ define([ 'duino' ], function(duino) {
     this.board = new duino.Board();
 
     this.pins = {};
-    this.pluginHelper = app.get('pluginHelper');
+    this.pluginHelper = app.get('plugin helper');
+
+    this.values = {};
 
     this.sensorList = [];
     this.sensors = {};
@@ -50,7 +52,7 @@ define([ 'duino' ], function(duino) {
    * @method refresh
    */
   Arduino.prototype.refresh = function() {
-    this.init();
+    return this.init();
   };
 
   /**
@@ -66,10 +68,11 @@ define([ 'duino' ], function(duino) {
     var that = this;
     this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
       if ((!err) && (item)) {
-        item.status = (parseInt(data.value));
-
         // Inform clients over websockets
         that.app.get('sockets').emit('arduino-rcswitch', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
 
         // Create RC object
         if (!that.pins[item.pin]) {
@@ -80,10 +83,10 @@ define([ 'duino' ], function(duino) {
         }
 
         // Send RC code
-        if (item.status) {
-          that.pins[item.pin].triState(item.code + "FF0F");
+        if (item.value) {
+          return that.pins[item.pin].triState(item.code + "FF0F");
         } else {
-          that.pins[item.pin].triState(item.code + "FF00");
+          return that.pins[item.pin].triState(item.code + "FF00");
         }
       } else {
         console.log(err);
@@ -105,7 +108,7 @@ define([ 'duino' ], function(duino) {
     this.sensorList = [];
 
     this.sensors = {};
-    this.app.get('db').collection(that.collection, function(err, collection) {
+    return this.app.get('db').collection(that.collection, function(err, collection) {
       collection.find({
         method: 'sensor'
       }).toArray(function(err, result) {
@@ -125,6 +128,7 @@ define([ 'duino' ], function(duino) {
               }
               var val = parseFloat(eval(item.formula.replace('x', +value)));
               item.value = parseFloat(((item.value + val) / 2).toFixed(2));
+              that.values[item._id] = item.value;
               that.app.get('sockets').emit('arduino-sensor', {
                 id: item._id,
                 value: item.value
@@ -137,6 +141,23 @@ define([ 'duino' ], function(duino) {
     });
   };
 
-  return Arduino;
+  /**
+   * Manipulate the items array before render
+   *
+   * @param {Array} items An array containing the items to be rendered
+   * @param {Function} callback The callback method to execute after manipulation
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result The manipulated items
+   */
+  Arduino.prototype.beforeRender = function(items, callback) {
+    var that = this;
+    items.forEach(function(item) {
+      item.value = that.values[item._id] ? that.values[item._id] : 0;
+    });
+    return callback(null, items);
+  }
+
+  var exports = Arduino;
+  return exports;
 
 });
