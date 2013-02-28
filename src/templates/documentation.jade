@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  header.jumbotron.subhead#overview
+    h1 Documentation
+    p.lead Project and source code documentation 
+    
+   section
+    h2.page-header API
+    p The source code documentation is automatically generated using&nbsp;
+      a(href="http://yui.github.com/yuidoc/") YUIDoc
+      | . You can find the latest documentation here:&nbsp;
+      a(href="#{url}api/index.html") #{url}api/index.html
+    p Or you can generate the documentation from the source code.
+      script(src="https://gist.github.com/ni-c/d2819c27a525b0049308.js")
+      | This will generate the documention in the&nbsp;
+      code docs
+      | &nbsp; directory of the project.
+   
+  section
+    h2.page-header gh-pages
+    p The gh-pages that you are currently reading can be found in the&nbsp;
+      code gh-pages
+      | &nbsp; branch of the project. They are generated from Jade-Templates using&nbsp;
+      a(href="http://jnordberg.github.com/wintersmith/") http://jnordberg.github.com/wintersmith/
+      | .
