@@ -1,6 +1,6 @@
 {
   "locals": {
-    "url": "http://localhost:8080/",
+    "url": "http://ni-c.github.com/heimcontrol.js/",
     "name": "heimcontrol.js"
   },
   "output": "../"
