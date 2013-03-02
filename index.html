@@ -2,11 +2,11 @@
 <html>
   <head>
     <title>heimcontrol.js - Home automation in Node.js with Raspberry PI and Arduino</title>
-    <link rel="stylesheet" href="http://ni-c.github.com/heimcontrol.js/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://ni-c.github.com/heimcontrol.js/css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="http://ni-c.github.com/heimcontrol.js/css/font-awesome.min.css">
-    <link rel="stylesheet" href="http://ni-c.github.com/heimcontrol.js/css/heimcontrol.css">
-    <link rel="icon" href="http://ni-c.github.com/heimcontrol.js/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="http://localhost:8080/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://localhost:8080/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="http://localhost:8080/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://localhost:8080/css/heimcontrol.css">
+    <link rel="icon" href="http://localhost:8080/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-language" content="en">
@@ -32,15 +32,15 @@
     <meta property="og:type" content="article">
     <meta property="og:article:author" content="Willi Thiel">
     <meta property="og:article:tag" content="arduino,raspberry,raspberry pi,home automation,automation,node,nodejs,mongo,mongodb,gpio,html5,websockets,heimcontrol,javascript">
-    <meta property="og:url" content="http://ni-c.github.com/heimcontrol.js/">
-    <meta property="og:image" content="http://ni-c.github.com/heimcontrol.js/img/heimcontrol.jpg">
+    <meta property="og:url" content="http://localhost:8080/">
+    <meta property="og:image" content="http://localhost:8080/img/heimcontrol.jpg">
     <meta property="og:image:type" content="image/jpg">
     <meta property="og:image:width" content="970">
     <meta property="og:image:height" content="364">
     <meta property="og:description" content="Home automation in Node.js with Raspberry PI and Arduino.">
-    <script data-main="http://ni-c.github.com/heimcontrol.js/js/heimcontrol" src="http://ni-c.github.com/heimcontrol.js/js/require-jquery.js"></script>
+    <script data-main="http://localhost:8080/js/heimcontrol" src="http://localhost:8080/js/require-jquery.js"></script>
     <script>
-      var url = "http://ni-c.github.com/heimcontrol.js/";
+      var url = "http://localhost:8080/";
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-38973162-1']);
       _gaq.push(['_trackPageview']);
@@ -52,20 +52,20 @@
       
     </script>
   </head>
-  <body><a href="https://github.com/ni-c/heimcontrol.js"><img style="z-index: 2000; position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
+  <body><a href="https://github.com/ni-c/heimcontrol.js" class="visible-desktop"><img style="z-index: 2000; position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <button data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar navigation"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+          <button data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar navigation"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="brand">heimcontrol.js</a>
           <div class="nav-collapse collapse navigation">
             <ul id="bar-menu-left" class="nav">
-              <li class="active">               <a href="http://ni-c.github.com/heimcontrol.js/"><i class="icon-home"> </i>&nbsp;Home</a></li>
-              <li class="">               <a href="http://ni-c.github.com/heimcontrol.js/get-started.html"><i class="icon-thumbs-up"> </i>&nbsp;Get Started</a></li>
+              <li class="active">               <a href="http://localhost:8080/"><i class="icon-home"> </i>&nbsp;Home</a></li>
+              <li class="">               <a href="http://localhost:8080/get-started.html"><i class="icon-thumbs-up"> </i>&nbsp;Get Started</a></li>
               <li class="dropdown ">               <a href="#" data-toggle="dropdown" role="button" id="dropdown" class="dropdown-toggle"><i class="icon-cogs"> </i>&nbsp;Plugins&nbsp;<b class="caret"></b></a>
                 <ul role="menu" aria-labelledby="dropdown" class="dropdown-menu">
-                  <li><a href="http://ni-c.github.com/heimcontrol.js/plugins/gpio.html"> <i class="icon-lightbulb"></i>&nbsp;GPIO</a></li>
-                  <li><a href="http://ni-c.github.com/heimcontrol.js/plugins/arduino.html"> <i class="icon-external-link"></i>&nbsp;Arduino</a></li>
-                  <li><a href="http://ni-c.github.com/heimcontrol.js/plugins/wakeonlan.html"> <i class="icon-off"></i>&nbsp;Wake-on-LAN</a></li>
+                  <li><a href="http://localhost:8080/plugins/gpio.html"> <i class="icon-lightbulb"></i>&nbsp;GPIO</a></li>
+                  <li><a href="http://localhost:8080/plugins/arduino.html"> <i class="icon-external-link"></i>&nbsp;Arduino</a></li>
+                  <li><a href="http://localhost:8080/plugins/wakeonlan.html"> <i class="icon-off"></i>&nbsp;Wake-on-LAN</a></li>
                 </ul>
               </li>
             </ul>
@@ -80,7 +80,7 @@
     <div class="container">
       <header id="overview" class="jumbotron subhead">
         <h1>heimcontrol.js</h1>
-        <p class="lead">Awesome home automation with Raspberry PI and Arduino using Node.js, MongoDB, HTML5 and Websockets.</p><img src="http://ni-c.github.com/heimcontrol.js/img/heimcontrol.jpg" alt="heimcontrol" class="shadow title">
+        <p class="lead">Awesome home automation with Raspberry PI and Arduino using Node.js, MongoDB, HTML5 and Websockets.</p><img src="http://localhost:8080/img/heimcontrol.jpg" alt="heimcontrol" class="shadow title">
       </header>
       <div class="row"><span class="span3">
           <h3> <i class="icon-mobile-phone"></i>&nbsp;Responsive</h3>
