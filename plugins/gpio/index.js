@@ -49,15 +49,9 @@ define([ 'pi-gpio' ], function(gpio) {
    * @param {String} data.value The value to set
    */
   Gpio.prototype.toggle = function(data) {
-
     var that = this;
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
-
       item.value = data.value + '';
-
-      // Save status to db
-      collection.save(item);
-
       gpio.open(parseInt(item.pin), "output", function(err) {
         gpio.write(parseInt(item.pin), parseInt(item.value), function() {
           gpio.close(parseInt(item.pin));
@@ -102,6 +96,7 @@ define([ 'pi-gpio' ], function(gpio) {
   /**
    * Manipulate the items array before render
    *
+   * @method beforeRender
    * @param {Array} items An array containing the items to be rendered
    * @param {Function} callback The callback method to execute after manipulation
    * @param {String} callback.err null if no error occured, otherwise the error

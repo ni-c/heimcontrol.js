@@ -13,15 +13,15 @@ each item in items
       div
         span.label.label-success.label-large.gpiostatus(data-id="#{item._id}", data-value="1", class=(item.value == '0' ? 'hide' : ''))
           i.icon-circle
-          | &nbsp;Up
+          | Up
         span.label.label-important.label-large.gpiostatus(data-id="#{item._id}", data-value="0", class=(item.value == '1' ? 'hide' : ''))
           i.icon-circle-blank
-          | &nbsp;Down
+          | Down
     - else
       div.btn-group(data-toggle="buttons-radio")
         button.btn.btn-large.socket(type="button", data-socket="gpio-toggle", data-id="#{item._id}", data-value="1", class=(item.value == '1' ? 'active' : ''))
           i.icon-circle
-          | &nbsp;On
+          | On
         button.btn.btn-inverse.btn-large.socket(type="button", data-socket="gpio-toggle", data-id="#{item._id}", data-value="0", class=(item.value == '0' ? 'active' : ''))
           i.icon-circle-blank
-          | &nbsp;Off
+          | Off

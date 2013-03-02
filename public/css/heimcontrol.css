@@ -30,6 +30,10 @@
   margin-right: 6px;
 }
 
+button i, .label i {
+  padding-right: 8px;
+}
+
 .plugin-container:after {
   background-color: #F5F5F5;
   border: 1px solid #DDDDDD;

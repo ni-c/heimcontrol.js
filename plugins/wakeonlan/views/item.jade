@@ -2,9 +2,9 @@ each item in items
   div.plugin-container.wakeonlan
     button.btn.btn-large.socket(type="button", data-socket="wakeonlan-wake", data-id="#{item._id}", data-value="1", class=(item.value == '1' ? 'disabled' : ''))
       i.icon-off.icon-large&nbsp;&nbsp;
-        - if (typeof(item.description) != 'undefined')
-          | #{item.description}
-        - else
-          | #{item.host}
+      - if (typeof(item.description) != 'undefined')
+        | #{item.description}
+      - else
+        | #{item.host}
     span.label.label-success.pull-right.status.online(data-id="#{item._id}", class=(item.value == '1' ? '' : 'hide')) Online
     span.label.label-important.pull-right.status.offline(data-id="#{item._id}", class=(item.value != '1' ? '' : 'hide')) Offline

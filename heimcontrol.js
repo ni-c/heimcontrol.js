@@ -1,5 +1,5 @@
 /**
- * heimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)
+ * heimcontrol.js (https://ni-c.github.com/heimcontrol.js)
  *
  * @file heimcontrol.js
  * @brief heimcontrol.js - Homeautomation in node.js with the Raspberry PI
@@ -99,6 +99,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       });
 
       app.get('plugin helper').getPluginList(function(err, plugins) {
+        console.log('init');
         app.locals.plugins = plugins;
         app.set('plugins', plugins);
       });
@@ -121,7 +122,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/logout', Routes.logout);
 
       app.get('/js/plugins.js', Routes.pluginsJs);
-      app.get('/js/plugins.css', Routes.pluginsCss);
+      app.get('/css/plugins.css', Routes.pluginsCss);
       
       // 404 Not found
       app.all('*', Routes.notFound);

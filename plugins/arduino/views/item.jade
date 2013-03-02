@@ -7,10 +7,10 @@ each item in items
       div.btn-group(data-rcswitch="buttons-radio")
         button.btn.btn-large.socket(type="button", data-socket="arduino-rcswitch", data-value="1", data-id="#{item._id}", class=(item.value == 1 ? 'active' : ''))
           i.icon-circle
-          | &nbsp;&nbsp;On
+          | On
         button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-rcswitch", data-value="0", data-id="#{item._id}", class=(item.value == 0 ? 'active' : '')) 
           i.icon-circle-blank
-          | &nbsp;&nbsp;Off
+          | Off
     - if (item.method == 'sensor')
       p.description
         strong #{item.description}&nbsp; 

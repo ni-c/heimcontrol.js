@@ -76,6 +76,7 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
   /**
    * Manipulate the items array before render
    *
+   * @method beforeRender
    * @param {Array} items An array containing the items to be rendered
    * @param {Function} callback The callback method to execute after manipulation
    * @param {String} callback.err null if no error occured, otherwise the error
