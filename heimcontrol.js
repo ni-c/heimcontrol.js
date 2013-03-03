@@ -99,7 +99,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       });
 
       app.get('plugin helper').getPluginList(function(err, plugins) {
-        console.log('init');
         app.locals.plugins = plugins;
         app.set('plugins', plugins);
       });

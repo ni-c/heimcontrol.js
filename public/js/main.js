@@ -5,43 +5,47 @@ require(["jquery", "bootstrap.min", "/socket.io/socket.io.js"], function() {
   require(["plugins"], function() {
 
     // Delete buttons
-    function registerDeleteButtons() {
-      $('.delete').unbind('click');
-      $('.delete').click(function() {
-        var e = $('#' + $(this).attr('data-delete'));
-        e.slideToggle(500, function() {
-          e.remove();
-        });
+    function iDelete() {
+      var e = $('#' + $(this).attr('data-delete'));
+      e.slideToggle(500, function() {
+        e.remove();
       });
     }
-    registerDeleteButtons();
+    $('.delete').unbind('click', iDelete);
+    $('.delete').bind('click', iDelete);
 
     // Mac address to uppercase
-    function registerMacInput() {
-      $('.mac').unbind('mac');
-      $('.mac').keyup(function() {
-        var e = $(this);
-        var value = e.val();
-        value = value.toUpperCase();
-        value = value.replace('-', ':').replace('.', ':');
-        e.val(value);
-      });  
+    function iMac() {
+      var e = $(this);
+      var value = e.val();
+      value = value.toUpperCase();
+      value = value.replace('-', ':').replace('.', ':');
+      e.val(value);
     }
-    registerMacInput();
+    $('.mac').unbind('keyup', iMac);
+    $('.mac').bind('keyup', iMac);
+
+    // Uppercase
+    function iUppercase() {
+      var e = $(this);
+      var value = e.val();
+      value = value.toUpperCase();
+      e.val(value);
+    }
+    $('.uppercase').unbind('keyup', iUppercase);    
+    $('.uppercase').bind('keyup', iUppercase);
 
     // Socket buttons
-    function registerSocketButtons(socket) {
-      $('.socket').unbind('click');
-      $('.socket').click(function() {
-        var e = $(this);
-        var data = {
-            id: e.data('id'),
-            value: e.data('value')
-        };
-        socket.emit(e.data('socket'), data);
-      });
+    function iSocketButton() {
+      var e = $(this);
+      var data = {
+          id: e.data('id'),
+          value: e.data('value')
+      };
+      socket.emit(e.data('socket'), data);
     }
-    registerSocketButtons(socket);
+    $('.socket').unbind('click', iSocketButton);
+    $('.socket').bind('click', iSocketButton);
     
     if ($('#template').length) {
       $('.add').click(function() {
@@ -73,9 +77,15 @@ require(["jquery", "bootstrap.min", "/socket.io/socket.io.js"], function() {
           eval($(this).attr('data-callback'));
         }
         
-        // Register Events
-        registerDeleteButtons();
-        registerMacInput();
+        // Unbind Events
+        $('.delete').unbind('click', iDelete);
+        $('.uppercase').unbind('keyup', iUppercase);    
+        $('.mac').unbind('keyup', iMac);
+
+        // Bind Events
+        $('.delete').bind('click', iDelete);
+        $('.uppercase').bind('keyup', iUppercase);
+        $('.mac').bind('keyup', iMac);
 
         // Set new iterator
         $('#iterator').val(++i);

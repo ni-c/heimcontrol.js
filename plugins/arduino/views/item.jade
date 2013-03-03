@@ -19,3 +19,11 @@ each item in items
         p
           span.value(data-id="#{item._id}") #{item.value}
           | &nbsp;#{item.unit}
+    - if (item.method == 'irremote')
+      div
+        button.btn.btn-large.socket(type="button", data-socket="arduino-irremote", data-value="1", data-id="#{item._id}")
+          i.icon-certificate
+          - if (item.description!='')
+            | #{item.description}
+          else
+            | Send

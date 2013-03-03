@@ -42,6 +42,10 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-rcswitch', function(data) {
         that.rcswitch(data);
       });
+      // Arduino toggle
+      socket.on('arduino-irremote', function(data) {
+        that.irremote(data);
+      });
     });
     
   };
@@ -88,6 +92,29 @@ define([ 'duino' ], function(duino) {
         } else {
           return that.pins[item.pin].triState(item.code + "FF00");
         }
+      } else {
+        console.log(err);
+      }
+    });
+  };
+
+  /**
+   * Send an IR remote code
+   * 
+   * @method irremote
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the IR to use
+   * @param {String} data.value The value to set (0 or 1)
+   */
+  Arduino.prototype.irremote = function(data) {
+
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        var ir = new duino.IR({
+          board: that.board
+        });
+        ir.send(item.irtype, item.ircode, item.irlength);
       } else {
         console.log(err);
       }
