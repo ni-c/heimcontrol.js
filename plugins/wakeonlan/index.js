@@ -45,19 +45,21 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
    */
   Wakeonlan.prototype.ping = function() {
     var that = this;
-    this.app.get('db').collection(this.collection, function(err, collection) {
-      collection.find({}).toArray(function(err, result) {
-        result.forEach(function(item) {
-          ping.sys.probe(item.host, function(value) {
-            that.values[item._id] = value;
-            that.app.get('sockets').emit('wakeonlan-ping', {
-              id: item._id,
-              alive: value
+    if (that.app.get('clients').length > 0) {
+      that.app.get('db').collection(this.collection, function(err, collection) {
+        collection.find({}).toArray(function(err, result) {
+          result.forEach(function(item) {
+            ping.sys.probe(item.host, function(value) {
+              that.values[item._id] = value;
+              that.app.get('sockets').emit('wakeonlan-ping', {
+                id: item._id,
+                alive: value
+              });
             });
           });
         });
       });
-    });
+    }
   };
 
   /**
@@ -89,6 +91,8 @@ define([ 'ping', 'wake_on_lan' ], function(ping, wol) {
     });
     return callback(null, items);
   }
+
+  var exports = Wakeonlan;
 
   return Wakeonlan;
 

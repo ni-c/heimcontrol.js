@@ -71,6 +71,15 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         });
       });
 
+      var clientList = [];
+      io.sockets.on('connection', function(socket) {
+        clientList.push(socket.id);
+        socket.on('disconnect', function() {
+          var i = clientList.indexOf(socket.id);
+          clientList.splice(i,1);
+        });
+      });
+
       // Express
       app.configure(function() {
         app.set('events', new Events.EventEmitter());
@@ -81,6 +90,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('sockets', io.sockets);
         app.set('mongo', Mongo);
         app.set('db', db);
+        app.set('clients', clientList);
         app.set('config', config);
         app.set('plugin folder', __dirname + '/plugins');
         app.set('plugin helper', new PluginHelper(app));

@@ -72,25 +72,27 @@ define([ 'pi-gpio' ], function(gpio) {
    */
   Gpio.prototype.parse = function() {
     var that = this;
-    this.app.get('db').collection(this.collection, function(err, collection) {
-      collection.find({
-        direction: 'input'
-      }).toArray(function(err, result) {
-        result.forEach(function(item) {
-          gpio.setDirection(parseInt(item.pin), "input", function(err) {
-            gpio.read(parseInt(item.pin), function(err, value) {
-              if (!err) {
-                that.values[item._id] = value;
-                that.app.get('sockets').emit('gpio-input', {
-                  id: item._id,
-                  value: value
-                });
-              }
+    if (that.app.get('clients').length > 0) {
+      that.app.get('db').collection(this.collection, function(err, collection) {
+        collection.find({
+          direction: 'input'
+        }).toArray(function(err, result) {
+          result.forEach(function(item) {
+            gpio.setDirection(parseInt(item.pin), "input", function(err) {
+              gpio.read(parseInt(item.pin), function(err, value) {
+                if (!err) {
+                  that.values[item._id] = value;
+                  that.app.get('sockets').emit('gpio-input', {
+                    id: item._id,
+                    value: value
+                  });
+                }
+              });
             });
           });
         });
       });
-    });
+    }
   };
 
   /**
@@ -109,6 +111,8 @@ define([ 'pi-gpio' ], function(gpio) {
     });
     return callback(null, items);
   }
+
+  var exports = Gpio;
 
   return Gpio;
 

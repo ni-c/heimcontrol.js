@@ -1,0 +1,3 @@
+.plugin-container.webcam:after {
+  content: "Webcam";
+}

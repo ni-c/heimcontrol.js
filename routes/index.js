@@ -173,22 +173,32 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
           if (plugin.id == req.params.plugin) {
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.find({}).toArray(function(err, items) {
-                req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
-                  items: items
-                }, function(err, html) {
-                  if (!err) {
-                    return res.render('plugin-settings', {
-                      content: html,
-                      plugin: plugin.id,
-                      title: plugin.name + ' Settings'
-                    });
-                  } else {
-                    console.log(err);
-                    return res.render(500, '500', {
-                      title: '500 Internal Server Error'
-                    });
-                  }
-                });
+                function render(items) {
+                  req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
+                    items: items
+                  }, function(err, html) {
+                    if (!err) {
+                      return res.render('plugin-settings', {
+                        content: html,
+                        plugin: plugin.id,
+                        title: plugin.name + ' Settings'
+                      });
+                    } else {
+                      console.log(err);
+                      return res.render(500, '500', {
+                        title: '500 Internal Server Error'
+                      });
+                    }
+                  });
+                }
+                // If the plugin has a beforeRender() method, call it
+                if (plugin.beforeRender) {
+                  plugin.beforeRender(items, function(err, result) {
+                    render(result);
+                  });
+                } else {
+                  render(items);
+                }
               });
             });
           }
@@ -251,23 +261,33 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
                 saveMultiple(req.app, collection, items, function(err, result) {
                   req.app.get('events').emit('settings-saved');
                   collection.find({}).toArray(function(err, items) {
-                    req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
-                      items: items,
-                      success: 'Settings have been updated'
-                    }, function(err, html) {
-                      if (!err) {
-                        return res.render('plugin-settings', {
-                          content: html,
-                          plugin: plugin.id,
-                          title: plugin.name + ' Settings'
-                        });
-                      } else {
-                        console.log(err);
-                        return res.render(500, '500', {
-                          title: '500 Internal Server Error'
-                        });
-                      }
-                    });
+                    function render(items) {
+                      req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
+                        items: items,
+                        success: 'Settings have been updated'
+                      }, function(err, html) {
+                        if (!err) {
+                          return res.render('plugin-settings', {
+                            content: html,
+                            plugin: plugin.id,
+                            title: plugin.name + ' Settings'
+                          });
+                        } else {
+                          console.log(err);
+                          return res.render(500, '500', {
+                            title: '500 Internal Server Error'
+                          });
+                        }
+                      });
+                    }
+                    // If the plugin has a beforeRender() method, call it
+                    if (plugin.beforeRender) {
+                      plugin.beforeRender(items, function(err, result) {
+                        render(result);
+                      });
+                    } else {
+                      render(items);
+                    }
                   });
                 });
               });

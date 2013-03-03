@@ -34,7 +34,7 @@ define([ 'duino' ], function(duino) {
     var that = this;
 
     app.get('events').on('settings-saved', function() {
-      that.refresh();
+      that.init();
     });
     
     app.get('sockets').on('connection', function(socket) {
@@ -48,15 +48,6 @@ define([ 'duino' ], function(duino) {
       });
     });
     
-  };
-
-  /**
-   * Refreshes the plugin.
-   * 
-   * @method refresh
-   */
-  Arduino.prototype.refresh = function() {
-    return this.init();
   };
 
   /**
@@ -186,6 +177,7 @@ define([ 'duino' ], function(duino) {
   }
 
   var exports = Arduino;
+
   return exports;
 
 });
