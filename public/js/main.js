@@ -74,7 +74,11 @@ require(["jquery", "bootstrap.min", "/socket.io/socket.io.js"], function() {
         
         // Call callback
         if ($(this).attr('data-callback')) {
-          eval($(this).attr('data-callback'));
+          try {
+            eval($(this).attr('data-callback'));
+          } catch (e) {
+            alert('JavaScript Error: Callback function not found [' + $(this).attr('data-callback') + '].');
+          }
         }
         
         // Unbind Events

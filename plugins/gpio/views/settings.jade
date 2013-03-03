@@ -23,7 +23,7 @@ div.container
               button.btn.btn-inverse.gpio.toggle(type="button", data-value="input", class=(item.direction == 'input' ? 'active' : '')) 
                 i.icon-signin &nbsp;
                 | Input
-              input(type="hidden", name="data[#{i}][direction]", value="#{item.direction}")
+            input(type="hidden", name="data[#{i}][direction]", value="#{item.direction}")
             br
             br
             label(for="pin") GPIO Pin:
@@ -65,7 +65,7 @@ div.plugin-container.gpio.settings#template(style="display: none;")
     button.btn.btn-inverse.gpio.toggle(type="button", data-value="input") 
       i.icon-signin &nbsp;
       | Input
-    input(type="hidden", name="data[%i%][direction]", value="output")
+  input(type="hidden", name="data[%i%][direction]", value="output")
   br
   br
   label(for="pin") GPIO Pin:

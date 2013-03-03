@@ -35,7 +35,8 @@ input(type="hidden", name="iterator", id="iterator", value=(items.length))
 div.plugin-container.wakeonlan.settings#template(style="display: none;")
   button.btn.btn-danger.pull-right.delete(type="button")
     i.icon-trash.icon-large
-    |  Delete  label(for="description") Description (optional):
+    |  Delete  
+  label(for="description") Description (optional):
   input(type="text", name="data[%i][description]", placeholder="iMac")
   label(for="host") Hostname / IP:
   input(type="text", name="data[%i][host]", placeholder="hostname", required="1")

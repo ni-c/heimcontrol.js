@@ -1,16 +1,19 @@
 /**
  * GPIO on/off toggles
  */
-function iGpioToggle() {
-  var button = $(this);
-  button.parent().children('input').attr('value', button.attr('data-value'));
+function registerGpioToggles() {
+  $('button.gpio.toggle').unbind('click.toggle');
+  $('button.gpio.toggle').bind('click.toggle', function()  {
+    var button = $(this);
+    button.parent().children('input').attr('value', button.attr('data-value'));
+  }); 
 }
-$('button.gpio.toggle').unbind('click.toggle', iGpioToggle);
-$('button.gpio.toggle').bind('click.toggle', iGpioToggle);
 
 require([ "jquery", "/socket.io/socket.io.js" ], function() {
 
   var socket = io.connect();
+
+  registerGpioToggles();
 
   /**
    * GPIO input change
