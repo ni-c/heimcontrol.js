@@ -1,0 +1,3 @@
+User-agent: *
+Allow: *
+Sitemap: http://ni-c.github.com/heimcontrol.js/sitemap.xml

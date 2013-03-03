@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/get-started.html</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/plugins/gpio.html</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/plugins/arduino.html</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/plugins/wakeonlan.html</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/api/index.html</loc>
+  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+</urlset>
