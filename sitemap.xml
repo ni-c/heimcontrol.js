@@ -8,32 +8,37 @@
 
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/get-started.html</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/plugins/gpio.html</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/plugins/arduino.html</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/plugins/wakeonlan.html</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>http://ni-c.github.com/heimcontrol.js/plugins/webcam.html</loc>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 <url>
   <loc>http://ni-c.github.com/heimcontrol.js/api/index.html</loc>
-  <lastmod>2013-03-03T01:13:22+00:00</lastmod>
+  <lastmod>2013-03-03T17:13:22+00:00</lastmod>
   <changefreq>monthly</changefreq>
 </url>
 </urlset>

@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  header.jumbotron.subhead#overview
+    h1 Webcam Plugin
+    p.lead CCTV for your home automation
+    
+   section.about
+    h2.page-header About
+    p Attach webcams to your Raspberyy PI and stream the webcam images via socket.io to your browser.
+    h2.page-header Screenshot
+    img(src="#{url}img/webcam.png", alt="Raspberry PI webcam over socket.io")
