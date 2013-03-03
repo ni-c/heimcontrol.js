@@ -8,8 +8,7 @@ if (typeof define !== 'function') {
  * @class Webcam
  * @constructor 
  */
-
-define([ 'child_process', 'delivery', 'fs' ], function( ChildProcess, Delivery, Fs ) {
+define([ 'child_process', 'delivery', 'fs', 'http' ], function( ChildProcess, Delivery, Fs, Http ) {
 
   var Webcam = function(app) {
 
@@ -20,6 +19,17 @@ define([ 'child_process', 'delivery', 'fs' ], function( ChildProcess, Delivery, 
 
     this.app = app;
     this.pluginHelper = app.get('plugin helper');
+
+    /**
+     * Use the following command to get a list of supported resolutions of your webcam:
+     * 
+     * ````
+     * $ v4l2-ctl --list-formats-ext
+     * ````
+     * 
+     * Microsoft® LifeCam HD-3000: 640x480, 1280x720, 960x544, 800x448, 640x360, 424x240, 352x288, 320x240, 800x600, 176x144, 160x120, 1280x800
+     */
+    this.webcamResolution = '960x544';
 
     this.webcamList = [];
     this.webcams = {};
@@ -64,28 +74,63 @@ define([ 'child_process', 'delivery', 'fs' ], function( ChildProcess, Delivery, 
     this.webcamList = [];
 
     return this.app.get('db').collection(that.collection, function(err, collection) {
-      collection.find({}).toArray(function(err, result) {
+      collection.find().toArray(function(err, result) {
         if ((!err) && (result.length > 0)) {
           result.forEach(function(item) {
-            function capture() {
-              if (that.app.get('clients').length > 0) {
-                var filename = '/tmp/' + item._id + '.jpeg';
-                that.streamer(item.input, filename, '1280x720', function(err, result) {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    that.deliveryList.forEach(function(delivery) {
-                      delivery.send({
-                        name: item._id + '.jpg',
-                        path : filename,
+
+            if (item.method == 'streamer') {
+              function capture() {
+                if (that.app.get('clients').length > 0) {
+                  var filename = '/tmp/' + item._id + '.jpeg';
+                  that.streamer(item.input, filename, that.webcamResolution, function(err, result) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      that.deliveryList.forEach(function(delivery) {
+                        delivery.send({
+                          name: item._id + '.jpg',
+                          path : filename,
+                        });
                       });
-                    });
-                  }
-                });             
+                    }
+                  });             
+                }
               }
+              var intervalId = setInterval(capture, parseInt(item.interval)*1000);
+              that.webcamList.push(intervalId);
             }
-            var intervalId = setInterval(capture, parseInt(item.interval)*1000);
-            that.webcamList.push(intervalId);
+
+            if (item.method == 'motion') {
+              // check if authorized and forward motion stream
+              that.app.get('/webcam/motion/' + item._id, that.app.get('routes').isAuthorized, function(req, res) {
+                var creq = Http.request({
+                  host:   'localhost',
+                  port:   item.port,
+                  path:   '/',
+                  method: 'GET',
+                  headers: req.headers
+                }, function(cres) {
+                  res.setHeader('Content-Type', cres.headers['content-type']);
+                  res.setHeader('Connection', cres.headers.connection);
+                  res.setHeader('Pragma', cres.headers.pragma);
+                  res.setHeader('Cache-Control', cres.headers['cache-control']);
+                  res.setHeader('Expires', cres.headers.expires);
+                  res.setHeader('Max-Age', cres.headers['max-age']);
+                  cres.on('data', function(chunk){
+                    res.write(chunk);
+                  });
+                  cres.on('close', function(){
+                    res.writeHead(cres.statusCode);
+                    res.end();
+                  });
+                }).on('error', function(e) {
+                  // we got an error, return 500 error to client and log error
+                  res.write('Error connecting to motion stream: ' + e.message);
+                  res.end();
+                });
+                creq.end();
+              });
+            }
           });
         }
       });
@@ -134,16 +179,13 @@ define([ 'child_process', 'delivery', 'fs' ], function( ChildProcess, Delivery, 
       }
     })
     items.forEach(function(item) {
-      console.log(deviceList.indexOf(item.input));
       if (deviceList.indexOf(item.input)==-1) {
         console.log('Webcam Plugin: Device "' + item.input + '" not found.');
         var i = items.indexOf(item);
         items.splice(i,1);
-      } else {
-        item.deviceList = deviceList;
-    }
+      }
     });
-    return callback(null, items);
+    return callback(null, items, {'devices': deviceList});
   }
 
   var exports = Webcam;

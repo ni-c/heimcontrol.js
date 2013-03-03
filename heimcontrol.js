@@ -92,6 +92,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('db', db);
         app.set('clients', clientList);
         app.set('config', config);
+        app.set('routes', Routes);
         app.set('plugin folder', __dirname + '/plugins');
         app.set('plugin helper', new PluginHelper(app));
         app.use(Express.favicon());
@@ -106,11 +107,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(Express.favicon(__dirname + '/public/heimcontrol.ico'));
         app.use(Express.static(Path.join(__dirname, 'public')));
         app.use(app.router);
-      });
-
-      app.get('plugin helper').getPluginList(function(err, plugins) {
-        app.locals.plugins = plugins;
-        app.set('plugins', plugins);
       });
 
       // Routes
@@ -132,9 +128,15 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
-      
-      // 404 Not found
-      app.all('*', Routes.notFound);
+
+      app.get('plugin helper').getPluginList(function(err, plugins) {
+        app.locals.plugins = plugins;
+        app.set('plugins', plugins);
+
+        // 404 Not found
+        app.all('*', Routes.notFound);
+
+      });
     }
   });
 });

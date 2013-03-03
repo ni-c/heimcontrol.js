@@ -70,9 +70,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         }
         if (items.length > 0) {
 
-          function render(items) {
+          function render(items, meta) {
+            var meta = meta || {};
             app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/' + type + '.jade', {
-              items: items
+              items: items,
+              meta: meta
             }, function(err, result) {
               if (!err) {
                 html.append(result);
@@ -84,8 +86,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
 
           // If the plugin has a beforeRender() method, call it
           if (plugin.beforeRender) {
-            plugin.beforeRender(items, function(err, result) {
-              render(result);
+            plugin.beforeRender(items, function(err, result, meta) {
+              render(result, meta);
             });
           } else {
             render(items);
@@ -173,9 +175,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
           if (plugin.id == req.params.plugin) {
             req.app.get('db').collection(plugin.collection, function(err, collection) {
               collection.find({}).toArray(function(err, items) {
-                function render(items) {
+                function render(items, meta) {
+                  var meta = meta || {};
                   req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
-                    items: items
+                    items: items,
+                    meta: meta
                   }, function(err, html) {
                     if (!err) {
                       return res.render('plugin-settings', {
@@ -193,8 +197,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
                 }
                 // If the plugin has a beforeRender() method, call it
                 if (plugin.beforeRender) {
-                  plugin.beforeRender(items, function(err, result) {
-                    render(result);
+                  plugin.beforeRender(items, function(err, result, meta) {
+                    render(result, meta);
                   });
                 } else {
                   render(items);
@@ -261,9 +265,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
                 saveMultiple(req.app, collection, items, function(err, result) {
                   req.app.get('events').emit('settings-saved');
                   collection.find({}).toArray(function(err, items) {
-                    function render(items) {
+                    function render(items, meta) {
+                      var meta = meta || {};
                       req.app.get('jade').renderFile(__dirname + '/../plugins/' + plugin.id + '/views/settings.jade', {
                         items: items,
+                        meta: meta,
                         success: 'Settings have been updated'
                       }, function(err, html) {
                         if (!err) {
@@ -282,8 +288,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
                     }
                     // If the plugin has a beforeRender() method, call it
                     if (plugin.beforeRender) {
-                      plugin.beforeRender(items, function(err, result) {
-                        render(result);
+                      plugin.beforeRender(items, function(err, result, meta) {
+                        render(result, meta);
                       });
                     } else {
                       render(items);
