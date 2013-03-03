@@ -49,7 +49,6 @@ html
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-
   body
     a.visible-desktop(href="https://github.com/ni-c/heimcontrol.js")
       img(style="z-index: 2000; position: absolute; top: 0; left: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png", alt="Fork me on GitHub")
@@ -94,7 +93,6 @@ html
                 a.btn-logout(href="https://github.com/ni-c/heimcontrol.js") 
                   i.icon-github
                   | &nbsp;Fork it!&nbsp;
-    #{page.meta}
     div.container
       block content
     footer.footer
