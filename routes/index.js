@@ -517,7 +517,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         	item = result[0]
         }
         item.value = req.body.theme || 'default';
-        req.app.locals.theme = '/css/themes/' + item.value;
+        if (item.value=='default') {
+          req.app.locals.theme = '/css/bootstrap.min.css';
+        } else {
+          req.app.locals.theme = '/css/themes/' + item.value;
+        }
         s.save(item, function(err, result) {
           return res.render('settings', {
             title: 'Settings',
