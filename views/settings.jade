@@ -3,19 +3,34 @@ extends layout
 block content
   div.container
     h1 heimcontrol.js Settings
-    h2 Change password
     include includes/messages
-    div.row16
-      form(action="/settings", method="POST")
-        p
-          label(for="oldpassword") Old Password:
-          input.login#oldpassword(type="password", name="oldpassword", required="1")
-        p
-          label(for="newpassword") New Password:
-          input.login#newpassword(type="password", name="newpassword", required="1")
-        p
-          label(for="repeatnewpassword") Repeat new Password:
-          input.login#repeatnewpassword(type="password", name="repeatnewpassword", required="1")
-        br
-        p
-          input.btn.btn-success.btn-login(type="submit", value="Change")
+    div.row
+      div.span5
+        h2 Select theme
+        p Bootstrap compatible themes from 
+          a(href="http://bootswatch.com/") Bootswatch
+          .
+        form(action="/settings/theme", method="POST")
+          p
+            label(for="changetheme") Theme:
+            select(name="theme")
+              option(value="default", selected=(theme=="/css/bootstrap.css")) bootstrap.css
+              each t in themes
+                option(value="#{t}", selected=(theme=="/css/themes/" + t)) #{t}
+          p
+            input.btn.btn-success.btn-login(type="submit", value="Select Theme")
+  
+      div.span5      
+        h2 Change password
+        form(action="/settings/password", method="POST")
+          p
+            label(for="oldpassword") Old Password:
+            input.login#oldpassword(type="password", name="oldpassword", required="1")
+          p
+            label(for="newpassword") New Password:
+            input.login#newpassword(type="password", name="newpassword", required="1")
+          p
+            label(for="repeatnewpassword") Repeat new Password:
+            input.login#repeatnewpassword(type="password", name="repeatnewpassword", required="1")
+          p
+            input.btn.btn-success.btn-login(type="submit", value="Change")

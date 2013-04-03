@@ -8,7 +8,7 @@ if (typeof define !== 'function') {
  * @class PluginHelper
  * @constructor 
  */
-define([ 'fs' ], function( Fs ) {
+define([ 'fs' ], function( fs ) {
 
   var PluginHelper = function(app) {
     this.app = app;
@@ -50,7 +50,7 @@ define([ 'fs' ], function( Fs ) {
   PluginHelper.prototype.getPluginList = function(callback) {
     var pluginList = [];
     var that = this;
-    var files = Fs.readdirSync(that.pluginFolder);
+    var files = fs.readdirSync(that.pluginFolder);
 
     function requireRecursive(files) {
       var file = files.pop();

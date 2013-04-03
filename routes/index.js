@@ -212,7 +212,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       }
     } else {
       return res.render('settings', {
-        title: "Settings"
+        title: "Settings",
+        themes: fs.readdirSync(req.app.get('theme folder'))
       });
     }
   };
@@ -454,7 +455,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
-   * POST /settings
+   * POST /settings/password
    * 
    * @method changePassword
    * @param {Object} req The request
@@ -487,13 +488,45 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
             u.save(r[0], function(err, result) {
               return res.render('settings', {
                 title: 'Settings',
-                success: 'Your password has been changed.'
+                success: 'Your password has been changed.',
+				        themes: fs.readdirSync(req.app.get('theme folder'))
               });
             });
           }
         });
       });
     }
+  };
+
+  /**
+   * POST /settings/theme
+   * 
+   * @method changeTheme
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.changeTheme = function(req, res) {
+    req.app.get('db').collection('Settings', function(err, s) {
+      s.find({
+        'key': 'theme'
+      }).toArray(function(err, result) {
+      	var item = {};
+        if (result.length == 0) {
+          item.key = 'theme';
+        } else {
+        	item = result[0]
+        }
+        item.value = req.body.theme || 'default';
+        req.app.locals.theme = '/css/themes/' + item.value;
+        s.save(item, function(err, result) {
+          return res.render('settings', {
+            title: 'Settings',
+            success: 'The theme has been changed.',
+		        themes: fs.readdirSync(req.app.get('theme folder'))
+          });
+        });
+      });
+    });
   };
 
   /**

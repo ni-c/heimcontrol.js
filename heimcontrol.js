@@ -97,6 +97,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('clients', clientList);
         app.set('config', config);
         app.set('routes', Routes);
+        app.set('theme folder', __dirname + '/public/css/themes');
         app.set('plugin folder', __dirname + '/plugins');
         app.set('plugin helper', new PluginHelper(app));
         app.use(Express.favicon());
@@ -113,6 +114,19 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(app.router);
       });
 
+			// Load theme
+	    app.get('db').collection('Settings', function(err, s) {
+	      s.find({
+	        'key': 'theme'
+	      }).toArray(function(err, result) {
+	      	if (err || result.length == 0 || result[0].value == 'default') {
+						app.locals.theme = '/css/bootstrap.min.css';
+	      	} else {
+	      		app.locals.theme = '/css/themes/' + result[0].value;
+	      	}
+	      });
+	    });
+				
       // Routes
       app.get('/register', Routes.showRegister);
       app.post('/register', Routes.doRegister);
@@ -123,7 +137,8 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/', Routes.isAuthorized, Routes.index);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
-      app.post('/settings', Routes.isAuthorized, Routes.changePassword);
+      app.post('/settings/password', Routes.isAuthorized, Routes.changePassword);
+      app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
 
       app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
       app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
