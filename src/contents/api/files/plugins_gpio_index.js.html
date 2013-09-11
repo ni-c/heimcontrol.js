@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>plugins&#x2F;gpio&#x2F;index.js - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>plugins/gpio/index.js - heimcontrol.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -92,7 +96,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: plugins&#x2F;gpio&#x2F;index.js</h1>
+                        <h1 class="file-heading">File: plugins/gpio/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,13 +106,13 @@ if (typeof define !== &#x27;function&#x27;) {
 
 define([ &#x27;pi-gpio&#x27; ], function(gpio) {
 
-  &#x2F;**
+  /**
    * Gpio Plugin. Can access the GPIO on the Raspberry PI
    *
    * @class Gpio
    * @param {Object} app The express application
    * @constructor 
-   *&#x2F;
+   */
   var Gpio = function(app) {
 
     this.name = &#x27;GPIO&#x27;;
@@ -123,14 +127,14 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
 
     var that = this;
 
-    &#x2F;&#x2F; Ping interval
+    // Ping interval
     setInterval(function() {
       that.parse();
     }, 100);
 
     app.get(&#x27;sockets&#x27;).on(&#x27;connection&#x27;, function(socket) {
 
-      &#x2F;&#x2F; GPIO toggle
+      // GPIO toggle
       socket.on(&#x27;gpio-toggle&#x27;, function(data) {
         that.toggle(data);
       });
@@ -138,24 +142,18 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
     });
   };
 
-  &#x2F;**
+  /**
    * Toggle a GPIO port
    * 
    * @method toggle
    * @param {Object} data The websocket data
    * @param {String} data.id The ID of the database entry
    * @param {String} data.value The value to set
-   *&#x2F;
+   */
   Gpio.prototype.toggle = function(data) {
-
     var that = this;
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
-
       item.value = data.value + &#x27;&#x27;;
-
-      &#x2F;&#x2F; Save status to db
-      collection.save(item);
-
       gpio.open(parseInt(item.pin), &quot;output&quot;, function(err) {
         gpio.write(parseInt(item.pin), parseInt(item.value), function() {
           gpio.close(parseInt(item.pin));
@@ -169,42 +167,45 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
     });
   };
 
-  &#x2F;**
+  /**
    * Parse GPIO the ports that are used as input and send the result to the client websocket
    * 
    * @method parse
-   *&#x2F;
+   */
   Gpio.prototype.parse = function() {
     var that = this;
-    this.app.get(&#x27;db&#x27;).collection(this.collection, function(err, collection) {
-      collection.find({
-        direction: &#x27;input&#x27;
-      }).toArray(function(err, result) {
-        result.forEach(function(item) {
-          gpio.setDirection(parseInt(item.pin), &quot;input&quot;, function(err) {
-            gpio.read(parseInt(item.pin), function(err, value) {
-              if (!err) {
-                that.values[item._id] = value;
-                that.app.get(&#x27;sockets&#x27;).emit(&#x27;gpio-input&#x27;, {
-                  id: item._id,
-                  value: value
-                });
-              }
+    if (that.app.get(&#x27;clients&#x27;).length &gt; 0) {
+      that.app.get(&#x27;db&#x27;).collection(this.collection, function(err, collection) {
+        collection.find({
+          direction: &#x27;input&#x27;
+        }).toArray(function(err, result) {
+          result.forEach(function(item) {
+            gpio.setDirection(parseInt(item.pin), &quot;input&quot;, function(err) {
+              gpio.read(parseInt(item.pin), function(err, value) {
+                if (!err) {
+                  that.values[item._id] = value;
+                  that.app.get(&#x27;sockets&#x27;).emit(&#x27;gpio-input&#x27;, {
+                    id: item._id,
+                    value: value
+                  });
+                }
+              });
             });
           });
         });
       });
-    });
+    }
   };
 
-  &#x2F;**
+  /**
    * Manipulate the items array before render
    *
+   * @method beforeRender
    * @param {Array} items An array containing the items to be rendered
    * @param {Function} callback The callback method to execute after manipulation
    * @param {String} callback.err null if no error occured, otherwise the error
    * @param {Object} callback.result The manipulated items
-   *&#x2F;
+   */
   Gpio.prototype.beforeRender = function(items, callback) {
     var that = this;
     items.forEach(function(item) {
@@ -212,6 +213,8 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
     });
     return callback(null, items);
   }
+
+  var exports = Gpio;
 
   return Gpio;
 
@@ -226,13 +229,13 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

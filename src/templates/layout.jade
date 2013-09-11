@@ -39,7 +39,7 @@ html
     meta(property="og:image:height",content="364")
     meta(property="og:description",content="Home automation in Node.js with Raspberry PI and Arduino.")
     script(data-main='#{url}js/heimcontrol', src='#{url}js/require-jquery.js')
-    script
+    script.
       var url = "#{url}";
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-38973162-1']);
@@ -84,6 +84,10 @@ html
                     a(href="#{url}plugins/arduino.html") 
                       i.icon-external-link
                       | &nbsp;Arduino
+                  li
+                    a(href="#{url}plugins/rgblights.html") 
+                      i.icon-eye-open
+                      | &nbsp;RGB Lights
                   li
                     a(href="#{url}plugins/webcam.html") 
                       i.icon-play-circle

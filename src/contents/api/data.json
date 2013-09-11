@@ -47,6 +47,22 @@
             "fors": {},
             "namespaces": {}
         },
+        "plugins/rgblights/public/js/rgblights.js": {
+            "name": "plugins/rgblights/public/js/rgblights.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/rgblights/index.js": {
+            "name": "plugins/rgblights/index.js",
+            "modules": {},
+            "classes": {
+                "RGBLights": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "plugins/wakeonlan/public/js/wakeonlan.js": {
             "name": "plugins/wakeonlan/public/js/wakeonlan.js",
             "modules": {},
@@ -60,6 +76,29 @@
             "classes": {
                 "Wakeonlan": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/webcam/public/js/webcam.js": {
+            "name": "plugins/webcam/public/js/webcam.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "plugins/webcam/index.js": {
+            "name": "plugins/webcam/index.js",
+            "modules": {},
+            "classes": {
+                "Webcam": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/js/delivery.js": {
+            "name": "public/js/delivery.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -143,6 +182,27 @@
             ],
             "is_constructor": 1
         },
+        "RGBLights": {
+            "name": "RGBLights",
+            "shortname": "RGBLights",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "plugins/rgblights/index.js",
+            "line": 7,
+            "description": "RGB Lights Plugin. This plugin is able to control a strip of RGB LEDs connected to an Arduino or GPIO Pins",
+            "author": "https://github.com/ConnorRoberts",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "The express application",
+                    "type": "Object"
+                }
+            ],
+            "is_constructor": 1
+        },
         "Wakeonlan": {
             "name": "Wakeonlan",
             "shortname": "Wakeonlan",
@@ -154,6 +214,19 @@
             "file": "plugins/wakeonlan/index.js",
             "line": 5,
             "description": "Wake-on-LAN Plugin. This plugin is able to wake devices via WOL packets",
+            "is_constructor": 1
+        },
+        "Webcam": {
+            "name": "Webcam",
+            "shortname": "Webcam",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "plugins/webcam/index.js",
+            "line": 5,
+            "description": "Webcam Plugin. Plugin that uses streamer to create images from the webcam and pushes them to the clients",
             "is_constructor": 1
         },
         "StringBuffer": {
@@ -238,27 +311,19 @@
         },
         {
             "file": "plugins/arduino/public/js/arduino.js",
-            "line": 23,
+            "line": 6,
             "description": "Arduino RC button has been switched",
             "class": "Arduino"
         },
         {
             "file": "plugins/arduino/public/js/arduino.js",
-            "line": 31,
+            "line": 14,
             "description": "Arduino sensor data received",
             "class": "Arduino"
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 49,
-            "description": "Refreshes the plugin.",
-            "itemtype": "method",
-            "name": "refresh",
-            "class": "Arduino"
-        },
-        {
-            "file": "plugins/arduino/index.js",
-            "line": 58,
+            "line": 53,
             "description": "Toggle an Arduino port",
             "itemtype": "method",
             "name": "rcswitch",
@@ -285,7 +350,34 @@
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 97,
+            "line": 92,
+            "description": "Send an IR remote code",
+            "itemtype": "method",
+            "name": "irremote",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The websocket data from the client",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The ID of the database entry from the IR to use",
+                            "type": "String"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The value to set (0 or 1)",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/index.js",
+            "line": 115,
             "description": "Initialize the sensors attached to the Arduino",
             "itemtype": "method",
             "name": "init",
@@ -293,8 +385,10 @@
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 144,
+            "line": 162,
             "description": "Manipulate the items array before render",
+            "itemtype": "method",
+            "name": "beforeRender",
             "params": [
                 {
                     "name": "items",
@@ -368,7 +462,7 @@
         },
         {
             "file": "plugins/gpio/index.js",
-            "line": 74,
+            "line": 68,
             "description": "Parse GPIO the ports that are used as input and send the result to the client websocket",
             "itemtype": "method",
             "name": "parse",
@@ -376,8 +470,10 @@
         },
         {
             "file": "plugins/gpio/index.js",
-            "line": 102,
+            "line": 98,
             "description": "Manipulate the items array before render",
+            "itemtype": "method",
+            "name": "beforeRender",
             "params": [
                 {
                     "name": "items",
@@ -405,6 +501,67 @@
             "class": "Gpio"
         },
         {
+            "file": "plugins/rgblights/public/js/rgblights.js",
+            "line": 32,
+            "description": "Colourwheel change",
+            "class": "RGBLights"
+        },
+        {
+            "file": "plugins/rgblights/index.js",
+            "line": 40,
+            "description": "Is called if user has picked a color from the colourwheel",
+            "itemtype": "method",
+            "name": "picker",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The data of the colourwheel",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The id of the element",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "oaram": "{String} data.pins.B The value for BLUE",
+            "class": "RGBLights"
+        },
+        {
+            "file": "plugins/rgblights/index.js",
+            "line": 71,
+            "description": "Manipulate the items array before render",
+            "itemtype": "method",
+            "name": "beforeRender",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "An array containing the items to be rendered",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback method to execute after manipulation",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "null if no error occured, otherwise the error",
+                            "type": "String"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The manipulated items",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "class": "RGBLights"
+        },
+        {
             "file": "plugins/wakeonlan/public/js/wakeonlan.js",
             "line": 5,
             "description": "Host status has been changed",
@@ -420,7 +577,7 @@
         },
         {
             "file": "plugins/wakeonlan/index.js",
-            "line": 63,
+            "line": 65,
             "description": "Wake on LAN",
             "itemtype": "method",
             "name": "wake",
@@ -442,8 +599,10 @@
         },
         {
             "file": "plugins/wakeonlan/index.js",
-            "line": 76,
+            "line": 78,
             "description": "Manipulate the items array before render",
+            "itemtype": "method",
+            "name": "beforeRender",
             "params": [
                 {
                     "name": "items",
@@ -469,6 +628,145 @@
                 }
             ],
             "class": "Wakeonlan"
+        },
+        {
+            "file": "plugins/webcam/public/js/webcam.js",
+            "line": 12,
+            "description": "Image data received",
+            "class": "Webcam"
+        },
+        {
+            "file": "plugins/webcam/index.js",
+            "line": 23,
+            "description": "Use the following command to get a list of supported resolutions of your webcam:\n\n````\n$ v4l2-ctl --list-formats-ext\n````\n\nMicrosoft® LifeCam HD-3000: 640x480, 1280x720, 960x544, 800x448, 640x360, 424x240, 352x288, 320x240, 800x600, 176x144, 160x120, 1280x800",
+            "class": "Webcam"
+        },
+        {
+            "file": "plugins/webcam/index.js",
+            "line": 63,
+            "description": "Initialize the webcams",
+            "itemtype": "method",
+            "name": "init",
+            "class": "Webcam"
+        },
+        {
+            "file": "plugins/webcam/index.js",
+            "line": 140,
+            "description": "Create an image using streamer",
+            "itemtype": "method",
+            "name": "streamer",
+            "params": [
+                {
+                    "name": "input",
+                    "description": "The input to use, e.g. '/dev/video0'",
+                    "type": "String"
+                },
+                {
+                    "name": "output",
+                    "description": "The output file, e.g. '/tmp/image.jpg'",
+                    "type": "String"
+                },
+                {
+                    "name": "resolution",
+                    "description": "The resolution to use, e.g. '1280x720'",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback method to execute after manipulation",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "null if no error occured, otherwise the error",
+                            "type": "String"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The result of the exec call",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "class": "Webcam"
+        },
+        {
+            "file": "plugins/webcam/index.js",
+            "line": 163,
+            "description": "Manipulate the items array before render",
+            "itemtype": "method",
+            "name": "beforeRender",
+            "params": [
+                {
+                    "name": "items",
+                    "description": "An array containing the items to be rendered",
+                    "type": "Array"
+                },
+                {
+                    "name": "callback",
+                    "description": "The callback method to execute after manipulation",
+                    "type": "Function",
+                    "props": [
+                        {
+                            "name": "err",
+                            "description": "null if no error occured, otherwise the error",
+                            "type": "String"
+                        },
+                        {
+                            "name": "result",
+                            "description": "The manipulated items",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "class": "Webcam"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 20,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 21,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 22,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 43,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 44,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 45,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 108,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 109,
+            "class": "StringBuffer"
+        },
+        {
+            "file": "public/js/delivery.js",
+            "line": 110,
+            "class": "StringBuffer"
         },
         {
             "file": "public/js/require-jquery.js",
@@ -948,7 +1246,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 104,
+            "line": 106,
             "description": "Recursive function to combine javascript and css files from the plugins",
             "itemtype": "method",
             "name": "combinePluginFiles",
@@ -997,7 +1295,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 136,
+            "line": 138,
             "description": "GET /",
             "itemtype": "method",
             "name": "index",
@@ -1017,7 +1315,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 157,
+            "line": 159,
             "description": "GET /settings",
             "itemtype": "method",
             "name": "settings",
@@ -1042,7 +1340,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 206,
+            "line": 221,
             "description": "POST /settings",
             "itemtype": "method",
             "name": "saveSettings",
@@ -1067,13 +1365,13 @@
         },
         {
             "file": "routes/index.js",
-            "line": 226,
+            "line": 241,
             "description": "Recursive function to save items to collections",
             "class": "Controller"
         },
         {
             "file": "routes/index.js",
-            "line": 285,
+            "line": 312,
             "description": "GET /register",
             "itemtype": "method",
             "name": "register",
@@ -1093,7 +1391,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 307,
+            "line": 334,
             "description": "POST /register",
             "itemtype": "method",
             "name": "doRegister",
@@ -1113,7 +1411,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 355,
+            "line": 382,
             "description": "GET /login",
             "itemtype": "method",
             "name": "showLogin",
@@ -1133,7 +1431,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 383,
+            "line": 410,
             "description": "POST /login",
             "itemtype": "method",
             "name": "doLogin",
@@ -1153,7 +1451,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 414,
+            "line": 441,
             "description": "GET /logout",
             "itemtype": "method",
             "name": "logout",
@@ -1173,8 +1471,8 @@
         },
         {
             "file": "routes/index.js",
-            "line": 430,
-            "description": "POST /settings",
+            "line": 457,
+            "description": "POST /settings/password",
             "itemtype": "method",
             "name": "changePassword",
             "params": [
@@ -1193,7 +1491,27 @@
         },
         {
             "file": "routes/index.js",
-            "line": 473,
+            "line": 501,
+            "description": "POST /settings/theme",
+            "itemtype": "method",
+            "name": "changeTheme",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 536,
             "description": "GET /js/plugins.js\n\nLoad the plugin javascripts into one file and returns it",
             "itemtype": "method",
             "name": "pluginsJs",
@@ -1213,7 +1531,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 503,
+            "line": 566,
             "description": "GET /js/plugins.css\n\nLoad the plugin css into one file and returns it",
             "itemtype": "method",
             "name": "pluginsCss",
@@ -1233,7 +1551,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 533,
+            "line": 596,
             "description": "Error 404",
             "itemtype": "method",
             "name": "notFound",
@@ -1253,7 +1571,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 547,
+            "line": 610,
             "description": "Authorization chec",
             "itemtype": "method",
             "name": "isAuthorized",
@@ -1279,7 +1597,7 @@
         {
             "file": "heimcontrol.js",
             "line": 1,
-            "description": "heimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)",
+            "description": "heimcontrol.js (https://ni-c.github.com/heimcontrol.js)",
             "brief": "heimcontrol.js - Homeautomation in node.js with the Raspberry PI",
             "author": "Willi Thiel (ni-c@ni-c.de)",
             "class": ""
@@ -1304,6 +1622,26 @@
         }
     ],
     "warnings": [
+        {
+            "message": "unknown tag: oaram",
+            "line": " plugins/rgblights/index.js:40"
+        },
+        {
+            "message": "unknown tag: oaram",
+            "line": " plugins/rgblights/index.js:40"
+        },
+        {
+            "message": "unknown tag: oaram",
+            "line": " plugins/rgblights/index.js:40"
+        },
+        {
+            "message": "unknown tag: oaram",
+            "line": " plugins/rgblights/index.js:40"
+        },
+        {
+            "message": "unknown tag: oaram",
+            "line": " plugins/rgblights/index.js:40"
+        },
         {
             "message": "unknown tag: license",
             "line": " public/js/require-jquery.js:1"
@@ -1342,15 +1680,11 @@
         },
         {
             "message": "Missing item type\nArduino RC button has been switched",
-            "line": " plugins/arduino/public/js/arduino.js:23"
+            "line": " plugins/arduino/public/js/arduino.js:6"
         },
         {
             "message": "Missing item type\nArduino sensor data received",
-            "line": " plugins/arduino/public/js/arduino.js:31"
-        },
-        {
-            "message": "Missing item type\nManipulate the items array before render",
-            "line": " plugins/arduino/index.js:144"
+            "line": " plugins/arduino/public/js/arduino.js:14"
         },
         {
             "message": "Missing item type\nGPIO on/off toggles",
@@ -1365,16 +1699,56 @@
             "line": " plugins/gpio/public/js/gpio.js:26"
         },
         {
-            "message": "Missing item type\nManipulate the items array before render",
-            "line": " plugins/gpio/index.js:102"
+            "message": "Missing item type\nColourwheel change",
+            "line": " plugins/rgblights/public/js/rgblights.js:32"
         },
         {
             "message": "Missing item type\nHost status has been changed",
             "line": " plugins/wakeonlan/public/js/wakeonlan.js:5"
         },
         {
-            "message": "Missing item type\nManipulate the items array before render",
-            "line": " plugins/wakeonlan/index.js:76"
+            "message": "Missing item type\nImage data received",
+            "line": " plugins/webcam/public/js/webcam.js:12"
+        },
+        {
+            "message": "Missing item type\nUse the following command to get a list of supported resolutions of your webcam:\n\n````\n$ v4l2-ctl --list-formats-ext\n````\n\nMicrosoft® LifeCam HD-3000: 640x480, 1280x720, 960x544, 800x448, 640x360, 424x240, 352x288, 320x240, 800x600, 176x144, 160x120, 1280x800",
+            "line": " plugins/webcam/index.js:23"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:20"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:21"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:22"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:43"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:44"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:45"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:108"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:109"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/js/delivery.js:110"
         },
         {
             "message": "Missing item type",
@@ -1518,10 +1892,10 @@
         },
         {
             "message": "Missing item type\nRecursive function to save items to collections",
-            "line": " routes/index.js:226"
+            "line": " routes/index.js:241"
         },
         {
-            "message": "Missing item type\nheimcontrol.js (https://github.com/heimcontroljs/heimcontrol.js)",
+            "message": "Missing item type\nheimcontrol.js (https://ni-c.github.com/heimcontrol.js)",
             "line": " heimcontrol.js:1"
         },
         {

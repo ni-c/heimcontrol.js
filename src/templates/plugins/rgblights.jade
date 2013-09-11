@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  header.jumbotron.subhead#overview
+    h1 RGB Lighting Plugin
+    p.lead With the RGB Lights plugin heimcontrol.js can control analog RGB Lighting strips through a connected arduino. 
+    
+  section.about
+    h2.page-header About
+    p The RGB Lights plugin uses the&nbsp;
+      a(href="https://github.com/ni-c/duino") duino
+      |&nbsp; library to connect to analog RGB lighting strips
+      img(src="#{url}img/rgblights.png", alt="RGB Lights")
+      
+  section.setup
+    h2.page-header Setup
+    p To connect your RGB LED strip to the Arduino is very simple and requires very few additional parts. For detailed instructions, see&nbsp;
+    a(href="http://learn.adafruit.com/rgb-led-strips") Adafruit's
+    | &nbsp; and simply enter which pins it's connected to in the menu.

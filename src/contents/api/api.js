@@ -5,8 +5,10 @@ YUI.add("yuidoc-meta", function(Y) {
         "Controller",
         "Gpio",
         "PluginHelper",
+        "RGBLights",
         "StringBuffer",
-        "Wakeonlan"
+        "Wakeonlan",
+        "Webcam"
     ],
     "modules": [],
     "allModules": []

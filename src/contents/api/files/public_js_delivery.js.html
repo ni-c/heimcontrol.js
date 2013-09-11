@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>public/js/delivery.js - heimcontrol.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
+            
+                <li><a href="../classes/Controller.html">Controller</a></li>
+            
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
+            
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
+            
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
+            
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: public/js/delivery.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+(function(global){
+
+  /*
+  Channels
+
+  delivery.connect
+  file.load
+
+  send.start
+  send.success
+  send.error
+
+  receive.start
+  receive.success
+  receive.error
+  */
+  var imageFilter = /^(image\/gif|image\/jpeg|image\/png|image\/svg\+xml|image\/tiff)/i,
+      pubSub;
+  
+  /********************************/
+  /****        PUBSUB     *********/
+  /********************************/
+  function PubSub(){
+    this.channels = {};
+  };
+
+  PubSub.prototype.subscribe = function(channel, fn){
+    if (this.channels[channel] === undefined) {
+      this.channels[channel] = [fn];
+    }else{
+      this.channels[channel].push(fn);
+    };
+  };
+
+  PubSub.prototype.publish = function(channel,obj){
+    var cnl = this.channels[channel];
+    var numChannels = (cnl === undefined) ? 0 : cnl.length;
+    for (var i = 0; i &lt; numChannels; i++) {
+      cnl[i](obj);
+    };
+  };
+
+  /********************************/
+  /****        FilePackage    *****/
+  /********************************/
+  function FilePackage(file,receiving){
+    _this = this;
+    this.name = file.name;
+    this.size = file.size;
+    
+    if(receiving){
+      this.uid = file.uid;
+      this.isText = file.isText;
+      this.mimeType = file.mimeType;
+      this.data = file.data;
+      this.dataURLPrefix = file.prefix;
+      pubSub.publish(&#x27;receive.success&#x27;,this);
+    }else{
+      //Sending a file.
+      this.uid = this.getUID();
+      this.reader = new FileReader();
+    
+      this.reader.onerror = function(obj){};
+
+      this.reader.onload = function(){
+        _this.base64Data = _this.reader.result;
+        _this.prepBatch();
+      };
+
+      this.reader.readAsDataURL(file);
+    };
+  };
+
+
+  FilePackage.prototype.getUID = function(){
+    //fix this
+    return this.name + this.size + (new Date()).getTime();  
+  };
+
+  FilePackage.prototype.prepBatch = function(){
+    //replace &#x27;data:image/gif;base64,&#x27; with &#x27;&#x27;
+    this.data = this.base64Data.replace(/^[^,]*,/,&#x27;&#x27;);
+    this.batch = {
+      uid: this.uid,
+      name: this.name,
+      size: this.size,
+      data: this.data
+    };
+    pubSub.publish(&#x27;file.load&#x27;,this);
+  };
+
+  FilePackage.prototype.isImage = function(){
+    return imageFilter.test(this.mimeType);
+  };
+
+  FilePackage.prototype.isText = function(){
+    return this.isText;
+  }
+
+  FilePackage.prototype.text = function(){
+    return this.data;
+  }
+
+  FilePackage.prototype.dataURL = function(){
+    return this.dataURLPrefix + this.data;
+  };
+
+  /********************************/
+  /****        DELIVERY     *******/
+  /********************************/
+  function Delivery(socket){
+    this.socket = socket;
+    this.sending = {};
+    this.receiving = {};
+    this.connected = false;
+    this.subscribe();
+    this.connect();
+  };
+
+  Delivery.prototype.subscribe = function(){
+    var _this = this;
+    pubSub.subscribe(&#x27;file.load&#x27;,function(filePackage){
+      _this.socket.emit(&#x27;send.start&#x27;,filePackage.batch);
+    });
+
+    pubSub.subscribe(&#x27;receive.success&#x27;,function(filePackage){
+      _this.socket.emit(&#x27;send.success&#x27;,filePackage.uid);
+
+    });
+
+    //Socket Subscriptions
+    this.socket.on(&#x27;send.success&#x27;,function(uid){
+      pubSub.publish(&#x27;send.success&#x27;,_this.sending[uid]);
+      delete _this.sending[uid];    
+    });
+
+    this.socket.on(&#x27;receive.start&#x27;,function(file){
+      pubSub.publish(&#x27;receive.start&#x27;,file.uid);
+      var filePackage = new FilePackage(file,true);
+      _this.receiving[file.uid] = filePackage;
+      
+    });
+
+
+  };
+
+  Delivery.prototype.connect = function(){
+    var _this = this;
+    this.socket.on(&#x27;delivery.connect&#x27;,function(){
+      _this.connected = true;
+      pubSub.publish(&#x27;delivery.connect&#x27;, _this);
+    });
+    this.socket.emit(&#x27;delivery.connecting&#x27;,&#x27;&#x27;);
+  };
+
+  Delivery.prototype.on = function(evt,fn){
+    if (evt === &#x27;delivery.connect&#x27; &amp;&amp; this.connected) {
+      return fn(this); 
+    };
+    pubSub.subscribe(evt,fn);    
+  };
+
+  Delivery.prototype.off = function(evt){
+    throw &quot;Delivery.off() has not yet been implemented.&quot;;
+  };
+
+  Delivery.prototype.send = function(file){
+    var filePackage = new FilePackage(file);
+    this.sending[filePackage.uid] = filePackage;
+    return filePackage.uid;
+  };
+
+
+
+  pubSub = new PubSub();
+
+  window.Delivery = Delivery;
+
+})(window);
+
+
+/*
+todo: server
+Receive batch &amp; send batch
+batch should send DataURL prefix
+
+*/
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

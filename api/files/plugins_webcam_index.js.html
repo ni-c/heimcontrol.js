@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>plugins/webcam/index.js - heimcontrol.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
+            
+                <li><a href="../classes/Controller.html">Controller</a></li>
+            
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
+            
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
+            
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
+            
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: plugins/webcam/index.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+if (typeof define !== &#x27;function&#x27;) {
+  var define = require(&#x27;amdefine&#x27;)(module);
+}
+
+/**
+ * Webcam Plugin. Plugin that uses streamer to create images from the webcam and pushes them to the clients
+ *
+ * @class Webcam
+ * @constructor 
+ */
+define([ &#x27;child_process&#x27;, &#x27;delivery&#x27;, &#x27;fs&#x27;, &#x27;http&#x27; ], function( ChildProcess, Delivery, Fs, Http ) {
+
+  var Webcam = function(app) {
+
+    this.name = &#x27;Webcam&#x27;;
+    this.id = &#x27;webcam&#x27;;
+    this.collection = &#x27;Webcam&#x27;;
+    this.icon = &#x27;icon-play-circle&#x27;;
+
+    this.app = app;
+    this.pluginHelper = app.get(&#x27;plugin helper&#x27;);
+
+    /**
+     * Use the following command to get a list of supported resolutions of your webcam:
+     * 
+     * &#x60;&#x60;&#x60;&#x60;
+     * $ v4l2-ctl --list-formats-ext
+     * &#x60;&#x60;&#x60;&#x60;
+     * 
+     * Microsoft® LifeCam HD-3000: 640x480, 1280x720, 960x544, 800x448, 640x360, 424x240, 352x288, 320x240, 800x600, 176x144, 160x120, 1280x800
+     */
+    this.webcamResolution = &#x27;960x544&#x27;;
+
+    this.webcamList = [];
+    this.webcams = {};
+
+    this.deliveryList = [];
+
+    this.init();
+
+    var that = this;
+
+    app.get(&#x27;events&#x27;).on(&#x27;settings-saved&#x27;, function() {
+      that.init();
+    });
+
+    app.get(&#x27;sockets&#x27;).on(&#x27;connection&#x27;, function(socket) {
+      var delivery = Delivery.listen(socket);
+      that.deliveryList.push(delivery);
+
+      socket.on(&#x27;disconnect&#x27;, function() {
+        that.deliveryList.forEach(function(delivery) {
+          if (delivery.socket.id == socket.id) {
+            var i = that.deliveryList.indexOf(delivery);
+            that.deliveryList.splice(i,1);
+          }
+        });
+      });
+
+    });
+  };
+
+  /**
+   * Initialize the webcams
+   * 
+   * @method init
+   */
+  Webcam.prototype.init = function() {
+
+    var that = this;
+    this.webcamList.forEach(function(webcam) {
+      clearInterval(webcam);
+    });
+    this.webcamList = [];
+
+    return this.app.get(&#x27;db&#x27;).collection(that.collection, function(err, collection) {
+      collection.find().toArray(function(err, result) {
+        if ((!err) &amp;&amp; (result.length &gt; 0)) {
+          result.forEach(function(item) {
+
+            if (item.method == &#x27;streamer&#x27;) {
+              function capture() {
+                if (that.app.get(&#x27;clients&#x27;).length &gt; 0) {
+                  var filename = &#x27;/tmp/&#x27; + item._id + &#x27;.jpeg&#x27;;
+                  that.streamer(item.input, filename, that.webcamResolution, function(err, result) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      that.deliveryList.forEach(function(delivery) {
+                        delivery.send({
+                          name: item._id + &#x27;.jpg&#x27;,
+                          path : filename,
+                        });
+                      });
+                    }
+                  });             
+                }
+              }
+              var intervalId = setInterval(capture, parseInt(item.interval)*1000);
+              that.webcamList.push(intervalId);
+            }
+
+            if (item.method == &#x27;motion&#x27;) {
+              // check if authorized and forward motion stream
+              that.app.get(&#x27;/webcam/motion/&#x27; + item._id, that.app.get(&#x27;routes&#x27;).isAuthorized, function(req, res) {
+                var creq = Http.request({
+                  host:   &#x27;localhost&#x27;,
+                  port:   item.port,
+                  path:   &#x27;/&#x27;,
+                  method: &#x27;GET&#x27;,
+                  headers: req.headers
+                }, function(cres) {
+                  res.setHeader(&#x27;Content-Type&#x27;, cres.headers[&#x27;content-type&#x27;]);
+                  res.setHeader(&#x27;Connection&#x27;, cres.headers.connection);
+                  res.setHeader(&#x27;Pragma&#x27;, cres.headers.pragma);
+                  res.setHeader(&#x27;Cache-Control&#x27;, cres.headers[&#x27;cache-control&#x27;]);
+                  res.setHeader(&#x27;Expires&#x27;, cres.headers.expires);
+                  res.setHeader(&#x27;Max-Age&#x27;, cres.headers[&#x27;max-age&#x27;]);
+                  cres.on(&#x27;data&#x27;, function(chunk){
+                    res.write(chunk);
+                  });
+                  cres.on(&#x27;close&#x27;, function(){
+                    res.writeHead(cres.statusCode);
+                    res.end();
+                  });
+                }).on(&#x27;error&#x27;, function(e) {
+                  // we got an error, return 500 error to client and log error
+                  res.write(&#x27;Error connecting to motion stream: &#x27; + e.message);
+                  res.end();
+                });
+                creq.end();
+              });
+            }
+          });
+        }
+      });
+    });
+  }
+
+  /**
+   * Create an image using streamer
+   *
+   * @method streamer
+   * @param {String} input The input to use, e.g. &#x27;/dev/video0&#x27;
+   * @param {String} output The output file, e.g. &#x27;/tmp/image.jpg&#x27;
+   * @param {String} resolution The resolution to use, e.g. &#x27;1280x720&#x27;
+   * @param {Function} callback The callback method to execute after manipulation
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result The result of the exec call
+   */
+  Webcam.prototype.streamer = function(input, output, resolution, callback) {
+
+    var exec = ChildProcess.exec;
+    var cmd = &#x27;streamer -c &#x27; + input + &#x27; -o &#x27; + output + &#x27; -s &#x27; + resolution;
+    exec(cmd, function(err, stdout, stderr) {
+      if(err) {
+        callback(err);
+      } else {
+        callback(null, stdout);
+      }
+    });    
+  }
+  /**
+   * Manipulate the items array before render
+   *
+   * @method beforeRender
+   * @param {Array} items An array containing the items to be rendered
+   * @param {Function} callback The callback method to execute after manipulation
+   * @param {String} callback.err null if no error occured, otherwise the error
+   * @param {Object} callback.result The manipulated items
+   */
+  Webcam.prototype.beforeRender = function(items, callback) {
+    var that = this;
+    var devList = Fs.readdirSync(&#x27;/dev/&#x27;);
+    var deviceList = [];
+    devList.forEach(function(dev) {
+      if (dev.substr(0,5) == &#x27;video&#x27;) {
+        deviceList.push(&#x27;/dev/&#x27; + dev);
+      }
+    })
+    items.forEach(function(item) {
+      if (deviceList.indexOf(item.input)==-1) {
+        console.log(&#x27;Webcam Plugin: Device &quot;&#x27; + item.input + &#x27;&quot; not found.&#x27;);
+        var i = items.indexOf(item);
+        items.splice(i,1);
+      }
+    });
+    return callback(null, items, {&#x27;devices&#x27;: deviceList});
+  }
+
+  var exports = Webcam;
+
+  return Webcam;
+
+});
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

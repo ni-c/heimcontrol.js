@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>routes&#x2F;index.js - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>routes/index.js - heimcontrol.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -92,7 +96,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: routes&#x2F;index.js</h1>
+                        <h1 class="file-heading">File: routes/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -102,48 +106,48 @@ if (typeof define !== &#x27;function&#x27;) {
 
 define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(crypto, cookie, fs) {
 
-  &#x2F;**
+  /**
    * Helper class to concat strings
    *
    * @class StringBuffer
    * @constructor 
-   *&#x2F;
+   */
   var StringBuffer = function() {
     this.buffer = [];
     this.index = 0;
   };
 
   StringBuffer.prototype = {
-    &#x2F;** 
+    /** 
      * Append a string at the end of the StringBuffer 
      * 
      * @method append
      * @param {String} s The string to append
-     *&#x2F;
+     */
     append: function(s) {
       this.buffer[this.index++] = s;
       return this;
     },
 
-    &#x2F;**
+    /**
      * Return the string representation of the StringBuffer
      * 
      * @method toString
-     *&#x2F;
+     */
     toString: function() {
       return this.buffer.join(&quot;&quot;);
     }
   };
   
-  &#x2F;**
+  /**
    * Route-Controller
    *
    * @class Controller
    * @constructor 
-   *&#x2F;
+   */
   var Controller = {};
 
-  &#x2F;** 
+  /** 
    * Recursive function to render all plugin items to on page to show them on the startpage. 
    * 
    * @method renderPluginItems
@@ -154,7 +158,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
    * @param {Function} callback The callback method to execute after rendering
    * @param {String} callback.err null if no error occured, otherwise the error
    * @param {String} callback.result The rendered HTML string
-   *&#x2F;
+   */
   function renderPluginItems(app, type, i, html, callback) {
     var plugins = app.get(&#x27;plugins&#x27;);
     var plugin = plugins[i];
@@ -168,9 +172,11 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
         }
         if (items.length &gt; 0) {
 
-          function render(items) {
-            app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;&#x2F;..&#x2F;plugins&#x2F;&#x27; + plugin.id + &#x27;&#x2F;views&#x2F;&#x27; + type + &#x27;.jade&#x27;, {
-              items: items
+          function render(items, meta) {
+            var meta = meta || {};
+            app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;/../plugins/&#x27; + plugin.id + &#x27;/views/&#x27; + type + &#x27;.jade&#x27;, {
+              items: items,
+              meta: meta
             }, function(err, result) {
               if (!err) {
                 html.append(result);
@@ -180,10 +186,10 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
             });
           }
 
-          &#x2F;&#x2F; If the plugin has a beforeRender() method, call it
+          // If the plugin has a beforeRender() method, call it
           if (plugin.beforeRender) {
-            plugin.beforeRender(items, function(err, result) {
-              render(result);
+            plugin.beforeRender(items, function(err, result, meta) {
+              render(result, meta);
             });
           } else {
             render(items);
@@ -199,7 +205,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   }
 
-  &#x2F;** 
+  /** 
    * Recursive function to combine javascript and css files from the plugins
    * 
    * @method combinePluginFiles
@@ -210,13 +216,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
    * @param {String} callback.err null if no error occured, otherwise the error
    * @param {String} callback.result The rendered HTML string
    * @param {Object} sb *optional* StringBuffer containing the already combined files
-   *&#x2F;
+   */
   function combinePluginFiles(fileList, callback, sb) {
     if (!sb) {
       sb = new StringBuffer();
     }
     var file = fileList.pop();
-    var filename = __dirname + &#x27;&#x2F;..&#x2F;plugins&#x2F;&#x27; + file.name + &#x27;&#x2F;public&#x2F;&#x27; + file.type + &#x27;&#x2F;&#x27; + file.name + &#x27;.&#x27; + file.type;
+    var filename = __dirname + &#x27;/../plugins/&#x27; + file.name + &#x27;/public/&#x27; + file.type + &#x27;/&#x27; + file.name + &#x27;.&#x27; + file.type;
     fs.readFile(filename, &#x27;utf8&#x27;, function(err, data) {
       if (!err) {
         sb.append(data);
@@ -231,13 +237,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   }
 
-  &#x2F;**
-   * GET &#x2F;
+  /**
+   * GET /
    * 
    * @method index
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.index = function(req, res) {
     var html = new StringBuffer();
     renderPluginItems(req.app, &#x27;item&#x27;, 0, html, function(err, html) {
@@ -252,14 +258,14 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   };
 
-  &#x2F;**
-   * GET &#x2F;settings
+  /**
+   * GET /settings
    * 
    * @method settings
    * @param {Object} req The request
    * @param {Object} res The response
    * @param {Object} next Next route
-   *&#x2F;
+   */
   Controller.settings = function(req, res, next) {
     if (req.params.plugin) {
       var pluginList = [];
@@ -271,22 +277,34 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
           if (plugin.id == req.params.plugin) {
             req.app.get(&#x27;db&#x27;).collection(plugin.collection, function(err, collection) {
               collection.find({}).toArray(function(err, items) {
-                req.app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;&#x2F;..&#x2F;plugins&#x2F;&#x27; + plugin.id + &#x27;&#x2F;views&#x2F;settings.jade&#x27;, {
-                  items: items
-                }, function(err, html) {
-                  if (!err) {
-                    return res.render(&#x27;plugin-settings&#x27;, {
-                      content: html,
-                      plugin: plugin.id,
-                      title: plugin.name + &#x27; Settings&#x27;
-                    });
-                  } else {
-                    console.log(err);
-                    return res.render(500, &#x27;500&#x27;, {
-                      title: &#x27;500 Internal Server Error&#x27;
-                    });
-                  }
-                });
+                function render(items, meta) {
+                  var meta = meta || {};
+                  req.app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;/../plugins/&#x27; + plugin.id + &#x27;/views/settings.jade&#x27;, {
+                    items: items,
+                    meta: meta
+                  }, function(err, html) {
+                    if (!err) {
+                      return res.render(&#x27;plugin-settings&#x27;, {
+                        content: html,
+                        plugin: plugin.id,
+                        title: plugin.name + &#x27; Settings&#x27;
+                      });
+                    } else {
+                      console.log(err);
+                      return res.render(500, &#x27;500&#x27;, {
+                        title: &#x27;500 Internal Server Error&#x27;
+                      });
+                    }
+                  });
+                }
+                // If the plugin has a beforeRender() method, call it
+                if (plugin.beforeRender) {
+                  plugin.beforeRender(items, function(err, result, meta) {
+                    render(result, meta);
+                  });
+                } else {
+                  render(items);
+                }
               });
             });
           }
@@ -296,19 +314,20 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
       }
     } else {
       return res.render(&#x27;settings&#x27;, {
-        title: &quot;Settings&quot;
+        title: &quot;Settings&quot;,
+        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
       });
     }
   };
 
-  &#x2F;**
-   * POST &#x2F;settings
+  /**
+   * POST /settings
    * 
    * @method saveSettings
    * @param {Object} req The request
    * @param {Object} res The response
    * @param {Object} next Next route
-   *&#x2F;
+   */
   Controller.saveSettings = function(req, res, next) {
     if (req.params.plugin) {
       var pluginList = [];
@@ -321,9 +340,9 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
             
             var items = req.body.data;
 
-            &#x2F;**
+            /**
              * Recursive function to save items to collections
-             *&#x2F;
+             */
             function saveMultiple(app, collection, items, callback) {
               if ((items) &amp;&amp; (items.length &gt; 0)) {
                 var item = items.shift();
@@ -343,29 +362,41 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
               }
             }
 
-            &#x2F;&#x2F; TODO: Each plugin should have a &quot;validate()&quot; method to check if the items-data is valid
+            // TODO: Each plugin should have a &quot;validate()&quot; method to check if the items-data is valid
             req.app.get(&#x27;db&#x27;).collection(plugin.collection, function(err, collection) {
               collection.remove({}, function(err, result) {
                 saveMultiple(req.app, collection, items, function(err, result) {
                   req.app.get(&#x27;events&#x27;).emit(&#x27;settings-saved&#x27;);
                   collection.find({}).toArray(function(err, items) {
-                    req.app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;&#x2F;..&#x2F;plugins&#x2F;&#x27; + plugin.id + &#x27;&#x2F;views&#x2F;settings.jade&#x27;, {
-                      items: items,
-                      success: &#x27;Settings have been updated&#x27;
-                    }, function(err, html) {
-                      if (!err) {
-                        return res.render(&#x27;plugin-settings&#x27;, {
-                          content: html,
-                          plugin: plugin.id,
-                          title: plugin.name + &#x27; Settings&#x27;
-                        });
-                      } else {
-                        console.log(err);
-                        return res.render(500, &#x27;500&#x27;, {
-                          title: &#x27;500 Internal Server Error&#x27;
-                        });
-                      }
-                    });
+                    function render(items, meta) {
+                      var meta = meta || {};
+                      req.app.get(&#x27;jade&#x27;).renderFile(__dirname + &#x27;/../plugins/&#x27; + plugin.id + &#x27;/views/settings.jade&#x27;, {
+                        items: items,
+                        meta: meta,
+                        success: &#x27;Settings have been updated&#x27;
+                      }, function(err, html) {
+                        if (!err) {
+                          return res.render(&#x27;plugin-settings&#x27;, {
+                            content: html,
+                            plugin: plugin.id,
+                            title: plugin.name + &#x27; Settings&#x27;
+                          });
+                        } else {
+                          console.log(err);
+                          return res.render(500, &#x27;500&#x27;, {
+                            title: &#x27;500 Internal Server Error&#x27;
+                          });
+                        }
+                      });
+                    }
+                    // If the plugin has a beforeRender() method, call it
+                    if (plugin.beforeRender) {
+                      plugin.beforeRender(items, function(err, result, meta) {
+                        render(result, meta);
+                      });
+                    } else {
+                      render(items);
+                    }
                   });
                 });
               });
@@ -380,13 +411,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     }
   };
 
-  &#x2F;**
-   * GET &#x2F;register
+  /**
+   * GET /register
    * 
    * @method register
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.showRegister = function(req, res) {
     req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
       u.find({}).toArray(function(err, r) {
@@ -396,19 +427,19 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
             hide_menubar: true
           });
         } else {
-          return res.redirect(&#x27;&#x2F;&#x27;);
+          return res.redirect(&#x27;/&#x27;);
         }
       });
     });
   };
 
-  &#x2F;**
-   * POST &#x2F;register
+  /**
+   * POST /register
    * 
    * @method doRegister
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.doRegister = function(req, res) {
     req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
       u.find({}).toArray(function(err, r) {
@@ -450,19 +481,19 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   };
 
-  &#x2F;**
-   * GET &#x2F;login
+  /**
+   * GET /login
    * 
    * @method showLogin
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.showLogin = function(req, res) {
-    &#x2F;&#x2F; If no user exists, redirect to register
+    // If no user exists, redirect to register
     req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
       u.find({}).toArray(function(err, r) {
         if (r.length == 0) {
-          return res.redirect(&#x27;&#x2F;register&#x27;);
+          return res.redirect(&#x27;/register&#x27;);
         } else {
           var c = cookie.parse(req.headers.cookie);
           if ((!err) &amp;&amp; (c.email) &amp;&amp; (c.password)) {
@@ -478,13 +509,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   };
 
-  &#x2F;**
-   * POST &#x2F;login
+  /**
+   * POST /login
    * 
    * @method doLogin
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.doLogin = function(req, res) {
 
     var c = cookie.parse(req.headers.cookie);
@@ -498,24 +529,24 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
         if (r.length == 0) {
           return res.render(&#x27;login&#x27;, {
             title: &#x27;Login&#x27;,
-            error: &#x27;Login failed, wrong email&#x2F;password combination.&#x27;,
+            error: &#x27;Login failed, wrong email/password combination.&#x27;,
             hide_menubar: true
           });
         } else {
           req.session.user = r[0];
-          return res.redirect(&#x27;&#x2F;&#x27;);
+          return res.redirect(&#x27;/&#x27;);
         }
       });
     });
   };
 
-  &#x2F;**
-   * GET &#x2F;logout
+  /**
+   * GET /logout
    * 
    * @method logout
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.logout = function(req, res) {
     req.session.user = null;
     res.render(&#x27;login&#x27;, {
@@ -525,13 +556,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   };
 
-  &#x2F;**
-   * POST &#x2F;settings
+  /**
+   * POST /settings/password
    * 
    * @method changePassword
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.changePassword = function(req, res) {
 
     var password = crypto.createHash(&#x27;sha256&#x27;).update(req.body.oldpassword || &#x27;&#x27;).digest(&quot;hex&quot;);
@@ -559,7 +590,8 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
             u.save(r[0], function(err, result) {
               return res.render(&#x27;settings&#x27;, {
                 title: &#x27;Settings&#x27;,
-                success: &#x27;Your password has been changed.&#x27;
+                success: &#x27;Your password has been changed.&#x27;,
+				        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
               });
             });
           }
@@ -568,15 +600,50 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     }
   };
 
-  &#x2F;**
-   * GET &#x2F;js&#x2F;plugins.js
+  /**
+   * POST /settings/theme
+   * 
+   * @method changeTheme
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.changeTheme = function(req, res) {
+    req.app.get(&#x27;db&#x27;).collection(&#x27;Settings&#x27;, function(err, s) {
+      s.find({
+        &#x27;key&#x27;: &#x27;theme&#x27;
+      }).toArray(function(err, result) {
+      	var item = {};
+        if (result.length == 0) {
+          item.key = &#x27;theme&#x27;;
+        } else {
+        	item = result[0]
+        }
+        item.value = req.body.theme || &#x27;default&#x27;;
+        if (item.value==&#x27;default&#x27;) {
+          req.app.locals.theme = &#x27;/css/bootstrap.min.css&#x27;;
+        } else {
+          req.app.locals.theme = &#x27;/css/themes/&#x27; + item.value;
+        }
+        s.save(item, function(err, result) {
+          return res.render(&#x27;settings&#x27;, {
+            title: &#x27;Settings&#x27;,
+            success: &#x27;The theme has been changed.&#x27;,
+		        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
+          });
+        });
+      });
+    });
+  };
+
+  /**
+   * GET /js/plugins.js
    * 
    * Load the plugin javascripts into one file and returns it
    *
    * @method pluginsJs
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.pluginsJs = function(req, res) {
     var fileList = [];
     req.app.get(&#x27;plugins&#x27;).forEach(function(plugin) {
@@ -590,7 +657,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     if (fileList.length &gt; 0) {
       combinePluginFiles(fileList, function(err, result) {
         res.charset = &#x27;utf-8&#x27;;
-        res.setHeader(&#x27;Content-Type&#x27;, &#x27;text&#x2F;javascript&#x27;);
+        res.setHeader(&#x27;Content-Type&#x27;, &#x27;text/javascript&#x27;);
         return res.send(200, result);
       });
     } else {
@@ -598,15 +665,15 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     }
   }
 
-  &#x2F;**
-   * GET &#x2F;js&#x2F;plugins.css
+  /**
+   * GET /js/plugins.css
    * 
    * Load the plugin css into one file and returns it
    *
    * @method pluginsCss
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.pluginsCss = function(req, res) {
     var fileList = [];
     req.app.get(&#x27;plugins&#x27;).forEach(function(plugin) {
@@ -620,7 +687,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     if (fileList.length &gt; 0) {
       combinePluginFiles(fileList, function(err, result) {
         res.charset = &#x27;utf-8&#x27;;
-        res.setHeader(&#x27;Content-Type&#x27;, &#x27;text&#x2F;css&#x27;);
+        res.setHeader(&#x27;Content-Type&#x27;, &#x27;text/css&#x27;);
         return res.send(200, result);
       });
     } else {
@@ -628,13 +695,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     }
   }
 
-  &#x2F;**
+  /**
    * Error 404
    *
    * @method notFound
    * @param {Object} req The request
    * @param {Object} res The response
-   *&#x2F;
+   */
   Controller.notFound = function(req, res) {
     res.status(404).render(&#x27;404&#x27;, {
       title: &#x27;404 Not Found&#x27;,
@@ -642,17 +709,17 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   };
 
-  &#x2F;**
+  /**
    * Authorization chec
    *
    * @method isAuthorized
    * @param {Object} req The request
    * @param {Object} res The response
    * @param {Object} next The next route
-   *&#x2F;
+   */
   Controller.isAuthorized = function(req, res, next) {
     if (!req.session.user) {
-      return res.redirect(&#x27;&#x2F;login&#x27;);
+      return res.redirect(&#x27;/login&#x27;);
     } else {
       next();
     }
@@ -673,13 +740,13 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

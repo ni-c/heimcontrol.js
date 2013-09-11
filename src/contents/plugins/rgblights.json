@@ -1,0 +1,4 @@
+{
+  "title": "RGBLights Plugin",
+  "template": "plugins/rgblights.jade"
+}

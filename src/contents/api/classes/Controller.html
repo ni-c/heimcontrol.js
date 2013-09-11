@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>Controller - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -100,7 +104,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;routes_index.js.html#l40"><code>routes&#x2F;index.js:40</code></a>
+            Defined in: <a href="../files/routes_index.js.html#l40"><code>routes&#x2F;index.js:40</code></a>
         </div>
     
 
@@ -113,6 +117,7 @@
 
 <div class="box intro">
     <p>Route-Controller</p>
+
 </div>
 
 
@@ -150,7 +155,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l40"><code>routes&#x2F;index.js:40</code></a>
+        <a href="../files/routes_index.js.html#l40"><code>routes&#x2F;index.js:40</code></a>
         
         </p>
 
@@ -198,6 +203,13 @@
                         
                             <li class="index-item method">
                                 <a href="#method_changePassword">changePassword</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_changeTheme">changeTheme</a>
 
                                 
                                 
@@ -365,7 +377,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l430"><code>routes&#x2F;index.js:430</code></a>
+        <a href="../files/routes_index.js.html#l457"><code>routes&#x2F;index.js:457</code></a>
         
         </p>
 
@@ -376,7 +388,8 @@
     </div>
 
     <div class="description">
-        <p>POST /settings</p>
+        <p>POST /settings/password</p>
+
     </div>
 
     
@@ -395,6 +408,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -410,6 +424,118 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_changeTheme" class="method item">
+    <h3 class="name"><code>changeTheme</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l501"><code>routes&#x2F;index.js:501</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>POST /settings/theme</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The response</p>
+
                     </div>
 
                     
@@ -479,7 +605,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l104"><code>routes&#x2F;index.js:104</code></a>
+        <a href="../files/routes_index.js.html#l106"><code>routes&#x2F;index.js:106</code></a>
         
         </p>
 
@@ -491,6 +617,7 @@
 
     <div class="description">
         <p>Recursive function to combine javascript and css files from the plugins</p>
+
     </div>
 
     
@@ -509,6 +636,7 @@
 
                     <div class="param-description">
                         <p>An array containing the files to combine</p>
+
                     </div>
 
                     
@@ -522,6 +650,7 @@
 
                                 <div class="param-description">
                                     <p>The name of the file to combine</p>
+
                                 </div>
 
                                 
@@ -534,7 +663,8 @@
                                 
 
                                 <div class="param-description">
-                                    <p>The type of the file (e.g. 'js' or 'css')</p>
+                                    <p>The type of the file (e.g. &#39;js&#39; or &#39;css&#39;)</p>
+
                                 </div>
 
                                 
@@ -554,6 +684,7 @@
 
                     <div class="param-description">
                         <p>The callback method to execute after rendering</p>
+
                     </div>
 
                     
@@ -567,6 +698,7 @@
 
                                 <div class="param-description">
                                     <p>null if no error occured, otherwise the error</p>
+
                                 </div>
 
                                 
@@ -580,6 +712,7 @@
 
                                 <div class="param-description">
                                     <p>The rendered HTML string</p>
+
                                 </div>
 
                                 
@@ -599,6 +732,7 @@
 
                     <div class="param-description">
                         <p><em>optional</em> StringBuffer containing the already combined files</p>
+
                     </div>
 
                     
@@ -662,7 +796,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l383"><code>routes&#x2F;index.js:383</code></a>
+        <a href="../files/routes_index.js.html#l410"><code>routes&#x2F;index.js:410</code></a>
         
         </p>
 
@@ -674,6 +808,7 @@
 
     <div class="description">
         <p>POST /login</p>
+
     </div>
 
     
@@ -692,6 +827,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -707,6 +843,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -770,7 +907,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l307"><code>routes&#x2F;index.js:307</code></a>
+        <a href="../files/routes_index.js.html#l334"><code>routes&#x2F;index.js:334</code></a>
         
         </p>
 
@@ -782,6 +919,7 @@
 
     <div class="description">
         <p>POST /register</p>
+
     </div>
 
     
@@ -800,6 +938,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -815,6 +954,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -878,7 +1018,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l136"><code>routes&#x2F;index.js:136</code></a>
+        <a href="../files/routes_index.js.html#l138"><code>routes&#x2F;index.js:138</code></a>
         
         </p>
 
@@ -890,6 +1030,7 @@
 
     <div class="description">
         <p>GET /</p>
+
     </div>
 
     
@@ -908,6 +1049,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -923,6 +1065,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -992,7 +1135,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l547"><code>routes&#x2F;index.js:547</code></a>
+        <a href="../files/routes_index.js.html#l610"><code>routes&#x2F;index.js:610</code></a>
         
         </p>
 
@@ -1004,6 +1147,7 @@
 
     <div class="description">
         <p>Authorization chec</p>
+
     </div>
 
     
@@ -1022,6 +1166,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1037,6 +1182,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1052,6 +1198,7 @@
 
                     <div class="param-description">
                         <p>The next route</p>
+
                     </div>
 
                     
@@ -1115,7 +1262,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l414"><code>routes&#x2F;index.js:414</code></a>
+        <a href="../files/routes_index.js.html#l441"><code>routes&#x2F;index.js:441</code></a>
         
         </p>
 
@@ -1127,6 +1274,7 @@
 
     <div class="description">
         <p>GET /logout</p>
+
     </div>
 
     
@@ -1145,6 +1293,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1160,6 +1309,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1223,7 +1373,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l533"><code>routes&#x2F;index.js:533</code></a>
+        <a href="../files/routes_index.js.html#l596"><code>routes&#x2F;index.js:596</code></a>
         
         </p>
 
@@ -1235,6 +1385,7 @@
 
     <div class="description">
         <p>Error 404</p>
+
     </div>
 
     
@@ -1253,6 +1404,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1268,6 +1420,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1331,7 +1484,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l503"><code>routes&#x2F;index.js:503</code></a>
+        <a href="../files/routes_index.js.html#l566"><code>routes&#x2F;index.js:566</code></a>
         
         </p>
 
@@ -1343,8 +1496,8 @@
 
     <div class="description">
         <p>GET /js/plugins.css</p>
-
 <p>Load the plugin css into one file and returns it</p>
+
     </div>
 
     
@@ -1363,6 +1516,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1378,6 +1532,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1441,7 +1596,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l473"><code>routes&#x2F;index.js:473</code></a>
+        <a href="../files/routes_index.js.html#l536"><code>routes&#x2F;index.js:536</code></a>
         
         </p>
 
@@ -1453,8 +1608,8 @@
 
     <div class="description">
         <p>GET /js/plugins.js</p>
-
 <p>Load the plugin javascripts into one file and returns it</p>
+
     </div>
 
     
@@ -1473,6 +1628,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1488,6 +1644,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1551,7 +1708,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l285"><code>routes&#x2F;index.js:285</code></a>
+        <a href="../files/routes_index.js.html#l312"><code>routes&#x2F;index.js:312</code></a>
         
         </p>
 
@@ -1563,6 +1720,7 @@
 
     <div class="description">
         <p>GET /register</p>
+
     </div>
 
     
@@ -1581,6 +1739,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1596,6 +1755,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1671,7 +1831,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l48"><code>routes&#x2F;index.js:48</code></a>
+        <a href="../files/routes_index.js.html#l48"><code>routes&#x2F;index.js:48</code></a>
         
         </p>
 
@@ -1683,6 +1843,7 @@
 
     <div class="description">
         <p>Recursive function to render all plugin items to on page to show them on the startpage.</p>
+
     </div>
 
     
@@ -1701,6 +1862,7 @@
 
                     <div class="param-description">
                         <p>The express app</p>
+
                     </div>
 
                     
@@ -1715,7 +1877,8 @@
                     
 
                     <div class="param-description">
-                        <p>The type to render ('settings' or 'view')</p>
+                        <p>The type to render (&#39;settings&#39; or &#39;view&#39;)</p>
+
                     </div>
 
                     
@@ -1731,6 +1894,7 @@
 
                     <div class="param-description">
                         <p>The iterator for the plugins</p>
+
                     </div>
 
                     
@@ -1746,6 +1910,7 @@
 
                     <div class="param-description">
                         <p>The callback method to execute after rendering</p>
+
                     </div>
 
                     
@@ -1759,6 +1924,7 @@
 
                                 <div class="param-description">
                                     <p>null if no error occured, otherwise the error</p>
+
                                 </div>
 
                                 
@@ -1772,6 +1938,7 @@
 
                                 <div class="param-description">
                                     <p>The rendered HTML string</p>
+
                                 </div>
 
                                 
@@ -1845,7 +2012,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l206"><code>routes&#x2F;index.js:206</code></a>
+        <a href="../files/routes_index.js.html#l221"><code>routes&#x2F;index.js:221</code></a>
         
         </p>
 
@@ -1857,6 +2024,7 @@
 
     <div class="description">
         <p>POST /settings</p>
+
     </div>
 
     
@@ -1875,6 +2043,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -1890,6 +2059,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -1905,6 +2075,7 @@
 
                     <div class="param-description">
                         <p>Next route</p>
+
                     </div>
 
                     
@@ -1974,7 +2145,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l157"><code>routes&#x2F;index.js:157</code></a>
+        <a href="../files/routes_index.js.html#l159"><code>routes&#x2F;index.js:159</code></a>
         
         </p>
 
@@ -1986,6 +2157,7 @@
 
     <div class="description">
         <p>GET /settings</p>
+
     </div>
 
     
@@ -2004,6 +2176,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -2019,6 +2192,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -2034,6 +2208,7 @@
 
                     <div class="param-description">
                         <p>Next route</p>
+
                     </div>
 
                     
@@ -2097,7 +2272,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;routes_index.js.html#l355"><code>routes&#x2F;index.js:355</code></a>
+        <a href="../files/routes_index.js.html#l382"><code>routes&#x2F;index.js:382</code></a>
         
         </p>
 
@@ -2109,6 +2284,7 @@
 
     <div class="description">
         <p>GET /login</p>
+
     </div>
 
     
@@ -2127,6 +2303,7 @@
 
                     <div class="param-description">
                         <p>The request</p>
+
                     </div>
 
                     
@@ -2142,6 +2319,7 @@
 
                     <div class="param-description">
                         <p>The response</p>
+
                     </div>
 
                     
@@ -2174,13 +2352,13 @@
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

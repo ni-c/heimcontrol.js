@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>libs&#x2F;PluginHelper.js - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <title>libs/PluginHelper.js - heimcontrol.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -92,7 +96,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: libs&#x2F;PluginHelper.js</h1>
+                        <h1 class="file-heading">File: libs/PluginHelper.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -100,27 +104,27 @@ if (typeof define !== &#x27;function&#x27;) {
   var define = require(&#x27;amdefine&#x27;)(module);
 }
 
-&#x2F;**
+/**
  *  The PluginHelper provides helper function for handling plugins.
  *
  * @class PluginHelper
  * @constructor 
- *&#x2F;
-define([ &#x27;fs&#x27; ], function( Fs ) {
+ */
+define([ &#x27;fs&#x27; ], function( fs ) {
 
   var PluginHelper = function(app) {
     this.app = app;
     this.pluginFolder = app.get(&#x27;plugin folder&#x27;);
   };
 
-  &#x2F;**
+  /**
    * Gets the plugin item from the database
    * 
    * @method findItem
    * @param {String} plugin The id of the plugin
    * @param {String} id The id of the item to find
    * @param {Function} callback The callback function to execute after find
-   *&#x2F;
+   */
   PluginHelper.prototype.findItem = function(plugin, id, callback) {
     var ObjectID = this.app.get(&#x27;mongo&#x27;).ObjectID;
     this.app.get(&#x27;db&#x27;).collection(plugin, function(err, collection) {
@@ -137,25 +141,32 @@ define([ &#x27;fs&#x27; ], function( Fs ) {
     });
   };
 
-  &#x2F;**
+  /**
    * Parse all plugins into an array
    * 
    * @method getPluginList
    * @param {Function} callback The callback method to execute after parsing
    * @param {String} callback.err null if no error occured, otherwise the error
    * @param {Object} callback.result An array containing the plugins
-   *&#x2F;
+   */
   PluginHelper.prototype.getPluginList = function(callback) {
     var pluginList = [];
     var that = this;
-    Fs.readdir(that.pluginFolder, function(err, files) {
-      files.forEach(function(file) {
-        requirejs([that.pluginFolder + &#x27;&#x2F;&#x27; + file + &#x27;&#x2F;index.js&#x27;], function(Plugin) {
-          pluginList.push(new Plugin(that.app));
-        });
+    var files = fs.readdirSync(that.pluginFolder);
+
+    function requireRecursive(files) {
+      var file = files.pop();
+      requirejs([that.pluginFolder + &#x27;/&#x27; + file + &#x27;/index.js&#x27;], function(Plugin) {
+        pluginList.push(new Plugin(that.app));
+        if (files.length&gt;0) {
+          requireRecursive(files);
+        } else {
+          return callback(null, pluginList);
+        }
       });
-    });
-    return callback(null, pluginList);
+    }
+
+    requireRecursive(files);
   };
 
   var exports = PluginHelper;
@@ -173,13 +184,13 @@ define([ &#x27;fs&#x27; ], function( Fs ) {
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

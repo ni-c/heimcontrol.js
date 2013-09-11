@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>heimcontrol.js - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -96,41 +100,41 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-&#x2F;**
- * heimcontrol.js (https:&#x2F;&#x2F;github.com&#x2F;heimcontroljs&#x2F;heimcontrol.js)
+/**
+ * heimcontrol.js (https://ni-c.github.com/heimcontrol.js)
  *
  * @file heimcontrol.js
  * @brief heimcontrol.js - Homeautomation in node.js with the Raspberry PI
  * @author Willi Thiel (ni-c@ni-c.de)
- *&#x2F;
+ */
 
-&#x2F;**
+/**
  * RequireJS
- * @see http:&#x2F;&#x2F;requirejs.org&#x2F;docs&#x2F;node.html
- *&#x2F;
+ * @see http://requirejs.org/docs/node.html
+ */
 var requirejs = require(&#x27;requirejs&#x27;);
 requirejs.config({
   nodeRequire: require
 });
 
-&#x2F;**
+/**
  * Express
- * @see http:&#x2F;&#x2F;expressjs.com&#x2F;guide.html
- *&#x2F;
-requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;path&#x27;, &#x27;express&#x27;, &#x27;node-conf&#x27;, &#x27;socket.io&#x27;, &#x27;jade&#x27;, &#x27;cookie&#x27;, &#x27;events&#x27;, &#x27;.&#x2F;routes&#x27;, &#x27;.&#x2F;libs&#x2F;PluginHelper.js&#x27; ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper) {
+ * @see http://expressjs.com/guide.html
+ */
+requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;path&#x27;, &#x27;express&#x27;, &#x27;node-conf&#x27;, &#x27;socket.io&#x27;, &#x27;jade&#x27;, &#x27;cookie&#x27;, &#x27;events&#x27;, &#x27;./routes&#x27;, &#x27;./libs/PluginHelper.js&#x27; ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper) {
 
-  &#x2F;&#x2F; Load configuration
+  // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : &#x27;development&#x27;;
   var config = Conf.load(node_env);
 
   if (!config.port || !config.secret || !config.mongo || !config.mongo.name || !config.mongo.host || !config.mongo.port || !config.mongo.user) {
-    return console.log(&#x27;\u001b[31mMissing configuration file \u001b[33mconfig&#x2F;&#x27; + node_env + &#x27;.json\u001b[31m. Create configuration file or start with &#x60;NODE_ENV=development node heimcontrol.js&#x60; to use another configuration file.\033[0m&#x27;);
+    return console.log(&#x27;\u001b[31mMissing configuration file \u001b[33mconfig/&#x27; + node_env + &#x27;.json\u001b[31m. Create configuration file or start with &#x60;NODE_ENV=development node heimcontrol.js&#x60; to use another configuration file.\033[0m&#x27;);
   }
-  
-  &#x2F;&#x2F; Initiate express
+
+  // Initiate express
   var app = Express();
 
-  &#x2F;&#x2F; Load database
+  // Load database
   var db = new Mongo.Db(config.mongo.name, new Mongo.Server(config.mongo.host, config.mongo.port, config.mongo.user, {
     native_parser: false
   }));
@@ -138,7 +142,7 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
   var cookieParser = Express.cookieParser(config.secret);
   var sessionStore = new Connect.middleware.session.MemoryStore();
 
-  &#x2F;&#x2F; MongoDB
+  // MongoDB
   db.open(function(err, db) {
     if (err) {
       return console.log(&#x27;\u001b[31mFailed to connect to MongoDB: &#x27; + err + &#x27;\033[0m&#x27;);
@@ -146,12 +150,16 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
       var server = Http.createServer(app).listen(config.port, function() {
         console.log(&#x27;\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m&#x27;, config.port);
       });
-      
-      &#x2F;&#x2F; socket.io
+        
+      if (config.secret == &quot;CHANGE_ME&quot;) {
+        console.log(&#x27;\u001b[31mWARNING: Change secret string in config/&#x27; + node_env + &#x27;.json\033[0m&#x27;);
+      }
+
+      // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
         io.set(&#x27;log level&#x27;, 0);
-        &#x2F;&#x2F; Permission check
+        // Permission check
         io.set(&#x27;authorization&#x27;, function(data, callback) {
           if (data.headers.cookie) {
             var c = Cookie.parse(data.headers.cookie);
@@ -169,18 +177,30 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
         });
       });
 
-      &#x2F;&#x2F; Express
+      var clientList = [];
+      io.sockets.on(&#x27;connection&#x27;, function(socket) {
+        clientList.push(socket.id);
+        socket.on(&#x27;disconnect&#x27;, function() {
+          var i = clientList.indexOf(socket.id);
+          clientList.splice(i,1);
+        });
+      });
+
+      // Express
       app.configure(function() {
         app.set(&#x27;events&#x27;, new Events.EventEmitter());
-        app.set(&#x27;views&#x27;, __dirname + &#x27;&#x2F;views&#x27;);
+        app.set(&#x27;views&#x27;, __dirname + &#x27;/views&#x27;);
         app.set(&#x27;view engine&#x27;, &#x27;jade&#x27;);
         app.set(&#x27;jade&#x27;, Jade);
         app.set(&#x27;server&#x27;, server);
         app.set(&#x27;sockets&#x27;, io.sockets);
         app.set(&#x27;mongo&#x27;, Mongo);
         app.set(&#x27;db&#x27;, db);
+        app.set(&#x27;clients&#x27;, clientList);
         app.set(&#x27;config&#x27;, config);
-        app.set(&#x27;plugin folder&#x27;, __dirname + &#x27;&#x2F;plugins&#x27;);
+        app.set(&#x27;routes&#x27;, Routes);
+        app.set(&#x27;theme folder&#x27;, __dirname + &#x27;/public/css/themes&#x27;);
+        app.set(&#x27;plugin folder&#x27;, __dirname + &#x27;/plugins&#x27;);
         app.set(&#x27;plugin helper&#x27;, new PluginHelper(app));
         app.use(Express.favicon());
         app.use(Express.logger(&#x27;dev&#x27;));
@@ -191,38 +211,53 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
           store: sessionStore,
           key: &#x27;heimcontrol.js&#x27;
         }));
-        app.use(Express.favicon(__dirname + &#x27;&#x2F;public&#x2F;heimcontrol.ico&#x27;));
+        app.use(Express.favicon(__dirname + &#x27;/public/heimcontrol.ico&#x27;));
         app.use(Express.static(Path.join(__dirname, &#x27;public&#x27;)));
         app.use(app.router);
       });
 
+			// Load theme
+	    app.get(&#x27;db&#x27;).collection(&#x27;Settings&#x27;, function(err, s) {
+	      s.find({
+	        &#x27;key&#x27;: &#x27;theme&#x27;
+	      }).toArray(function(err, result) {
+	      	if (err || result.length == 0 || result[0].value == &#x27;default&#x27;) {
+						app.locals.theme = &#x27;/css/bootstrap.min.css&#x27;;
+	      	} else {
+	      		app.locals.theme = &#x27;/css/themes/&#x27; + result[0].value;
+	      	}
+	      });
+	    });
+				
+      // Routes
+      app.get(&#x27;/register&#x27;, Routes.showRegister);
+      app.post(&#x27;/register&#x27;, Routes.doRegister);
+
+      app.get(&#x27;/login&#x27;, Routes.showLogin);
+      app.post(&#x27;/login&#x27;, Routes.doLogin);
+
+      app.get(&#x27;/&#x27;, Routes.isAuthorized, Routes.index);
+
+      app.get(&#x27;/settings&#x27;, Routes.isAuthorized, Routes.settings);
+      app.post(&#x27;/settings/password&#x27;, Routes.isAuthorized, Routes.changePassword);
+      app.post(&#x27;/settings/theme&#x27;, Routes.isAuthorized, Routes.changeTheme);
+
+      app.get(&#x27;/settings/:plugin&#x27;, Routes.isAuthorized, Routes.settings, Routes.notFound);
+      app.post(&#x27;/settings/:plugin&#x27;, Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
+
+      app.get(&#x27;/logout&#x27;, Routes.logout);
+
+      app.get(&#x27;/js/plugins.js&#x27;, Routes.pluginsJs);
+      app.get(&#x27;/css/plugins.css&#x27;, Routes.pluginsCss);
+
       app.get(&#x27;plugin helper&#x27;).getPluginList(function(err, plugins) {
         app.locals.plugins = plugins;
         app.set(&#x27;plugins&#x27;, plugins);
+
+        // 404 Not found
+        app.all(&#x27;*&#x27;, Routes.notFound);
+
       });
-
-      &#x2F;&#x2F; Routes
-      app.get(&#x27;&#x2F;register&#x27;, Routes.showRegister);
-      app.post(&#x27;&#x2F;register&#x27;, Routes.doRegister);
-
-      app.get(&#x27;&#x2F;login&#x27;, Routes.showLogin);
-      app.post(&#x27;&#x2F;login&#x27;, Routes.doLogin);
-
-      app.get(&#x27;&#x2F;&#x27;, Routes.isAuthorized, Routes.index);
-
-      app.get(&#x27;&#x2F;settings&#x27;, Routes.isAuthorized, Routes.settings);
-      app.post(&#x27;&#x2F;settings&#x27;, Routes.isAuthorized, Routes.changePassword);
-
-      app.get(&#x27;&#x2F;settings&#x2F;:plugin&#x27;, Routes.isAuthorized, Routes.settings, Routes.notFound);
-      app.post(&#x27;&#x2F;settings&#x2F;:plugin&#x27;, Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
-
-      app.get(&#x27;&#x2F;logout&#x27;, Routes.logout);
-
-      app.get(&#x27;&#x2F;js&#x2F;plugins.js&#x27;, Routes.pluginsJs);
-      app.get(&#x27;&#x2F;js&#x2F;plugins.css&#x27;, Routes.pluginsCss);
-      
-      &#x2F;&#x2F; 404 Not found
-      app.all(&#x27;*&#x27;, Routes.notFound);
     }
   });
 });
@@ -236,13 +271,13 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>

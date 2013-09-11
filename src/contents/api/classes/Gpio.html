@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>Gpio - heimcontrol.js</title>
-    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
-    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
-    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
-    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="..&#x2F;assets/css/logo.png" title="heimcontrol.js"></h1>
+                <h1><img src="../assets/css/logo.png" title="heimcontrol.js"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -41,17 +41,21 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="..&#x2F;classes/Arduino.html">Arduino</a></li>
+                <li><a href="../classes/Arduino.html">Arduino</a></li>
             
-                <li><a href="..&#x2F;classes/Controller.html">Controller</a></li>
+                <li><a href="../classes/Controller.html">Controller</a></li>
             
-                <li><a href="..&#x2F;classes/Gpio.html">Gpio</a></li>
+                <li><a href="../classes/Gpio.html">Gpio</a></li>
             
-                <li><a href="..&#x2F;classes/PluginHelper.html">PluginHelper</a></li>
+                <li><a href="../classes/PluginHelper.html">PluginHelper</a></li>
             
-                <li><a href="..&#x2F;classes/StringBuffer.html">StringBuffer</a></li>
+                <li><a href="../classes/RGBLights.html">RGBLights</a></li>
             
-                <li><a href="..&#x2F;classes/Wakeonlan.html">Wakeonlan</a></li>
+                <li><a href="../classes/StringBuffer.html">StringBuffer</a></li>
+            
+                <li><a href="../classes/Wakeonlan.html">Wakeonlan</a></li>
+            
+                <li><a href="../classes/Webcam.html">Webcam</a></li>
             
             </ul>
 
@@ -100,7 +104,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;plugins_gpio_index.js.html#l7"><code>plugins&#x2F;gpio&#x2F;index.js:7</code></a>
+            Defined in: <a href="../files/plugins_gpio_index.js.html#l7"><code>plugins&#x2F;gpio&#x2F;index.js:7</code></a>
         </div>
     
 
@@ -113,6 +117,7 @@
 
 <div class="box intro">
     <p>Gpio Plugin. Can access the GPIO on the Raspberry PI</p>
+
 </div>
 
 
@@ -160,7 +165,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;plugins_gpio_index.js.html#l7"><code>plugins&#x2F;gpio&#x2F;index.js:7</code></a>
+        <a href="../files/plugins_gpio_index.js.html#l7"><code>plugins&#x2F;gpio&#x2F;index.js:7</code></a>
         
         </p>
 
@@ -190,6 +195,7 @@
 
                     <div class="param-description">
                         <p>The express application</p>
+
                     </div>
 
                     
@@ -230,6 +236,13 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_beforeRender">beforeRender</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_parse">parse</a>
 
                                 
@@ -257,6 +270,149 @@
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_beforeRender" class="method item">
+    <h3 class="name"><code>beforeRender</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>items</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>callback</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/plugins_gpio_index.js.html#l98"><code>plugins&#x2F;gpio&#x2F;index.js:98</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Manipulate the items array before render</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">items</code>
+                        <span class="type">Array</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>An array containing the items to be rendered</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The callback method to execute after manipulation</p>
+
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name">err</code>
+                                    <span class="type">String</span>
+                                
+
+                                <div class="param-description">
+                                    <p>null if no error occured, otherwise the error</p>
+
+                                </div>
+
+                                
+                            </li>
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name">result</code>
+                                    <span class="type">Object</span>
+                                
+
+                                <div class="param-description">
+                                    <p>The manipulated items</p>
+
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="method_parse" class="method item">
@@ -291,7 +447,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;plugins_gpio_index.js.html#l74"><code>plugins&#x2F;gpio&#x2F;index.js:74</code></a>
+        <a href="../files/plugins_gpio_index.js.html#l68"><code>plugins&#x2F;gpio&#x2F;index.js:68</code></a>
         
         </p>
 
@@ -303,6 +459,7 @@
 
     <div class="description">
         <p>Parse GPIO the ports that are used as input and send the result to the client websocket</p>
+
     </div>
 
     
@@ -355,7 +512,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;plugins_gpio_index.js.html#l43"><code>plugins&#x2F;gpio&#x2F;index.js:43</code></a>
+        <a href="../files/plugins_gpio_index.js.html#l43"><code>plugins&#x2F;gpio&#x2F;index.js:43</code></a>
         
         </p>
 
@@ -367,6 +524,7 @@
 
     <div class="description">
         <p>Toggle a GPIO port</p>
+
     </div>
 
     
@@ -385,6 +543,7 @@
 
                     <div class="param-description">
                         <p>The websocket data</p>
+
                     </div>
 
                     
@@ -398,6 +557,7 @@
 
                                 <div class="param-description">
                                     <p>The ID of the database entry</p>
+
                                 </div>
 
                                 
@@ -411,6 +571,7 @@
 
                                 <div class="param-description">
                                     <p>The value to set</p>
+
                                 </div>
 
                                 
@@ -447,13 +608,13 @@
         </div>
     </div>
 </div>
-<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
 <script>prettyPrint();</script>
-<script src="..&#x2F;assets/js/yui-prettify.js"></script>
-<script src="..&#x2F;assets/../api.js"></script>
-<script src="..&#x2F;assets/js/api-filter.js"></script>
-<script src="..&#x2F;assets/js/api-list.js"></script>
-<script src="..&#x2F;assets/js/api-search.js"></script>
-<script src="..&#x2F;assets/js/apidocs.js"></script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
 </body>
 </html>
