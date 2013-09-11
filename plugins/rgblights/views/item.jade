@@ -1,0 +1,10 @@
+each item in items
+  div.plugin-container.rgblights
+    p.description
+      - if (item.description)
+        span.muted RGB Light:&nbsp; 
+        strong #{item.description} 
+      - else 
+        span.muted RGB Light:&nbsp;
+        strong PINS #{item.pins.R}, #{item.pins.G}, #{item.pins.B} 
+    div(class="colourwheel", id="wheel-#{item._id}" data-value="#FFFFFF", data-id="#{item._id}", data-socket="rgblights")    

@@ -1,0 +1,9 @@
+.plugin-container.rgblights:after {
+  content: "RGB Lighting";
+}
+
+.rgb {
+	width: 30px;
+	margin-right: 10px;
+	text-align: center;
+}
