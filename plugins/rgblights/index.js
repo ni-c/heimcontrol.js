@@ -38,8 +38,14 @@ define([ 'duino' ], function(duino) {
   };
 
   /**
+   * Is called if user has picked a color from the colourwheel
    * 
-   * @param data
+   * @param {Object} data The data of the colourwheel
+   * @param {String} data.id The id of the element
+   * @oaram {String} data.hex The hex value of the color
+   * @oaram {String} data.pins.R The value for RED
+   * @oaram {String} data.pins.G The value for GREEN
+   * @oaram {String} data.pins.B The value for BLUE
    */
   RGBLights.prototype.picker = function(data) {
 
