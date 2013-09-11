@@ -1,8 +1,8 @@
 div.container
   h1 Settings
   h2 RGB Lights
-  p Example Wirings:&nbsp;
-    a(href="http://ni-c.github.com/heimcontrol.js/plugins/arduino.html") http://ni-c.github.com/heimcontrol.js/plugins/arduino.html
+  p Setup:&nbsp;
+    a(href="http://ni-c.github.com/heimcontrol.js/plugins/rgblights.html") http://ni-c.github.com/heimcontrol.js/plugins/rgblights.html
   - if (typeof(success) !== 'undefined')
     div.alert.alert-success.fade.in
       button.close(type="button", data-dismiss="alert") ×
@@ -26,7 +26,7 @@ div.container
             input(type="hidden", name="data[#{i}][status]", value="#{item.status}")
           
       p.rgblights.buttons
-        button.btn.btn-info.add(data-target="rgblights", type="button", data-callback="registerSelectSwitch()") 
+        button.btn.btn-info.add(data-target="rgblights", type="button") 
           i.icon-plus.icon-large
           |  Add
       

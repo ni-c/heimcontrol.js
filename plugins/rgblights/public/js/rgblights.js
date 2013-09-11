@@ -1,7 +1,9 @@
-require([ "jquery", "/socket.io/socket.io.js", "/js/colourwheel.js" ], function() {
+require([ "jquery", "/socket.io/socket.io.js", "/js/raphael.js", "/js/colourwheel.js" ], function() {
 
   var socket = io.connect();
 
+  var wheels = {};
+  
   $('.colourwheel').each(function( index ) {
 
     var id = $('.colourwheel:eq(' + index + ')').attr('data-id');
@@ -11,7 +13,6 @@ require([ "jquery", "/socket.io/socket.io.js", "/js/colourwheel.js" ], function(
 
     colourWheel.onchange(function(color){
 
-        var colors = [parseInt(color.r), parseInt(color.g), parseInt(color.b)];
         $('.colourwheel').attr('data-value', color.hex);
 
         var data = new Object();
@@ -23,9 +24,16 @@ require([ "jquery", "/socket.io/socket.io.js", "/js/colourwheel.js" ], function(
         data.B = parseInt(color.b);
 
         socket.emit('rgblights', data);
-        
-    })
+    });
 
+    wheels[id] = colourWheel;
   });
 
+  /**
+   * Colourwheel change
+   */
+  socket.on('rgblights-changed', function(data) {
+	  wheels[data.id].color(data.hex);
+  });
+  
 });

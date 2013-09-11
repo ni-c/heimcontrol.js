@@ -7,6 +7,7 @@ define([ 'duino' ], function(duino) {
   /**
    * RGB Lights Plugin. This plugin is able to control a strip of RGB LEDs connected to an Arduino or GPIO Pins
    *
+   * @author https://github.com/ConnorRoberts
    * @class RGBLights
    * @param {Object} app The express application
    * @constructor 
@@ -26,16 +27,7 @@ define([ 'duino' ], function(duino) {
 
     this.values = {};
 
-    this.sensorList = [];
-    this.sensors = {};
-
-    this.init();
-
     var that = this;
-
-    app.get('events').on('settings-saved', function() {
-      that.init();
-    });
 
     app.get('sockets').on('connection', function(socket) {
       socket.on('rgblights', function(data) {
@@ -45,6 +37,10 @@ define([ 'duino' ], function(duino) {
     
   };
 
+  /**
+   * 
+   * @param data
+   */
   RGBLights.prototype.picker = function(data) {
 
     var that = this;
@@ -52,42 +48,15 @@ define([ 'duino' ], function(duino) {
       if ((!err) && (item)) {
         
         // Inform clients over websockets
-        that.app.get('sockets').emit('rgblights', data)
+        that.app.get('sockets').emit('rgblights-changed', data);
 
+        // Write the RGB values to the Arduino
         that.board.analogWrite(item.pins.R, data.R); // Red Pin
         that.board.analogWrite(item.pins.G, data.G); // Green Pin
         that.board.analogWrite(item.pins.B, data.B); // Blue Pin
-
       } else {
         console.log(err);
       }
-    });
-  };
-
-  RGBLights.prototype.init = function() {
-
-    var that = this;
-
-    this.sensorList = [];
-
-    this.sensors = {};
-    return this.app.get('db').collection(that.collection, function(err, collection) {
-      collection.find({
-        method: 'sensor'
-      }).toArray(function(err, result) {
-        if ((!err) && (result.length > 0)) {
-
-          result.forEach(function(item) {
-            that.sensors[item._id] = item;
-            
-            console.log(item);
-
-            sensor._id = item._id;
-            
-            that.sensorList.push(sensor);
-          });
-        }
-      });
     });
   };
 
@@ -106,7 +75,7 @@ define([ 'duino' ], function(duino) {
       item.value = that.values[item._id] ? that.values[item._id] : 0;
     });
     return callback(null, items);
-  }
+  };
 
   var exports = RGBLights;
 
