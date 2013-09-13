@@ -211,9 +211,14 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         return next();
       }
     } else {
-      return res.render('settings', {
-        title: "Settings",
-        themes: fs.readdirSync(req.app.get('theme folder'))
+      req.app.get('db').collection('User', function(err, collection) {
+        collection.find({}).toArray(function(err, users) {
+          return res.render('settings', {
+            title: "Settings",
+            themes: fs.readdirSync(req.app.get('theme folder')),
+            users: users
+          });
+        });
       });
     }
   };
@@ -235,7 +240,6 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       if (pluginList.indexOf(req.params.plugin) >= 0) {
         req.app.get('plugins').forEach(function(plugin) {
           if (plugin.id == req.params.plugin) {
-            
             var items = req.body.data;
 
             /**
@@ -455,49 +459,71 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
-   * POST /settings/password
+   * POST /settings/user/create
    * 
-   * @method changePassword
+   * @method createUser
    * @param {Object} req The request
    * @param {Object} res The response
    */
-  Controller.changePassword = function(req, res) {
+  Controller.createUser = function(req, res) {
 
-    var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
-    var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
-    var newpassword2 = crypto.createHash('sha256').update(req.body.repeatnewpassword || '').digest("hex");
+    var password = crypto.createHash('sha256').update(req.body.password || '').digest("hex");
+    var email = req.body.email || '';
 
-    if (newpassword != newpassword2) {
-      return res.render('settings', {
-        title: 'Settings',
-        error: 'New passwords did not match.'
-      });
-    } else {
-      req.app.get('db').collection('User', function(err, u) {
-        u.find({
-          'email': req.session.user.email,
-          'password': password
-        }).toArray(function(err, r) {
-          if (r.length == 0) {
-            return res.render('settings', {
+    if(!email || !password) {
+      req.app.get('db').collection('User', function(err, collection) {
+        collection.find({}).toArray(function(err, users) {
+          return res.sender('settings', {
               title: 'Settings',
-              error: 'Old password wrong.'
-            });
-          } else {
-            r[0].password = newpassword;
-            u.save(r[0], function(err, result) {
-              return res.render('settings', {
-                title: 'Settings',
-                success: 'Your password has been changed.',
-				        themes: fs.readdirSync(req.app.get('theme folder'))
-              });
-            });
-          }
+              error: 'Error while saving email - check whether you have entered a valid password or email',
+              themes: fs.readdirSync(req.app.get('theme folder')),
+              users: users
+          });
         });
       });
-    }
+     }else{
+      req.app.get('db').collection('User', function(err, u) {
+        u.save({
+          'email' : email,
+          'password' : password
+        }, function(err, result) {
+          req.app.get('db').collection('User', function(err, collection) {
+            collection.find({}).toArray(function(err, users) {
+              return res.render('settings', {
+                title: 'Settings',
+                success: 'The user has been created',
+                themes: fs.readdirSync(req.app.get('theme folder')),
+                users: users
+              });
+            });
+          })
+        })
+       });
+     }
   };
-
+  /**
+   * GET /settings/user/delete/:id
+   * 
+   * @method deleteUser
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.deleteUser = function(req, res) {
+    req.app.get('db').collection('User', function(err, users) {
+        users.remove({email: req.params.email}, function(err, user){
+          req.app.get('db').collection('User', function(err, collection) {
+            collection.find({}).toArray(function(err, users) {
+              return res.render('settings', {
+                title: 'Settings',
+                success: 'The user has been deleted',
+                themes: fs.readdirSync(req.app.get('theme folder')),
+                users: users
+              });
+            });
+          })
+       });
+    });
+  };
   /**
    * POST /settings/theme
    * 
