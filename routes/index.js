@@ -459,6 +459,50 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
+   * POST /settings/password
+   * 
+   * @method changePassword
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.changePassword = function(req, res) {
+
+    var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
+    var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
+    var newpassword2 = crypto.createHash('sha256').update(req.body.repeatnewpassword || '').digest("hex");
+
+    if (newpassword != newpassword2) {
+      return res.render('settings', {
+        title: 'Settings',
+        error: 'New passwords did not match.'
+      });
+    } else {
+      req.app.get('db').collection('User', function(err, u) {
+        u.find({
+          'email': req.session.user.email,
+          'password': password
+        }).toArray(function(err, r) {
+          if (r.length == 0) {
+            return res.render('settings', {
+              title: 'Settings',
+              error: 'Old password wrong.'
+            });
+          } else {
+            r[0].password = newpassword;
+            u.save(r[0], function(err, result) {
+              return res.render('settings', {
+                title: 'Settings',
+                success: 'Your password has been changed.',
+				        themes: fs.readdirSync(req.app.get('theme folder'))
+              });
+            });
+          }
+        });
+      });
+    }
+  };
+
+  /**
    * POST /settings/user/create
    * 
    * @method createUser

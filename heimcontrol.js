@@ -137,6 +137,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/', Routes.isAuthorized, Routes.index);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
+      app.post('/settings/password', Routes.isAuthorized, Routes.changePassword); 
       app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);
       app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
       app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
