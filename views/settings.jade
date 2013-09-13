@@ -30,7 +30,7 @@ block content
             tr
               td= u.email
               td
-                a(href="settings/user/delete/#{u.email}").btn.btn-danger Delete
+                a(href="/settings/user/delete/#{u.email}").btn.btn-danger Delete
 
         h3 Add a user
           form(action="settings/user/create", method="POST")
