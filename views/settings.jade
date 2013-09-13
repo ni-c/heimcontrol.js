@@ -33,7 +33,7 @@ block content
                 a(href="/settings/user/delete/#{u.email}").btn.btn-danger Delete
 
         h3 Add a user
-          form(action="settings/user/create", method="POST")
+          form(action="/settings/user/create", method="POST")
             p
               label(for="email") Email:
               input.login#email(type="email", name="email", required="1")
