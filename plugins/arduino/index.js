@@ -46,6 +46,10 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-irremote', function(data) {
         that.irremote(data);
       });
+      // Arduino toggle
+      socket.on('arduino-led', function(data) {
+        that.led(data);
+      });
     });
     
   };
@@ -106,6 +110,44 @@ define([ 'duino' ], function(duino) {
           board: that.board
         });
         ir.send(item.irtype, item.ircode, item.irlength);
+      } else {
+        console.log(err);
+      }
+    });
+  };
+
+  /**
+   * Turn an LED light on
+   * 
+   * @method led
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the LED to use
+   * @param {String} data.value The value to set (0 (off) or 1 (on))
+   */
+  Arduino.prototype.led = function(data) {
+
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-led', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
+
+        // Create RC object
+        if (!that.pins[item.pin]) {
+          var led = new duino.Led({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+        }
+
+        if(item.value == "1"){
+          led.on();
+        }else {
+          led.off();
+        }
       } else {
         console.log(err);
       }
