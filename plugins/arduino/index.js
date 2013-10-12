@@ -130,7 +130,7 @@ define([ 'duino' ], function(duino) {
     this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
       if ((!err) && (item)) {
         // Inform clients over websockets
-        that.app.get('sockets').emit('arduino-rcswitch', data);
+        that.app.get('sockets').emit('arduino-led', data);
 
         item.value = (parseInt(data.value));
         that.values[item._id] = item.value;
