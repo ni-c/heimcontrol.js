@@ -12,6 +12,15 @@ require([ "jquery", "/socket.io/socket.io.js" ], function() {
   });
 
   /**
+   * LED status switched
+   */
+  socket.on('arduino-led', function(data) {
+    console.log("socket");
+    $('*[data-id="' + data.id + '"]').removeClass('active');
+    $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
+  });
+
+  /**
    * Arduino sensor data received
    */
   socket.on('arduino-sensor', function(data) {
