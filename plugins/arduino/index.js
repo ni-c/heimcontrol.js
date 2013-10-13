@@ -135,18 +135,19 @@ define([ 'duino' ], function(duino) {
         item.value = (parseInt(data.value));
         that.values[item._id] = item.value;
 
-        // Create RC object
+        // Create LED object
         if (!that.pins[item.pin]) {
-          var led = new duino.Led({
+          that.pins[item.pin] = new duino.Led({
             board: that.board,
             pin: parseInt(item.pin)
           });
         }
 
+        // Change LED status
         if(item.value == "1"){
-          led.on();
+          that.pins[item.pin].on();
         }else {
-          led.off();
+          that.pins[item.pin].off();
         }
       } else {
         console.log(err);
