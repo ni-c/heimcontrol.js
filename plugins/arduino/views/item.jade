@@ -27,3 +27,14 @@ each item in items
             | #{item.description}
           else
             | Send
+    - if (item.method == 'led')
+      p.description
+        span.muted LED:&nbsp;
+        strong #{item.description} 
+      div.btn-group(data-led="buttons-radio")
+        button.btn.btn-large.socket(type="button", data-socket="arduino-led", data-value="1", data-id="#{item._id}", class=(item.value == 1 ? 'active' : ''))
+          i.icon-circle
+          | On
+        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-led", data-value="0", data-id="#{item._id}", class=(item.value == 0 ? 'active' : '')) 
+          i.icon-circle-blank
+          | Off
