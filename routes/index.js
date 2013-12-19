@@ -392,11 +392,13 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
    */
   Controller.showLogin = function(req, res) {
     // If no user exists, redirect to register
+            return res.render('login', {
+              title: 'Login',
+              hide_menubar: true
+            });
     req.app.get('db').collection('User', function(err, u) {
       u.find({}).toArray(function(err, r) {
         if (r.length == 0) {
-          return res.redirect('/register');
-        } else {
           var c = cookie.parse(req.headers.cookie);
           if ((!err) && (c.email) && (c.password)) {
             return Controller.doLogin(req, res);
@@ -410,6 +412,15 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     });
   };
+
+
+  Controller.emmit = function(req, res)
+  {
+    var test = req.socket.connect();
+    test.emit('hello');
+    console.log('test');
+    return res.send(200, {success: "yay credentials"});
+  }
 
   /**
    * POST /login
@@ -429,10 +440,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         'password': password
       }).toArray(function(err, r) {
         if (r.length == 0) {
-          return res.render('login', {
-            title: 'Login',
-            error: 'Login failed, wrong email/password combination.',
-            hide_menubar: true
+          return res.render('login', { title: 'Login', error: 'Login failed, wrong email/password combination.', hide_menubar: true
           });
         } else {
           req.session.user = r[0];
@@ -441,6 +449,29 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     });
   };
+
+  Controller.createAuthToken = function(req, res) {
+    var c = cookie.parse(req.headers.cookie);
+    var email = req.body.email || c.email || '';
+    var password = crypto.createHash('sha256').update(req.body.password || c.password || '').digest("hex");
+    req.app.get('db').collection('User', function(err, u) {
+      u.find({
+        'email': email,
+        'password': password
+      }).toArray(function(err, r) {
+        if (r.length > 0) {
+            var token = crypto.createHash('sha256').update(r[0].email+r[0].password).digest("hex");
+            req.app.get('db').collection('User', function(err, u){
+                u.update({email: r[0].email}, { $set: {'token': token}});
+            });
+            res.send({'token': token});
+        } else {
+            res.send(401, {error: "Wrong credentials"});
+        }
+      });
+    });
+  };
+
 
   /**
    * GET /logout
@@ -536,11 +567,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       s.find({
         'key': 'theme'
       }).toArray(function(err, result) {
-      	var item = {};
+        var item = {};
         if (result.length == 0) {
           item.key = 'theme';
         } else {
-        	item = result[0]
+            item = result[0]
         }
         item.value = req.body.theme || 'default';
         if (item.value=='default') {
@@ -552,7 +583,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
           return res.render('settings', {
             title: 'Settings',
             success: 'The theme has been changed.',
-		        themes: fs.readdirSync(req.app.get('theme folder'))
+                themes: fs.readdirSync(req.app.get('theme folder'))
           });
         });
       });
@@ -642,7 +673,21 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
    * @param {Object} next The next route
    */
   Controller.isAuthorized = function(req, res, next) {
-    if (!req.session.user) {
+     if(req.headers['authorization']){
+        req.app.get('db').collection('User', function(err, u) {
+          u.find({
+            token: req.headers['authorization']
+          }).toArray(function(err, r) {
+            if (r.length == 0) {
+              return res.send(401, {error: "Wrong acccess token"});
+            } else {
+              console.log('nexting');
+              next();
+            }
+          });
+        });
+    }
+    else if (!req.session.user) {
       return res.redirect('/login');
     } else {
       next();

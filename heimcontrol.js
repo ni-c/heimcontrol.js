@@ -48,7 +48,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       var server = Http.createServer(app).listen(config.port, function() {
         console.log('\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m', config.port);
       });
-        
+
       if (config.secret == "CHANGE_ME") {
         console.log('\u001b[31mWARNING: Change secret string in config/' + node_env + '.json\033[0m');
       }
@@ -56,20 +56,24 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
-        io.set('log level', 0);
+        io.set('log level', 3);
         // Permission check
         io.set('authorization', function(data, callback) {
           if (data.headers.cookie) {
+            console.log("socket io auth cokie passed");
             var c = Cookie.parse(data.headers.cookie);
             sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
-              if (err || !session) {
+              if (err) {
+                  console.log("error socketio");
                 callback('Error', false);
               } else {
+                  console.log("success socketio");
                 data.session = session;
                 callback(null, true);
               }
             });
           } else {
+           console.log("socketio Unauthorized");
             callback('Unauthorized', false);
           }
         });
@@ -77,6 +81,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       var clientList = [];
       io.sockets.on('connection', function(socket) {
+        console.log("pushed new socketio client: ", socket.id);
         clientList.push(socket.id);
         socket.on('disconnect', function() {
           var i = clientList.indexOf(socket.id);
@@ -126,15 +131,19 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 	      	}
 	      });
 	    });
-				
+
       // Routes
       app.get('/register', Routes.showRegister);
       app.post('/register', Routes.doRegister);
 
       app.get('/login', Routes.showLogin);
       app.post('/login', Routes.doLogin);
+      app.post('/api/login', Routes.createAuthToken);
 
       app.get('/', Routes.isAuthorized, Routes.index);
+
+
+      app.post('/emmit', Routes.isAuthorized, Routes.emmit);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
       app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);

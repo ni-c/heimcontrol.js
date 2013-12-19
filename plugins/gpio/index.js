@@ -31,9 +31,9 @@ define([ 'pi-gpio' ], function(gpio) {
     }, 100);
 
     app.get('sockets').on('connection', function(socket) {
-
       // GPIO toggle
       socket.on('gpio-toggle', function(data) {
+        console.log('gpio toggle activated');
         that.toggle(data);
       });
 
@@ -49,6 +49,7 @@ define([ 'pi-gpio' ], function(gpio) {
    * @param {String} data.value The value to set
    */
   Gpio.prototype.toggle = function(data) {
+      console.log("toggling");
     var that = this;
     this.pluginHelper.findItem(this.collection, data.id, function(err, item, collection) {
       item.value = data.value + '';
