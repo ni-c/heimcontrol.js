@@ -19,10 +19,28 @@ block content
                 option(value="#{t}", selected=(theme=="/css/themes/" + t)) #{t}
           p
             input.btn.btn-success.btn-login(type="submit", value="Select Theme")
+            
+      div.span5      
+        h2 Change password
+        form(action="/settings/password", method="POST")
+          p
+            label(for="oldpassword") Old Password:
+            input.login#oldpassword(type="password", name="oldpassword", required="1")
+          p
+            label(for="newpassword") New Password:
+            input.login#newpassword(type="password", name="newpassword", required="1")
+          p
+            label(for="repeatnewpassword") Repeat new Password:
+            input.login#repeatnewpassword(type="password", name="repeatnewpassword", required="1")
+          p
+            input.btn.btn-success.btn-login(type="submit", value="Change")
+                        
     div.row
+      div.span10
+        h2 User Management
+    
       div.span5
-
-        h2 Users
+        h3 Users
         table.table.table-striped
           th Email
           th Action
@@ -32,13 +50,14 @@ block content
               td
                 a(href="/settings/user/delete/#{u.email}").btn.btn-danger Delete
 
+      div.span5
         h3 Add a user
-          form(action="/settings/user/create", method="POST")
+          form#adduser(action="/settings/user/create", method="POST")
             p
               label(for="email") Email:
-              input.login#email(type="email", name="email", required="1")
+              input.adduser(type="email", name="email", required="1")
             p
               label(for="password") Password:
-              input.login#password(type="password", name="password", required="1")
+              input.adduser(type="password", name="password", required="1")
             p
               input.btn.btn-success.btn-login(type="submit", value="Create")

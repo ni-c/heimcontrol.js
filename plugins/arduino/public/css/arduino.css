@@ -3,6 +3,10 @@
 }
 .plugin-container.arduino.sensor:after {
   content: "Arduino Sensor";
-}.plugin-container.arduino.irremote:after {
+}
+.plugin-container.arduino.irremote:after {
   content: "Arduino IR Remote";
+}
+.plugin-container.arduino.led:after {
+  content: "Arduino LED";
 }

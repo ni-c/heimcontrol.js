@@ -26,6 +26,7 @@ div.container
                 option(value="rcswitch",selected=(item.method == 'rcswitch')) rc-switch
                 option(value="sensor",selected=(item.method == 'sensor')) sensor
                 option(value="irremote",selected=(item.method == 'irremote')) ir-remote
+                option(value="led",selected=(item.method == 'led')) led
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
                   label(for="code") Tristate-Code:
@@ -83,6 +84,7 @@ div.plugin-container.arduino.settings#template(style="display: none;")
       option(value="rcswitch") rc-switch
       option(value="sensor") sensor
       option(value="irremote") ir-remote
+      option(value="led") led
     div.switch-container
       div.rcswitch.hidden
         label(for="code") Tristate-Code:
