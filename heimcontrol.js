@@ -56,27 +56,35 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
-        io.set('log level', 3);
-        // Permission check
-        io.set('authorization', function(data, callback) {
-          if (data.headers.cookie) {
-            console.log("socket io auth cokie passed");
-            var c = Cookie.parse(data.headers.cookie);
-            sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
-              if (err) {
-                  console.log("error socketio");
-                callback('Error', false);
+          io.set('log level', 3);
+          // Permission check
+          io.set('authorization', function(data, callback) {
+              if (data.headers.cookie) {
+                  var c = Cookie.parse(data.headers.cookie);
+                  sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
+                      if (err) {
+                          callback('Error', false);
+                      } else {
+                          data.session = session;
+                          callback(null, true);
+                      }
+                  });
               } else {
-                  console.log("success socketio");
-                data.session = session;
-                callback(null, true);
+                  var token = data.headers.authorization;
+                  app.get('db').collection('User', function(err, u) {
+                      u.find({
+                          token: token
+                      }).toArray(function(err, r) {
+                          if (r.length === 0) {
+                              callback('Unauthorized', false);
+                          } else {
+                              console.log("success");
+                              callback(null, true);
+                          }
+                      });
+                  });
               }
-            });
-          } else {
-           console.log("socketio Unauthorized");
-            callback('Unauthorized', false);
-          }
-        });
+          });
       });
 
       var clientList = [];
@@ -97,6 +105,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('jade', Jade);
         app.set('server', server);
         app.set('sockets', io.sockets);
+        app.set('io', io);
         app.set('mongo', Mongo);
         app.set('db', db);
         app.set('clients', clientList);
@@ -141,9 +150,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.post('/api/login', Routes.createAuthToken);
 
       app.get('/', Routes.isAuthorized, Routes.index);
-
-
-      app.post('/emmit', Routes.isAuthorized, Routes.emmit);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
       app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);

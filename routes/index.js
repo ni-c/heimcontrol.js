@@ -414,14 +414,6 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
 
-  Controller.emmit = function(req, res)
-  {
-    var test = req.socket.connect();
-    test.emit('hello');
-    console.log('test');
-    return res.send(200, {success: "yay credentials"});
-  }
-
   /**
    * POST /login
    * 
@@ -451,9 +443,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   Controller.createAuthToken = function(req, res) {
-    var c = cookie.parse(req.headers.cookie);
-    var email = req.body.email || c.email || '';
-    var password = crypto.createHash('sha256').update(req.body.password || c.password || '').digest("hex");
+    var email = req.body.email || '';
+    var password = crypto.createHash('sha256').update(req.body.password || '').digest("hex");
     req.app.get('db').collection('User', function(err, u) {
       u.find({
         'email': email,
