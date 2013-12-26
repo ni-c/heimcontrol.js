@@ -161,6 +161,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       app.get('/logout', Routes.logout);
 
+      app.get('/api/gpio', Routes.isAuthorized, Routes.gpioSwitches);
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
 

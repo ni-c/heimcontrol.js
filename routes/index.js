@@ -102,7 +102,6 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     });
   }
-
   /** 
    * Recursive function to combine javascript and css files from the plugins
    * 
@@ -333,6 +332,26 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         }
       });
     });
+  };
+
+
+  /**
+   * GET /
+   * 
+   * @method get
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+
+  Controller.gpioSwitches = function(req, res) {
+      var plugins = req.app.get('plugins');
+      req.app.get('db').collection(plugins[3].collection, function(err, collection) {
+          collection.find({}).toArray(function(err, items) {
+              if (items.length > 0) {
+                  res.send(200, items);
+              }
+          });
+      });
   };
 
   /**
@@ -672,7 +691,6 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
             if (r.length == 0) {
               return res.send(401, {error: "Wrong acccess token"});
             } else {
-              console.log('nexting');
               next();
             }
           });
