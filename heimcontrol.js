@@ -56,7 +56,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
-          io.set('log level', 3);
+          io.set('log level', 0);
           // Permission check
           io.set('authorization', function(data, callback) {
               if (data.headers.cookie) {
@@ -78,7 +78,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
                           if (r.length === 0) {
                               callback('Unauthorized', false);
                           } else {
-                              console.log("success");
                               callback(null, true);
                           }
                       });
@@ -89,7 +88,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       var clientList = [];
       io.sockets.on('connection', function(socket) {
-        console.log("pushed new socketio client: ", socket.id);
         clientList.push(socket.id);
         socket.on('disconnect', function() {
           var i = clientList.indexOf(socket.id);
