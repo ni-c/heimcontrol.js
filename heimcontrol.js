@@ -59,29 +59,29 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
           io.set('log level', 0);
           // Permission check
           io.set('authorization', function(data, callback) {
-              if (data.headers.cookie) {
-                  var c = Cookie.parse(data.headers.cookie);
-                  sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
-                      if (err) {
-                          callback('Error', false);
-                      } else {
-                          data.session = session;
-                          callback(null, true);
-                      }
-                  });
+            if (data.headers.cookie) {
+              var c = Cookie.parse(data.headers.cookie);
+                sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
+                  if (err || !session) {
+                    callback('Error', false);
+                  } else {
+                    data.session = session;
+                    callback(null, true);
+                  }
+                });
               } else {
-                  var token = data.headers.authorization;
-                  app.get('db').collection('User', function(err, u) {
-                      u.find({
-                          token: token
-                      }).toArray(function(err, r) {
-                          if (r.length === 0) {
-                              callback('Unauthorized', false);
-                          } else {
-                              callback(null, true);
-                          }
-                      });
+                var token = data.headers.authorization;
+                app.get('db').collection('User', function(err, u) {
+                  u.find({
+                    token: token
+                  }).toArray(function(err, r) {
+		            if (r.length === 0) {
+		              callback('Unauthorized', false);
+		            } else {
+		              callback(null, true);
+		            }
                   });
+                });
               }
           });
       });
@@ -91,7 +91,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         clientList.push(socket.id);
         socket.on('disconnect', function() {
           var i = clientList.indexOf(socket.id);
-          clientList.splice(i,1);
+          clientList.splice(i, 1);
         });
       });
 
@@ -125,18 +125,18 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.use(app.router);
       });
 
-			// Load theme
-	    app.get('db').collection('Settings', function(err, s) {
-	      s.find({
-	        'key': 'theme'
-	      }).toArray(function(err, result) {
-	      	if (err || result.length == 0 || result[0].value == 'default') {
-						app.locals.theme = '/css/bootstrap.min.css';
-	      	} else {
-	      		app.locals.theme = '/css/themes/' + result[0].value;
-	      	}
-	      });
-	    });
+      // Load theme
+      app.get('db').collection('Settings', function(err, s) {
+        s.find({
+          'key': 'theme'
+        }).toArray(function(err, result) {
+          if (err || result.length == 0 || result[0].value == 'default') {
+            app.locals.theme = '/css/bootstrap.min.css';
+          } else {
+            app.locals.theme = '/css/themes/' + result[0].value;
+          }
+        });
+      });
 
       // Routes
       app.get('/register', Routes.showRegister);
@@ -149,7 +149,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/', Routes.isAuthorized, Routes.index);
 
       app.get('/settings', Routes.isAuthorized, Routes.settings);
-      app.post('/settings/password', Routes.isAuthorized, Routes.changePassword); 
+      app.post('/settings/password', Routes.isAuthorized, Routes.changePassword);
       app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);
       app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
       app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
