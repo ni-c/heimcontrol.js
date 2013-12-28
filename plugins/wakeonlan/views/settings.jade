@@ -37,8 +37,8 @@ div.plugin-container.wakeonlan.settings#template(style="display: none;")
     i.icon-trash.icon-large
     |  Delete  
   label(for="description") Description (optional):
-  input(type="text", name="data[%i][description]", placeholder="iMac")
+  input(type="text", name="data[%i%][description]", placeholder="iMac")
   label(for="host") Hostname / IP:
-  input(type="text", name="data[%i][host]", placeholder="hostname", required="1")
+  input(type="text", name="data[%i%][host]", placeholder="hostname", required="1")
   label(for="mac") MAC-Address:
-  input.mac(type="text", name="data[%i][mac]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17")
+  input.mac(type="text", name="data[%i%][mac]", placeholder="12:34:56:78:90:AB", required="1", pattern="^([0-9A-F]{2}[:-]){5}([0-9A-F]{2})$", maxlength="17")

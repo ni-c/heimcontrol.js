@@ -102,6 +102,35 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     });
   }
+
+  /**
+   * Render the settings page
+   * 
+   * @method renderSettings
+   * @param {Object} req The Request
+   * @param {Object} res The Reponse
+   * @param {Object options Additional vars for the settings view
+   */
+  function renderSettings(req, res, options) {
+    req.app.get('db').collection('User', function(err, collection) {
+       collection.find({}).toArray(function(err, users) {
+         var vars = {
+          title: 'Settings',
+           themes: fs.readdirSync(req.app.get('theme folder')),
+           users: users
+         };
+     
+         if (options) {
+           for(var key in options) {
+             vars[key] = options[key];
+           }
+         }
+     
+        return res.render('settings', vars);
+      });
+    });
+  }
+  
   /** 
    * Recursive function to combine javascript and css files from the plugins
    * 
@@ -210,15 +239,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         return next();
       }
     } else {
-      req.app.get('db').collection('User', function(err, collection) {
-        collection.find({}).toArray(function(err, users) {
-          return res.render('settings', {
-            title: "Settings",
-            themes: fs.readdirSync(req.app.get('theme folder')),
-            users: users
-          });
-        });
-      });
+      renderSettings(req, res);
     }
   };
 
@@ -411,13 +432,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
    */
   Controller.showLogin = function(req, res) {
     // If no user exists, redirect to register
-            return res.render('login', {
-              title: 'Login',
-              hide_menubar: true
-            });
     req.app.get('db').collection('User', function(err, u) {
       u.find({}).toArray(function(err, r) {
         if (r.length == 0) {
+          return res.redirect('/register');
+        } else {
           var c = cookie.parse(req.headers.cookie);
           if ((!err) && (c.email) && (c.password)) {
             return Controller.doLogin(req, res);
@@ -431,7 +450,6 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     });
   };
-
 
   /**
    * POST /login
@@ -451,7 +469,10 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         'password': password
       }).toArray(function(err, r) {
         if (r.length == 0) {
-          return res.render('login', { title: 'Login', error: 'Login failed, wrong email/password combination.', hide_menubar: true
+          return res.render('login', {
+            title: 'Login',
+            error: 'Login failed, wrong email/password combination.',
+            hide_menubar: true
           });
         } else {
           req.session.user = r[0];
@@ -500,6 +521,46 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
+   * POST /settings/password
+   * 
+   * @method changePassword
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.changePassword = function(req, res) {
+
+    var password = crypto.createHash('sha256').update(req.body.oldpassword || '').digest("hex");
+    var newpassword = crypto.createHash('sha256').update(req.body.newpassword || '').digest("hex");
+    var newpassword2 = crypto.createHash('sha256').update(req.body.repeatnewpassword || '').digest("hex");
+
+    if (newpassword != newpassword2) {
+      return res.render('settings', {
+        title: 'Settings',
+        error: 'New passwords did not match.'
+      });
+    } else {
+      req.app.get('db').collection('User', function(err, u) {
+        u.find({
+          'email': req.session.user.email,
+          'password': password
+        }).toArray(function(err, r) {
+          if (r.length == 0) {
+            return res.render('settings', {
+              title: 'Settings',
+              error: 'Old password wrong.'
+            });
+          } else {
+            r[0].password = newpassword;
+            u.save(r[0], function(err, result) {
+              renderSettings(req, res, {success: 'Your password has been changed.'});
+            });
+          }
+        });
+      });
+    };
+  };
+
+  /**
    * POST /settings/user/create
    * 
    * @method createUser
@@ -512,36 +573,25 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
     var email = req.body.email || '';
 
     if(!email || !password) {
+      renderSettings(req, res, {error: 'Error adding user: Check whether you have entered a valid email'});
+    } else {
       req.app.get('db').collection('User', function(err, collection) {
-        collection.find({}).toArray(function(err, users) {
-          return res.sender('settings', {
-              title: 'Settings',
-              error: 'Error while saving email - check whether you have entered a valid password or email',
-              themes: fs.readdirSync(req.app.get('theme folder')),
-              users: users
-          });
-        });
+        collection.find({email: email}).toArray(function(err, users) {
+           if (users.length>0) {
+            renderSettings(req, res, {error: 'Error adding user: Email already exist'});
+           } else {
+             collection.save({
+               'email' : email,
+               'password' : password
+             }, function(err, result) {
+               renderSettings(req, res, {success: 'The user has been created'});
+             });
+           }
+         });
       });
-     }else{
-      req.app.get('db').collection('User', function(err, u) {
-        u.save({
-          'email' : email,
-          'password' : password
-        }, function(err, result) {
-          req.app.get('db').collection('User', function(err, collection) {
-            collection.find({}).toArray(function(err, users) {
-              return res.render('settings', {
-                title: 'Settings',
-                success: 'The user has been created',
-                themes: fs.readdirSync(req.app.get('theme folder')),
-                users: users
-              });
-            });
-          })
-        })
-       });
-     }
+    }
   };
+  
   /**
    * GET /settings/user/delete/:id
    * 
@@ -551,20 +601,12 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
    */
   Controller.deleteUser = function(req, res) {
     req.app.get('db').collection('User', function(err, users) {
-        users.remove({email: req.params.email}, function(err, user){
-          req.app.get('db').collection('User', function(err, collection) {
-            collection.find({}).toArray(function(err, users) {
-              return res.render('settings', {
-                title: 'Settings',
-                success: 'The user has been deleted',
-                themes: fs.readdirSync(req.app.get('theme folder')),
-                users: users
-              });
-            });
-          })
-       });
+      users.remove({email: req.params.email}, function(err, user){
+        renderSettings(req, res, {success: 'The user has been deleted'});
+      });
     });
   };
+  
   /**
    * POST /settings/theme
    * 
@@ -577,11 +619,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       s.find({
         'key': 'theme'
       }).toArray(function(err, result) {
-        var item = {};
+           var item = {};
         if (result.length == 0) {
           item.key = 'theme';
         } else {
-            item = result[0]
+           item = result[0];
         }
         item.value = req.body.theme || 'default';
         if (item.value=='default') {
@@ -590,11 +632,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
           req.app.locals.theme = '/css/themes/' + item.value;
         }
         s.save(item, function(err, result) {
-          return res.render('settings', {
-            title: 'Settings',
-            success: 'The theme has been changed.',
-                themes: fs.readdirSync(req.app.get('theme folder'))
-          });
+          renderSettings(req, res, {success: 'The theme has been changed.'});
         });
       });
     });
@@ -628,7 +666,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
     } else {
       return res.send(200, '');
     }
-  }
+  };
 
   /**
    * GET /js/plugins.css
@@ -657,8 +695,8 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
       });
     } else {
       return res.send(200, '');
-    }
-  }
+    };
+  };
 
   /**
    * Error 404
