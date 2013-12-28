@@ -133,7 +133,6 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
     }, 100);
 
     app.get(&#x27;sockets&#x27;).on(&#x27;connection&#x27;, function(socket) {
-
       // GPIO toggle
       socket.on(&#x27;gpio-toggle&#x27;, function(data) {
         that.toggle(data);
@@ -212,11 +211,38 @@ define([ &#x27;pi-gpio&#x27; ], function(gpio) {
       item.value = that.values[item._id] ? that.values[item._id] : 0;
     });
     return callback(null, items);
-  }
+  };
+
+  /**
+   * API functions of the GPIO Plugin
+   * 
+   * @method api
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+
+  Gpio.prototype.api = function(req, res, next) {
+    /*
+     * GET
+     */
+    if (req.method == &#x27;GET&#x27;) {
+      this.app.get(&#x27;db&#x27;).collection(this.collection, function(err, collection) {
+        collection.find({}).toArray(function(err, items) {
+          if (!err) {
+            res.send(200, items);
+          } else {
+            res.send(500, &#x27;[]&#x27;);
+          }
+        });
+      });
+    } else {
+      next();
+    }
+  };
 
   var exports = Gpio;
 
-  return Gpio;
+  return exports;
 
 });
 

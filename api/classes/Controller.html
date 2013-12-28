@@ -202,6 +202,13 @@
                     <ul class="index-list methods">
                         
                             <li class="index-item method">
+                                <a href="#method_api">api</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_changePassword">changePassword</a>
 
                                 
@@ -217,6 +224,27 @@
                         
                             <li class="index-item method">
                                 <a href="#method_combinePluginFiles">combinePluginFiles</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_createAuthToken">createAuthToken</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_createUser">createUser</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_deleteUser">deleteUser</a>
 
                                 
                                 
@@ -293,6 +321,13 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_renderSettings">renderSettings</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_saveSettings">saveSettings</a>
 
                                 
@@ -327,6 +362,139 @@
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_api" class="method item">
+    <h3 class="name"><code>api</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>next</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l187"><code>routes&#x2F;index.js:187</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>GET /api</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The response</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">next</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Next route</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="method_changePassword" class="method item">
@@ -377,7 +545,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l457"><code>routes&#x2F;index.js:457</code></a>
+        <a href="../files/routes_index.js.html#l541"><code>routes&#x2F;index.js:541</code></a>
         
         </p>
 
@@ -488,7 +656,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l501"><code>routes&#x2F;index.js:501</code></a>
+        <a href="../files/routes_index.js.html#l628"><code>routes&#x2F;index.js:628</code></a>
         
         </p>
 
@@ -605,7 +773,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l106"><code>routes&#x2F;index.js:106</code></a>
+        <a href="../files/routes_index.js.html#l134"><code>routes&#x2F;index.js:134</code></a>
         
         </p>
 
@@ -748,6 +916,339 @@
 </div>
 
                 
+                    <div id="method_createAuthToken" class="method item">
+    <h3 class="name"><code>createAuthToken</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l497"><code>routes&#x2F;index.js:497</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>POST /api/login</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The response</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_createUser" class="method item">
+    <h3 class="name"><code>createUser</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l581"><code>routes&#x2F;index.js:581</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>POST /settings/user/create</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The response</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_deleteUser" class="method item">
+    <h3 class="name"><code>deleteUser</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l613"><code>routes&#x2F;index.js:613</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>GET /settings/user/delete/:id</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The response</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_doLogin" class="method item">
     <h3 class="name"><code>doLogin</code></h3>
 
@@ -796,7 +1297,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l410"><code>routes&#x2F;index.js:410</code></a>
+        <a href="../files/routes_index.js.html#l466"><code>routes&#x2F;index.js:466</code></a>
         
         </p>
 
@@ -907,7 +1408,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l334"><code>routes&#x2F;index.js:334</code></a>
+        <a href="../files/routes_index.js.html#l390"><code>routes&#x2F;index.js:390</code></a>
         
         </p>
 
@@ -1018,7 +1519,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l138"><code>routes&#x2F;index.js:138</code></a>
+        <a href="../files/routes_index.js.html#l166"><code>routes&#x2F;index.js:166</code></a>
         
         </p>
 
@@ -1135,7 +1636,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l610"><code>routes&#x2F;index.js:610</code></a>
+        <a href="../files/routes_index.js.html#l733"><code>routes&#x2F;index.js:733</code></a>
         
         </p>
 
@@ -1146,7 +1647,7 @@
     </div>
 
     <div class="description">
-        <p>Authorization chec</p>
+        <p>Authorization check</p>
 
     </div>
 
@@ -1262,7 +1763,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l441"><code>routes&#x2F;index.js:441</code></a>
+        <a href="../files/routes_index.js.html#l525"><code>routes&#x2F;index.js:525</code></a>
         
         </p>
 
@@ -1373,7 +1874,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l596"><code>routes&#x2F;index.js:596</code></a>
+        <a href="../files/routes_index.js.html#l719"><code>routes&#x2F;index.js:719</code></a>
         
         </p>
 
@@ -1484,7 +1985,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l566"><code>routes&#x2F;index.js:566</code></a>
+        <a href="../files/routes_index.js.html#l689"><code>routes&#x2F;index.js:689</code></a>
         
         </p>
 
@@ -1596,7 +2097,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l536"><code>routes&#x2F;index.js:536</code></a>
+        <a href="../files/routes_index.js.html#l659"><code>routes&#x2F;index.js:659</code></a>
         
         </p>
 
@@ -1708,7 +2209,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l312"><code>routes&#x2F;index.js:312</code></a>
+        <a href="../files/routes_index.js.html#l368"><code>routes&#x2F;index.js:368</code></a>
         
         </p>
 
@@ -1958,6 +2459,139 @@
 </div>
 
                 
+                    <div id="method_renderSettings" class="method item">
+    <h3 class="name"><code>renderSettings</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>req</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>res</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>{Object</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/routes_index.js.html#l106"><code>routes&#x2F;index.js:106</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Render the settings page</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">req</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The Request</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The Reponse</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">{Object</code>
+                        <span class="type">Object</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>options Additional vars for the settings view</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_saveSettings" class="method item">
     <h3 class="name"><code>saveSettings</code></h3>
 
@@ -2012,7 +2646,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l221"><code>routes&#x2F;index.js:221</code></a>
+        <a href="../files/routes_index.js.html#l278"><code>routes&#x2F;index.js:278</code></a>
         
         </p>
 
@@ -2145,7 +2779,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l159"><code>routes&#x2F;index.js:159</code></a>
+        <a href="../files/routes_index.js.html#l219"><code>routes&#x2F;index.js:219</code></a>
         
         </p>
 
@@ -2272,7 +2906,7 @@
             
         
         
-        <a href="../files/routes_index.js.html#l382"><code>routes&#x2F;index.js:382</code></a>
+        <a href="../files/routes_index.js.html#l438"><code>routes&#x2F;index.js:438</code></a>
         
         </p>
 

@@ -150,7 +150,7 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
       var server = Http.createServer(app).listen(config.port, function() {
         console.log(&#x27;\u001b[32mheimcontrol.js listening on port \u001b[33m%d\033[0m&#x27;, config.port);
       });
-        
+
       if (config.secret == &quot;CHANGE_ME&quot;) {
         console.log(&#x27;\u001b[31mWARNING: Change secret string in config/&#x27; + node_env + &#x27;.json\033[0m&#x27;);
       }
@@ -172,7 +172,18 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
               }
             });
           } else {
-            callback(&#x27;Unauthorized&#x27;, false);
+            var token = data.headers.authorization;
+            app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
+              u.find({
+                token: token
+              }).toArray(function(err, r) {
+                if (r.length === 0) {
+                  callback(&#x27;Unauthorized&#x27;, false);
+                } else {
+                  callback(null, true);
+                }
+              });
+            });
           }
         });
       });
@@ -182,7 +193,7 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
         clientList.push(socket.id);
         socket.on(&#x27;disconnect&#x27;, function() {
           var i = clientList.indexOf(socket.id);
-          clientList.splice(i,1);
+          clientList.splice(i, 1);
         });
       });
 
@@ -216,37 +227,42 @@ requirejs([ &#x27;http&#x27;, &#x27;connect&#x27;, &#x27;mongodb&#x27;, &#x27;pa
         app.use(app.router);
       });
 
-			// Load theme
-	    app.get(&#x27;db&#x27;).collection(&#x27;Settings&#x27;, function(err, s) {
-	      s.find({
-	        &#x27;key&#x27;: &#x27;theme&#x27;
-	      }).toArray(function(err, result) {
-	      	if (err || result.length == 0 || result[0].value == &#x27;default&#x27;) {
-						app.locals.theme = &#x27;/css/bootstrap.min.css&#x27;;
-	      	} else {
-	      		app.locals.theme = &#x27;/css/themes/&#x27; + result[0].value;
-	      	}
-	      });
-	    });
-				
+      // Load theme
+      app.get(&#x27;db&#x27;).collection(&#x27;Settings&#x27;, function(err, s) {
+        s.find({
+          &#x27;key&#x27;: &#x27;theme&#x27;
+        }).toArray(function(err, result) {
+          if (err || result.length == 0 || result[0].value == &#x27;default&#x27;) {
+            app.locals.theme = &#x27;/css/bootstrap.min.css&#x27;;
+          } else {
+            app.locals.theme = &#x27;/css/themes/&#x27; + result[0].value;
+          }
+        });
+      });
+
       // Routes
       app.get(&#x27;/register&#x27;, Routes.showRegister);
       app.post(&#x27;/register&#x27;, Routes.doRegister);
 
       app.get(&#x27;/login&#x27;, Routes.showLogin);
       app.post(&#x27;/login&#x27;, Routes.doLogin);
+      app.post(&#x27;/api/login&#x27;, Routes.createAuthToken);
 
       app.get(&#x27;/&#x27;, Routes.isAuthorized, Routes.index);
 
       app.get(&#x27;/settings&#x27;, Routes.isAuthorized, Routes.settings);
       app.post(&#x27;/settings/password&#x27;, Routes.isAuthorized, Routes.changePassword);
+      app.post(&#x27;/settings/user/create&#x27;, Routes.isAuthorized, Routes.createUser);
+      app.get(&#x27;/settings/user/delete/:email&#x27;, Routes.isAuthorized, Routes.deleteUser);
       app.post(&#x27;/settings/theme&#x27;, Routes.isAuthorized, Routes.changeTheme);
 
+      app.all(&#x27;/api/:plugin/:method?&#x27;, Routes.isAuthorized, Routes.api, Routes.notFound);
+      
       app.get(&#x27;/settings/:plugin&#x27;, Routes.isAuthorized, Routes.settings, Routes.notFound);
       app.post(&#x27;/settings/:plugin&#x27;, Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
 
       app.get(&#x27;/logout&#x27;, Routes.logout);
-
+      
       app.get(&#x27;/js/plugins.js&#x27;, Routes.pluginsJs);
       app.get(&#x27;/css/plugins.css&#x27;, Routes.pluginsCss);
 

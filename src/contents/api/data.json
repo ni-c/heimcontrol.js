@@ -318,12 +318,18 @@
         {
             "file": "plugins/arduino/public/js/arduino.js",
             "line": 14,
+            "description": "LED status switched",
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/public/js/arduino.js",
+            "line": 22,
             "description": "Arduino sensor data received",
             "class": "Arduino"
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 53,
+            "line": 57,
             "description": "Toggle an Arduino port",
             "itemtype": "method",
             "name": "rcswitch",
@@ -350,7 +356,7 @@
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 92,
+            "line": 96,
             "description": "Send an IR remote code",
             "itemtype": "method",
             "name": "irremote",
@@ -377,7 +383,34 @@
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 115,
+            "line": 119,
+            "description": "Turn an LED light on",
+            "itemtype": "method",
+            "name": "led",
+            "params": [
+                {
+                    "name": "data",
+                    "description": "The websocket data from the client",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "id",
+                            "description": "The ID of the database entry from the LED to use",
+                            "type": "String"
+                        },
+                        {
+                            "name": "value",
+                            "description": "The value to set (0 (off) or 1 (on))",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "Arduino"
+        },
+        {
+            "file": "plugins/arduino/index.js",
+            "line": 158,
             "description": "Initialize the sensors attached to the Arduino",
             "itemtype": "method",
             "name": "init",
@@ -385,7 +418,7 @@
         },
         {
             "file": "plugins/arduino/index.js",
-            "line": 162,
+            "line": 205,
             "description": "Manipulate the items array before render",
             "itemtype": "method",
             "name": "beforeRender",
@@ -435,7 +468,7 @@
         },
         {
             "file": "plugins/gpio/index.js",
-            "line": 43,
+            "line": 42,
             "description": "Toggle a GPIO port",
             "itemtype": "method",
             "name": "toggle",
@@ -462,7 +495,7 @@
         },
         {
             "file": "plugins/gpio/index.js",
-            "line": 68,
+            "line": 67,
             "description": "Parse GPIO the ports that are used as input and send the result to the client websocket",
             "itemtype": "method",
             "name": "parse",
@@ -470,7 +503,7 @@
         },
         {
             "file": "plugins/gpio/index.js",
-            "line": 98,
+            "line": 97,
             "description": "Manipulate the items array before render",
             "itemtype": "method",
             "name": "beforeRender",
@@ -501,6 +534,26 @@
             "class": "Gpio"
         },
         {
+            "file": "plugins/gpio/index.js",
+            "line": 114,
+            "description": "API functions of the GPIO Plugin",
+            "itemtype": "method",
+            "name": "api",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Gpio"
+        },
+        {
             "file": "plugins/rgblights/public/js/rgblights.js",
             "line": 32,
             "description": "Colourwheel change",
@@ -509,7 +562,7 @@
         {
             "file": "plugins/rgblights/index.js",
             "line": 40,
-            "description": "Is called if user has picked a color from the colourwheel",
+            "description": "Is called if the user has picked a color from the colourwheel",
             "itemtype": "method",
             "name": "picker",
             "params": [
@@ -1247,6 +1300,30 @@
         {
             "file": "routes/index.js",
             "line": 106,
+            "description": "Render the settings page",
+            "itemtype": "method",
+            "name": "renderSettings",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The Request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The Reponse",
+                    "type": "Object"
+                },
+                {
+                    "name": "{Object",
+                    "description": "options Additional vars for the settings view"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 134,
             "description": "Recursive function to combine javascript and css files from the plugins",
             "itemtype": "method",
             "name": "combinePluginFiles",
@@ -1295,7 +1372,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 138,
+            "line": 166,
             "description": "GET /",
             "itemtype": "method",
             "name": "index",
@@ -1315,7 +1392,32 @@
         },
         {
             "file": "routes/index.js",
-            "line": 159,
+            "line": 187,
+            "description": "GET /api",
+            "itemtype": "method",
+            "name": "api",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                },
+                {
+                    "name": "next",
+                    "description": "Next route",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 219,
             "description": "GET /settings",
             "itemtype": "method",
             "name": "settings",
@@ -1340,7 +1442,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 221,
+            "line": 278,
             "description": "POST /settings",
             "itemtype": "method",
             "name": "saveSettings",
@@ -1365,13 +1467,13 @@
         },
         {
             "file": "routes/index.js",
-            "line": 241,
+            "line": 297,
             "description": "Recursive function to save items to collections",
             "class": "Controller"
         },
         {
             "file": "routes/index.js",
-            "line": 312,
+            "line": 368,
             "description": "GET /register",
             "itemtype": "method",
             "name": "register",
@@ -1391,7 +1493,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 334,
+            "line": 390,
             "description": "POST /register",
             "itemtype": "method",
             "name": "doRegister",
@@ -1411,7 +1513,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 382,
+            "line": 438,
             "description": "GET /login",
             "itemtype": "method",
             "name": "showLogin",
@@ -1431,7 +1533,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 410,
+            "line": 466,
             "description": "POST /login",
             "itemtype": "method",
             "name": "doLogin",
@@ -1451,7 +1553,27 @@
         },
         {
             "file": "routes/index.js",
-            "line": 441,
+            "line": 497,
+            "description": "POST /api/login",
+            "itemtype": "method",
+            "name": "createAuthToken",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 525,
             "description": "GET /logout",
             "itemtype": "method",
             "name": "logout",
@@ -1471,7 +1593,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 457,
+            "line": 541,
             "description": "POST /settings/password",
             "itemtype": "method",
             "name": "changePassword",
@@ -1491,7 +1613,47 @@
         },
         {
             "file": "routes/index.js",
-            "line": 501,
+            "line": 581,
+            "description": "POST /settings/user/create",
+            "itemtype": "method",
+            "name": "createUser",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 613,
+            "description": "GET /settings/user/delete/:id",
+            "itemtype": "method",
+            "name": "deleteUser",
+            "params": [
+                {
+                    "name": "req",
+                    "description": "The request",
+                    "type": "Object"
+                },
+                {
+                    "name": "res",
+                    "description": "The response",
+                    "type": "Object"
+                }
+            ],
+            "class": "Controller"
+        },
+        {
+            "file": "routes/index.js",
+            "line": 628,
             "description": "POST /settings/theme",
             "itemtype": "method",
             "name": "changeTheme",
@@ -1511,7 +1673,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 536,
+            "line": 659,
             "description": "GET /js/plugins.js\n\nLoad the plugin javascripts into one file and returns it",
             "itemtype": "method",
             "name": "pluginsJs",
@@ -1531,7 +1693,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 566,
+            "line": 689,
             "description": "GET /js/plugins.css\n\nLoad the plugin css into one file and returns it",
             "itemtype": "method",
             "name": "pluginsCss",
@@ -1551,7 +1713,7 @@
         },
         {
             "file": "routes/index.js",
-            "line": 596,
+            "line": 719,
             "description": "Error 404",
             "itemtype": "method",
             "name": "notFound",
@@ -1571,8 +1733,8 @@
         },
         {
             "file": "routes/index.js",
-            "line": 610,
-            "description": "Authorization chec",
+            "line": 733,
+            "description": "Authorization check",
             "itemtype": "method",
             "name": "isAuthorized",
             "params": [
@@ -1683,8 +1845,12 @@
             "line": " plugins/arduino/public/js/arduino.js:6"
         },
         {
-            "message": "Missing item type\nArduino sensor data received",
+            "message": "Missing item type\nLED status switched",
             "line": " plugins/arduino/public/js/arduino.js:14"
+        },
+        {
+            "message": "Missing item type\nArduino sensor data received",
+            "line": " plugins/arduino/public/js/arduino.js:22"
         },
         {
             "message": "Missing item type\nGPIO on/off toggles",
@@ -1892,7 +2058,7 @@
         },
         {
             "message": "Missing item type\nRecursive function to save items to collections",
-            "line": " routes/index.js:241"
+            "line": " routes/index.js:297"
         },
         {
             "message": "Missing item type\nheimcontrol.js (https://ni-c.github.com/heimcontrol.js)",

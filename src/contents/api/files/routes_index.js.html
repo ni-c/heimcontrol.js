@@ -205,6 +205,34 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     });
   }
 
+  /**
+   * Render the settings page
+   * 
+   * @method renderSettings
+   * @param {Object} req The Request
+   * @param {Object} res The Reponse
+   * @param {Object options Additional vars for the settings view
+   */
+  function renderSettings(req, res, options) {
+    req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, collection) {
+       collection.find({}).toArray(function(err, users) {
+         var vars = {
+          title: &#x27;Settings&#x27;,
+           themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;)),
+           users: users
+         };
+     
+         if (options) {
+           for(var key in options) {
+             vars[key] = options[key];
+           }
+         }
+     
+        return res.render(&#x27;settings&#x27;, vars);
+      });
+    });
+  }
+  
   /** 
    * Recursive function to combine javascript and css files from the plugins
    * 
@@ -256,6 +284,38 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
         return res.render(500, &#x27;500&#x27;);
       }
     });
+  };
+
+  /**
+   * GET /api
+   * 
+   * @method api
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next Next route
+   */
+  Controller.api = function(req, res, next) {
+    if (req.params.plugin) {
+      var pluginList = [];
+      req.app.get(&#x27;plugins&#x27;).forEach(function(plugin) {
+        pluginList.push(plugin.id);
+      });
+      if (pluginList.indexOf(req.params.plugin) &gt;= 0) {
+        req.app.get(&#x27;plugins&#x27;).forEach(function(plugin) {
+          if (plugin.id == req.params.plugin) {
+            if (plugin.api) {
+              plugin.api(req, res, next);
+            } else {
+              return next();
+            }
+          }
+        });
+      } else {
+        return next();
+      }
+    } else {
+      renderSettings(req, res);
+    }
   };
 
   /**
@@ -313,10 +373,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
         return next();
       }
     } else {
-      return res.render(&#x27;settings&#x27;, {
-        title: &quot;Settings&quot;,
-        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
-      });
+      renderSettings(req, res);
     }
   };
 
@@ -337,7 +394,6 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
       if (pluginList.indexOf(req.params.plugin) &gt;= 0) {
         req.app.get(&#x27;plugins&#x27;).forEach(function(plugin) {
           if (plugin.id == req.params.plugin) {
-            
             var items = req.body.data;
 
             /**
@@ -541,6 +597,34 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
   };
 
   /**
+   * POST /api/login
+   * 
+   * @method createAuthToken
+   * @param {Object} req The request
+   * @param {Object} res The response 
+   */
+  Controller.createAuthToken = function(req, res) {
+    var email = req.body.email || &#x27;&#x27;;
+    var password = crypto.createHash(&#x27;sha256&#x27;).update(req.body.password || &#x27;&#x27;).digest(&quot;hex&quot;);
+    req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
+      u.find({
+        &#x27;email&#x27;: email,
+        &#x27;password&#x27;: password
+      }).toArray(function(err, r) {
+        if ((err) || (r.length &gt; 0)) {
+          var token = crypto.createHash(&#x27;sha256&#x27;).update(r[0].email + r[0].password).digest(&quot;hex&quot;);
+          req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u){
+            u.update({email: r[0].email}, { $set: {&#x27;token&#x27;: token}});
+          });
+          res.send(200, {&#x27;token&#x27;: token});
+        } else {
+          res.send(401, {error: &quot;Wrong credentials&quot;});
+        }
+      });
+    });
+  };
+
+  /**
    * GET /logout
    * 
    * @method logout
@@ -588,18 +672,61 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
           } else {
             r[0].password = newpassword;
             u.save(r[0], function(err, result) {
-              return res.render(&#x27;settings&#x27;, {
-                title: &#x27;Settings&#x27;,
-                success: &#x27;Your password has been changed.&#x27;,
-				        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
-              });
+              renderSettings(req, res, {success: &#x27;Your password has been changed.&#x27;});
             });
           }
         });
       });
-    }
+    };
   };
 
+  /**
+   * POST /settings/user/create
+   * 
+   * @method createUser
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.createUser = function(req, res) {
+
+    var password = crypto.createHash(&#x27;sha256&#x27;).update(req.body.password || &#x27;&#x27;).digest(&quot;hex&quot;);
+    var email = req.body.email || &#x27;&#x27;;
+
+    if(!email || !password) {
+      renderSettings(req, res, {error: &#x27;Error adding user: Check whether you have entered a valid email&#x27;});
+    } else {
+      req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, collection) {
+        collection.find({email: email}).toArray(function(err, users) {
+           if (users.length&gt;0) {
+            renderSettings(req, res, {error: &#x27;Error adding user: Email already exist&#x27;});
+           } else {
+             collection.save({
+               &#x27;email&#x27; : email,
+               &#x27;password&#x27; : password
+             }, function(err, result) {
+               renderSettings(req, res, {success: &#x27;The user has been created&#x27;});
+             });
+           }
+         });
+      });
+    }
+  };
+  
+  /**
+   * GET /settings/user/delete/:id
+   * 
+   * @method deleteUser
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+  Controller.deleteUser = function(req, res) {
+    req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, users) {
+      users.remove({email: req.params.email}, function(err, user){
+        renderSettings(req, res, {success: &#x27;The user has been deleted&#x27;});
+      });
+    });
+  };
+  
   /**
    * POST /settings/theme
    * 
@@ -612,11 +739,11 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
       s.find({
         &#x27;key&#x27;: &#x27;theme&#x27;
       }).toArray(function(err, result) {
-      	var item = {};
+           var item = {};
         if (result.length == 0) {
           item.key = &#x27;theme&#x27;;
         } else {
-        	item = result[0]
+           item = result[0];
         }
         item.value = req.body.theme || &#x27;default&#x27;;
         if (item.value==&#x27;default&#x27;) {
@@ -625,11 +752,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
           req.app.locals.theme = &#x27;/css/themes/&#x27; + item.value;
         }
         s.save(item, function(err, result) {
-          return res.render(&#x27;settings&#x27;, {
-            title: &#x27;Settings&#x27;,
-            success: &#x27;The theme has been changed.&#x27;,
-		        themes: fs.readdirSync(req.app.get(&#x27;theme folder&#x27;))
-          });
+          renderSettings(req, res, {success: &#x27;The theme has been changed.&#x27;});
         });
       });
     });
@@ -663,7 +786,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
     } else {
       return res.send(200, &#x27;&#x27;);
     }
-  }
+  };
 
   /**
    * GET /js/plugins.css
@@ -692,8 +815,8 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
       });
     } else {
       return res.send(200, &#x27;&#x27;);
-    }
-  }
+    };
+  };
 
   /**
    * Error 404
@@ -710,7 +833,7 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
   };
 
   /**
-   * Authorization chec
+   * Authorization check
    *
    * @method isAuthorized
    * @param {Object} req The request
@@ -718,7 +841,19 @@ define([ &#x27;crypto&#x27;, &#x27;cookie&#x27;, &#x27;fs&#x27; ], function(cryp
    * @param {Object} next The next route
    */
   Controller.isAuthorized = function(req, res, next) {
-    if (!req.session.user) {
+     if (req.headers[&#x27;authorization&#x27;]) {
+        req.app.get(&#x27;db&#x27;).collection(&#x27;User&#x27;, function(err, u) {
+          u.find({
+            token: req.headers[&#x27;authorization&#x27;]
+          }).toArray(function(err, r) {
+            if ((err) || (r.length == 0)) {
+              return res.send(401, {error: &quot;Wrong acccess token&quot;});
+            } else {
+              next();
+            }
+          });
+        });
+    } else if (!req.session.user) {
       return res.redirect(&#x27;/login&#x27;);
     } else {
       next();
