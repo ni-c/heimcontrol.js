@@ -56,34 +56,34 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
-          io.set('log level', 0);
-          // Permission check
-          io.set('authorization', function(data, callback) {
-            if (data.headers.cookie) {
-              var c = Cookie.parse(data.headers.cookie);
-                sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
-                  if (err || !session) {
-                    callback('Error', false);
-                  } else {
-                    data.session = session;
-                    callback(null, true);
-                  }
-                });
+        io.set('log level', 0);
+        // Permission check
+        io.set('authorization', function(data, callback) {
+          if (data.headers.cookie) {
+            var c = Cookie.parse(data.headers.cookie);
+            sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
+              if (err || !session) {
+                callback('Error', false);
               } else {
-                var token = data.headers.authorization;
-                app.get('db').collection('User', function(err, u) {
-                  u.find({
-                    token: token
-                  }).toArray(function(err, r) {
-		            if (r.length === 0) {
-		              callback('Unauthorized', false);
-		            } else {
-		              callback(null, true);
-		            }
-                  });
-                });
+                data.session = session;
+                callback(null, true);
               }
-          });
+            });
+          } else {
+            var token = data.headers.authorization;
+            app.get('db').collection('User', function(err, u) {
+              u.find({
+                token: token
+              }).toArray(function(err, r) {
+                if (r.length === 0) {
+                  callback('Unauthorized', false);
+                } else {
+                  callback(null, true);
+                }
+              });
+            });
+          }
+        });
       });
 
       var clientList = [];
@@ -154,12 +154,13 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
       app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
 
+      app.all('/api/:plugin/:method?', Routes.isAuthorized, Routes.api, Routes.notFound);
+      
       app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
       app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
 
       app.get('/logout', Routes.logout);
-
-      app.get('/api/gpio', Routes.isAuthorized, Routes.gpioSwitches);
+      
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
 
