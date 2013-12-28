@@ -119,7 +119,7 @@ require(["jquery", "bootstrap.min", "/socket.io/socket.io.js"], function() {
         $('.navigation').remove();
         $('#content').empty();
         $('#content').append('<h1>503</h1><h2>I\'m sorry Dave, i\'m afraid i have lost the connection to the server.</h2><p><a href="/login"><h3>Back to Login</h3></a></p>');
-      }, 5000);
+      }, 15000);
     });
 
     // Set login cookie

@@ -185,6 +185,38 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
+   * GET /api
+   * 
+   * @method api
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next Next route
+   */
+  Controller.api = function(req, res, next) {
+    if (req.params.plugin) {
+      var pluginList = [];
+      req.app.get('plugins').forEach(function(plugin) {
+        pluginList.push(plugin.id);
+      });
+      if (pluginList.indexOf(req.params.plugin) >= 0) {
+        req.app.get('plugins').forEach(function(plugin) {
+          if (plugin.id == req.params.plugin) {
+            if (plugin.api) {
+              plugin.api(req, res, next);
+            } else {
+              return next();
+            }
+          }
+        });
+      } else {
+        return next();
+      }
+    } else {
+      renderSettings(req, res);
+    }
+  };
+
+  /**
    * GET /settings
    * 
    * @method settings
@@ -463,6 +495,34 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
+   * POST /api/login
+   * 
+   * @method createAuthToken
+   * @param {Object} req The request
+   * @param {Object} res The response 
+   */
+  Controller.createAuthToken = function(req, res) {
+    var email = req.body.email || '';
+    var password = crypto.createHash('sha256').update(req.body.password || '').digest("hex");
+    req.app.get('db').collection('User', function(err, u) {
+      u.find({
+        'email': email,
+        'password': password
+      }).toArray(function(err, r) {
+        if ((err) || (r.length > 0)) {
+          var token = crypto.createHash('sha256').update(r[0].email + r[0].password).digest("hex");
+          req.app.get('db').collection('User', function(err, u){
+            u.update({email: r[0].email}, { $set: {'token': token}});
+          });
+          res.send(200, {'token': token});
+        } else {
+          res.send(401, {error: "Wrong credentials"});
+        }
+      });
+    });
+  };
+
+  /**
    * GET /logout
    * 
    * @method logout
@@ -671,7 +731,7 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
   };
 
   /**
-   * Authorization chec
+   * Authorization check
    *
    * @method isAuthorized
    * @param {Object} req The request
@@ -679,7 +739,19 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
    * @param {Object} next The next route
    */
   Controller.isAuthorized = function(req, res, next) {
-    if (!req.session.user) {
+     if (req.headers['authorization']) {
+        req.app.get('db').collection('User', function(err, u) {
+          u.find({
+            token: req.headers['authorization']
+          }).toArray(function(err, r) {
+            if ((err) || (r.length == 0)) {
+              return res.send(401, {error: "Wrong acccess token"});
+            } else {
+              next();
+            }
+          });
+        });
+    } else if (!req.session.user) {
       return res.redirect('/login');
     } else {
       next();

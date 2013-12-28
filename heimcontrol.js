@@ -70,7 +70,18 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
               }
             });
           } else {
-            callback('Unauthorized', false);
+            var token = data.headers.authorization;
+            app.get('db').collection('User', function(err, u) {
+              u.find({
+                token: token
+              }).toArray(function(err, r) {
+                if (r.length === 0) {
+                  callback('Unauthorized', false);
+                } else {
+                  callback(null, true);
+                }
+              });
+            });
           }
         });
       });
@@ -133,6 +144,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       app.get('/login', Routes.showLogin);
       app.post('/login', Routes.doLogin);
+      app.post('/api/login', Routes.createAuthToken);
 
       app.get('/', Routes.isAuthorized, Routes.index);
 
@@ -142,11 +154,13 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
       app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
 
+      app.all('/api/:plugin/:method?', Routes.isAuthorized, Routes.api, Routes.notFound);
+      
       app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
       app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
 
       app.get('/logout', Routes.logout);
-
+      
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
 

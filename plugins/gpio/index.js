@@ -31,7 +31,6 @@ define([ 'pi-gpio' ], function(gpio) {
     }, 100);
 
     app.get('sockets').on('connection', function(socket) {
-
       // GPIO toggle
       socket.on('gpio-toggle', function(data) {
         that.toggle(data);
@@ -110,10 +109,37 @@ define([ 'pi-gpio' ], function(gpio) {
       item.value = that.values[item._id] ? that.values[item._id] : 0;
     });
     return callback(null, items);
-  }
+  };
+
+  /**
+   * API functions of the GPIO Plugin
+   * 
+   * @method api
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+
+  Gpio.prototype.api = function(req, res, next) {
+    /*
+     * GET
+     */
+    if (req.method == 'GET') {
+      this.app.get('db').collection(this.collection, function(err, collection) {
+        collection.find({}).toArray(function(err, items) {
+          if (!err) {
+            res.send(200, items);
+          } else {
+            res.send(500, '[]');
+          }
+        });
+      });
+    } else {
+      next();
+    }
+  };
 
   var exports = Gpio;
 
-  return Gpio;
+  return exports;
 
 });
