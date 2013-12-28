@@ -56,23 +56,34 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       // socket.io
       var io = Socketio.listen(server);
       io.configure(function() {
-        io.set('log level', 0);
-        // Permission check
-        io.set('authorization', function(data, callback) {
-          if (data.headers.cookie) {
-            var c = Cookie.parse(data.headers.cookie);
-            sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
-              if (err || !session) {
-                callback('Error', false);
+          io.set('log level', 0);
+          // Permission check
+          io.set('authorization', function(data, callback) {
+            if (data.headers.cookie) {
+              var c = Cookie.parse(data.headers.cookie);
+                sessionStore.get(c['heimcontrol.js'].substring(2, 26), function(err, session) {
+                  if (err || !session) {
+                    callback('Error', false);
+                  } else {
+                    data.session = session;
+                    callback(null, true);
+                  }
+                });
               } else {
-                data.session = session;
-                callback(null, true);
+                var token = data.headers.authorization;
+                app.get('db').collection('User', function(err, u) {
+                  u.find({
+                    token: token
+                  }).toArray(function(err, r) {
+		            if (r.length === 0) {
+		              callback('Unauthorized', false);
+		            } else {
+		              callback(null, true);
+		            }
+                  });
+                });
               }
-            });
-          } else {
-            callback('Unauthorized', false);
-          }
-        });
+          });
       });
 
       var clientList = [];
@@ -133,6 +144,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       app.get('/login', Routes.showLogin);
       app.post('/login', Routes.doLogin);
+      app.post('/api/login', Routes.createAuthToken);
 
       app.get('/', Routes.isAuthorized, Routes.index);
 
@@ -147,6 +159,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
 
       app.get('/logout', Routes.logout);
 
+      app.get('/api/gpio', Routes.isAuthorized, Routes.gpioSwitches);
       app.get('/js/plugins.js', Routes.pluginsJs);
       app.get('/css/plugins.css', Routes.pluginsCss);
 
