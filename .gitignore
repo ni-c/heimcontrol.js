@@ -1,9 +1,2 @@
 node_modules
 docs
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-*.un~
-Session.vim
-.netrwhist
-*~
-.vimrc

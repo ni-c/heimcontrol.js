@@ -33,7 +33,6 @@ define([ 'pi-gpio' ], function(gpio) {
     app.get('sockets').on('connection', function(socket) {
       // GPIO toggle
       socket.on('gpio-toggle', function(data) {
-          console.log(data);
         that.toggle(data);
       });
 

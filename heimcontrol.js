@@ -103,7 +103,6 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('jade', Jade);
         app.set('server', server);
         app.set('sockets', io.sockets);
-        app.set('io', io);
         app.set('mongo', Mongo);
         app.set('db', db);
         app.set('clients', clientList);
