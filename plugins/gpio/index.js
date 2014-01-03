@@ -124,10 +124,13 @@ define([ 'pi-gpio' ], function(gpio) {
      * GET
      */
     if (req.method == 'GET') {
+      var that = this;
       this.app.get('db').collection(this.collection, function(err, collection) {
         collection.find({}).toArray(function(err, items) {
           if (!err) {
-            res.send(200, items);
+            that.beforeRender(items, function() {
+              res.send(200, items);
+            });
           } else {
             res.send(500, '[]');
           }
