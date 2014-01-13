@@ -1,6 +1,9 @@
 .plugin-container.arduino.rcswitch:after {
   content: "Arduino RC Switch";
 }
+.plugin-container.arduino.itrcswitch:after {
+  content: "Arduino Intertechno RC Switch";
+}
 .plugin-container.arduino.sensor:after {
   content: "Arduino Sensor";
 }

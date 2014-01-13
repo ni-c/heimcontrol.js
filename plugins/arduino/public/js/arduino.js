@@ -12,6 +12,14 @@ require([ "jquery", "/socket.io/socket.io.js" ], function() {
   });
 
   /**
+   * Arduino RC button has been switched
+   */
+  socket.on('arduino-itrcswitch', function(data) {
+    $('*[data-id="' + data.id + '"]').removeClass('active');
+    $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
+  });
+
+  /**
    * LED status switched
    */
   socket.on('arduino-led', function(data) {

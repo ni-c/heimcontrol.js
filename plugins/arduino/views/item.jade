@@ -11,6 +11,17 @@ each item in items
         button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-rcswitch", data-value="0", data-id="#{item._id}", class=(item.value == 0 ? 'active' : '')) 
           i.icon-circle-blank
           | Off
+    - if (item.method == 'itrcswitch')
+      p.description
+        span.muted IT RC Switch:&nbsp;
+        strong #{item.description} 
+      div.btn-group(data-rcswitch="buttons-radio")
+        button.btn.btn-large.socket(type="button", data-socket="arduino-itrcswitch", data-value="1", data-id="#{item._id}", class=(item.value == 1 ? 'active' : ''))
+          i.icon-circle
+          | On
+        button.btn.btn-inverse.btn-large.socket(type="button", data-socket="arduino-itrcswitch", data-value="0", data-id="#{item._id}", class=(item.value == 0 ? 'active' : '')) 
+          i.icon-circle-blank
+          | Off
     - if (item.method == 'sensor')
       p.description
         strong #{item.description}&nbsp; 
