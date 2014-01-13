@@ -42,6 +42,9 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-rcswitch', function(data) {
         that.rcswitch(data);
       });
+      socket.on('arduino-itrcswitch', function(data) {
+        that.itrcswitch(data);
+      });
       // Arduino toggle
       socket.on('arduino-irremote', function(data) {
         that.irremote(data);
@@ -87,6 +90,100 @@ define([ 'duino' ], function(duino) {
         } else {
           return that.pins[item.pin].triState(item.code + "FF00");
         }
+      } else {
+        console.log(err);
+      }
+    });
+  };
+
+  /**
+   * Toggle an Arduino port
+   * 
+   * @method rcswitch
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the RC switch to use
+   * @param {String} data.value The value to set (0 or 1)
+   */
+  Arduino.prototype.itrcswitch = function(data) {
+
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-itrcswitch', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
+
+        // Create RC object
+        if (!that.pins[item.pin]) {
+          that.pins[item.pin] = new duino.RC({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+        }
+
+				var houseCodes = {
+					'A': '0000',
+					'B': 'F000',
+					'C': '0F00',
+					'D': 'FF00',
+					'E': '00F0',
+					'F': 'F0F0',
+					'G': '0FF0',
+					'H': 'FFF0',
+					'I': '000F',
+					'J': 'F00F',
+					'K': '0F0F',
+					'L': 'FF0F',
+					'M': '00FF',
+					'N': 'F0FF',
+					'O': '0FFF',
+					'P': 'FFFF'
+				};
+
+				var deviceCodes = {
+					1: '0000',
+					2: 'F000',
+					3: '0F00',
+					4: 'FF00',
+					5: '00F0',
+					6: 'F0F0',
+					7: '0FF0',
+					8: 'FFF0',
+					9: '000F',
+					10: 'F00F',
+					11: '0F0F',
+					12: 'FF0F',
+					13: '00FF',
+					14: 'F0FF',
+					15: '0FFF',
+					16: 'FFFF'
+				};
+
+        if(item.led) {
+          led = new duino.Led({
+            board: that.board,
+            pin: parseInt(item.led)
+          });
+
+          // uhm, yeah... don't ask me why this is
+          // but the led turns on!
+          led.off();
+        }
+
+        // Send RC code
+        if (item.value) {
+          that.pins[item.pin].triState(houseCodes[item.housecode] + deviceCodes[item.devicecode] + "0FFF");
+        } else {
+          that.pins[item.pin].triState(houseCodes[item.housecode] + deviceCodes[item.devicecode] + "0FF0");
+        }
+        if(item.led) {
+          // uhm, yeah... don't ask me why this is
+          // but the led turns off!
+          led.on();
+        }
+
       } else {
         console.log(err);
       }
