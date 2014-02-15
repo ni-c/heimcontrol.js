@@ -237,29 +237,15 @@ define([ 'duino' ], function(duino) {
         this.app.get('db').collection("Arduino", function(err, collection) {
             collection.find({}).toArray(function(err, items) {
               if (!err) {
-                that.beforeRender(items, function() {
-                  res.send(200, items);
+              that.beforeRender(items, function() {
+                res.send(200, items);
                 });
               } else {
-               res.send(500, '[]');
+              res.send(500, '[]');
               }
+              });
             });
-        });
-      } else if(method === "sensors") {
-        this.app.get('db').collection("Arduino", function(err, collection) {
-            collection.find({}).toArray(function(err, items) {
-              if (!err) {
-                that.beforeRender(items, function() {
-                  res.send(200, items);
-                });
-              } else {
-               res.send(500, '[]');
-              }
-            });
-        });
       } else {
-        next();
-      }
         next();
       }
     }
