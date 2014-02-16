@@ -63,7 +63,6 @@ define([ 'duino' ], function(duino) {
    * @param {String} data.value The value to set (0 or 1)
    */
   Arduino.prototype.rcswitch = function(data) {
-
     var that = this;
     this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
       if ((!err) && (item)) {
@@ -218,6 +217,40 @@ define([ 'duino' ], function(duino) {
     });
     return callback(null, items);
   }
+
+  /**
+   * API functions of the Arduino Plugin
+   * 
+   * @method api
+   * @param {Object} req The request
+   * @param {Object} res The response
+   */
+
+  Arduino.prototype.api = function(req, res, next) {
+    /*
+     * GET
+     */
+    if (req.method == 'POST') {
+      var that = this;
+      var method = req.body.method;
+      if(method === "rcswitch") {
+        this.app.get('db').collection("Arduino", function(err, collection) {
+            collection.find({}).toArray(function(err, items) {
+              if (!err) {
+              that.beforeRender(items, function() {
+                res.send(200, items);
+                });
+              } else {
+              res.send(500, '[]');
+              }
+              });
+            });
+      } else {
+        next();
+      }
+    }
+  };
+
 
   var exports = Arduino;
 
