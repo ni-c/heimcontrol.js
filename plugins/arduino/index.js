@@ -19,7 +19,9 @@ define([ 'duino' ], function(duino) {
 
     this.app = app;
     this.id = this.name.toLowerCase();
-    this.board = new duino.Board();
+    this.board = new duino.Board({
+      debug: false;
+    });
 
     this.pins = {};
     this.pluginHelper = app.get('plugin helper');
@@ -63,8 +65,10 @@ define([ 'duino' ], function(duino) {
    * @param {String} data.value The value to set (0 or 1)
    */
   Arduino.prototype.rcswitch = function(data) {
+    
     var that = this;
     this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      
       if ((!err) && (item)) {
         // Inform clients over websockets
         that.app.get('sockets').emit('arduino-rcswitch', data);
@@ -82,9 +86,9 @@ define([ 'duino' ], function(duino) {
 
         // Send RC code
         if (item.value) {
-          return that.pins[item.pin].triState(item.code + "FF0F");
+          return that.pins[item.pin].triState(item.code);
         } else {
-          return that.pins[item.pin].triState(item.code + "FF00");
+          return that.pins[item.pin].triState(item.code);
         }
       } else {
         console.log(err);

@@ -30,7 +30,7 @@ div.container
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
                   label(for="code") Tristate-Code:
-                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="8", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8}$")
+                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{12}$")
               
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
@@ -88,7 +88,7 @@ div.plugin-container.arduino.settings#template(style="display: none;")
     div.switch-container
       div.rcswitch.hidden
         label(for="code") Tristate-Code:
-        input.uppercase(type="text", name="data[%i%][code]", maxlength="8", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8}$")
+        input.uppercase(type="text", name="data[%i%][code]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
       
       div.sensor.hidden
         label(for="formula") Formula:
