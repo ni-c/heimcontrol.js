@@ -86,9 +86,9 @@ define([ 'duino' ], function(duino) {
 
         // Send RC code
         if (item.value) {
-          return that.pins[item.pin].triState(item.code);
+          return that.pins[item.pin].triState(item.onCode);
         } else {
-          return that.pins[item.pin].triState(item.code);
+          return that.pins[item.pin].triState(item.offCode);
         }
       } else {
         console.log(err);

@@ -29,8 +29,12 @@ div.container
                 option(value="led",selected=(item.method == 'led')) led
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
-                  label(for="code") Tristate-Code:
-                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{12}$")
+                  label(for="onCode") On Tristate-Code:
+                  input.uppercase(type="text", name="data[#{i}][onCode]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.onCode ? item.onCode : ''), pattern="^[A-Fa-f0-9]{12}$")
+
+                div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
+                  label(for="offCode") Off Tristate-Code:
+                  input.uppercase(type="text", name="data[#{i}][offCode]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.offCode ? item.offCode : ''), pattern="^[A-Fa-f0-9]{12}$")
               
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
@@ -87,9 +91,12 @@ div.plugin-container.arduino.settings#template(style="display: none;")
       option(value="led") led
     div.switch-container
       div.rcswitch.hidden
-        label(for="code") Tristate-Code:
-        input.uppercase(type="text", name="data[%i%][code]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
+        label(for="onCode") On Tristate-Code:
+        input.uppercase(type="text", name="data[%i%][onCode]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
       
+        label(for="offCode") Off Tristate-Code:
+        input.uppercase(type="text", name="data[%i%][offCode]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
+
       div.sensor.hidden
         label(for="formula") Formula:
         input(type="text", name="data[%i%][formula]", placeholder="x*3.14-100", data-required="1")
