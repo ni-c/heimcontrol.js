@@ -127,8 +127,8 @@ require(["jquery", "bootstrap.min", "/socket.io/socket.io.js"], function() {
       if($('.btn-login').length > 0) {
         $('.btn-login').click(function() {
           if($('#rememberme').is(':checked')) {
-            $.cookie("email", $('#email').val());
-            $.cookie("password", $('#password').val());
+            $.cookie("email", $('#email').val(), { expires: 30, path: '/' });
+            $.cookie("password", $('#password').val(), { expires: 30, path: '/' });
           } else {
             $.cookie("email", null);
             $.cookie("password", null);
