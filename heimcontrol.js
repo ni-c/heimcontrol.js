@@ -19,7 +19,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'events', './routes', './libs/PluginHelper.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper) {
+requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'events', './routes', './libs/PluginHelper.js', './libs/DateHelpers.js', './plugins/arduino/index.js', './libs/SunriseSunsetHelpers.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper, DateHelpers, Arduino, SunriseSunsetHelpers) {
 
   // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -172,6 +172,12 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.all('*', Routes.notFound);
 
       });
+
+      // Check every minutes if we need to do something at sunrise/sunset
+      setInterval(function(){
+        var sunriseSunsetHelper = new SunriseSunsetHelpers(app);
+        sunriseSunsetHelper.check();
+      }, 1000 * 60);
     }
   });
 });
