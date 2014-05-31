@@ -29,9 +29,21 @@ div.container
                 option(value="led",selected=(item.method == 'led')) led
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
-                  label(for="code") Tristate-Code:
-                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="8", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8}$")
+                  label(for="onCode") On Tristate-Code:
+                  input.uppercase(type="text", name="data[#{i}][onCode]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.onCode ? item.onCode : ''), pattern="^[A-Fa-f0-9]{12}$")
+
+                div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
+                  label(for="offCode") Off Tristate-Code:
+                  input.uppercase(type="text", name="data[#{i}][offCode]", placeholder="FF0F0FFF0010", data-required="1", maxlength="12", value=(item.offCode ? item.offCode : ''), pattern="^[A-Fa-f0-9]{12}$")
               
+                div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
+                  label(for="sunriseOffset") Sunrise Offset:
+                  input.uppercase(type="text", name="data[#{i}][sunriseOffset]", placeholder="0", data-required="0", maxlength="3", value=(item.sunriseOffset ? item.sunriseOffset : ''), pattern="^[0-9]{0,3}$")
+
+                div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
+                  label(for="sunsetOffset") Sunset Offset:
+                  input.uppercase(type="text", name="data[#{i}][sunsetOffset]", placeholder="0", data-required="0", maxlength="3", value=(item.sunsetOffset ? item.sunsetOffset : ''), pattern="^[0-9]{0,3}$")
+
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
                   input(type="text", name="data[#{i}][formula]", placeholder="x*100-3.14", data-required="1", value=(item.formula ? item.formula : ''))
@@ -87,9 +99,18 @@ div.plugin-container.arduino.settings#template(style="display: none;")
       option(value="led") led
     div.switch-container
       div.rcswitch.hidden
-        label(for="code") Tristate-Code:
-        input.uppercase(type="text", name="data[%i%][code]", maxlength="8", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8}$")
+        label(for="onCode") On Tristate-Code:
+        input.uppercase(type="text", name="data[%i%][onCode]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
       
+        label(for="offCode") Off Tristate-Code:
+        input.uppercase(type="text", name="data[%i%][offCode]", maxlength="12", placeholder="FF0F0FFF0010", data-required="1", pattern="^[A-F0-9]{12}$")
+
+        label(for="sunriseOffset") Sunrise Offset:
+        input.uppercase(type="text", name="data[%i%][sunriseOffset]", maxlength="3", placeholder="0", data-required="0", pattern="^[0-9]{0,3}$")
+
+        label(for="sunsetOffset") Sunset Offset:
+        input.uppercase(type="text", name="data[%i%][sunsetOffset]", maxlength="3", placeholder="0", data-required="0", pattern="^[0-9]{0,3}$")
+
       div.sensor.hidden
         label(for="formula") Formula:
         input(type="text", name="data[%i%][formula]", placeholder="x*3.14-100", data-required="1")

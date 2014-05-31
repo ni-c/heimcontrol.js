@@ -19,7 +19,7 @@ requirejs.config({
  * Express
  * @see http://expressjs.com/guide.html
  */
-requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'events', './routes', './libs/PluginHelper.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper) {
+requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socket.io', 'jade', 'cookie', 'events', './routes', './libs/PluginHelper.js', './libs/DateHelpers.js', './plugins/arduino/index.js', './libs/SunriseSunsetHelpers.js' ], function(Http, Connect, Mongo, Path, Express, Conf, Socketio, Jade, Cookie, Events, Routes, PluginHelper, DateHelpers, Arduino, SunriseSunsetHelpers) {
 
   // Load configuration
   var node_env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -95,6 +95,11 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         });
       });
 
+      var sunriseSunsetLogger = require('winston');
+      sunriseSunsetLogger.add(sunriseSunsetLogger.transports.File, { 
+        filename: '/home/pi/heimcontrol.js/logs/sunrise_sunset.log' 
+      });
+
       // Express
       app.configure(function() {
         app.set('events', new Events.EventEmitter());
@@ -111,6 +116,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('theme folder', __dirname + '/public/css/themes');
         app.set('plugin folder', __dirname + '/plugins');
         app.set('plugin helper', new PluginHelper(app));
+        app.set('sunriseSunsetLogger', sunriseSunsetLogger);
         app.use(Express.favicon());
         app.use(Express.logger('dev'));
         app.use(Express.bodyParser());
@@ -172,6 +178,12 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.all('*', Routes.notFound);
 
       });
+
+      // Check every minutes if we need to do something at sunrise/sunset
+      setInterval(function(){
+        var sunriseSunsetHelper = new SunriseSunsetHelpers(app);
+        sunriseSunsetHelper.check();
+      }, 1000 * 60);
     }
   });
 });

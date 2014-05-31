@@ -1,19 +1,24 @@
 doctype 5
 html
   head
-    title heimcontrol.js | #{title}
+    title Home!
     link(rel='stylesheet', href='#{theme}') 
     link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/css/font-awesome.min.css')
     link(rel='stylesheet', href='/css/heimcontrol.css')
     link(rel='stylesheet', href='/css/plugins.css')
     link(rel='icon', href='/heimcontrol.ico', type='image/x-icon')
-    link(rel='apple-touch.icon', sizes='57x57', href='/apple-touch.icon-57x57.png')
-    link(rel='apple-touch.icon', sizes='72x72', href='/apple-touch.icon-72x72.png')
-    link(rel='apple-touch.icon', sizes='114x114', href='/apple-touch.icon-114x114.png')
-    link(rel='apple-touch.icon', sizes='144x144', href='/apple-touch.icon-144x144.png')
+    
+    link(rel='apple-touch.icon', sizes='114x114', href='/apple-touch-icon-114x114.png' rel="apple-touch-icon")
+    link(rel='apple-touch.icon', sizes='120x120', href='/apple-touch-icon-120x120.png' rel="apple-touch-icon")
+    link(rel='apple-touch.icon', sizes='144x144', href='/apple-touch-icon-144x144.png' rel="apple-touch-icon")
+    link(rel='apple-touch.icon', sizes='152x152', href='/apple-touch-icon-152x152.png' rel="apple-touch-icon")
+    link(href='apple-touch-startup-image-1536x2048.png', media='(device-width: 1536px) and (device-height: 2048px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)', rel='apple-touch-startup-image')
+
     script(data-main='/js/main', src='/js/require-jquery.js')
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    meta(name="apple-mobile-web-app-capable",content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style",content="black-translucent")
   body
     div.navbar.navbar-inverse.navbar-fixed-top
       div.navbar-inner
@@ -23,7 +28,7 @@ html
               span.icon-bar
               span.icon-bar
               span.icon-bar
-          a.brand(href="/") heimcontrol.js
+          a.brand(href="/") home.miscia.net
           - if (typeof(hide_menubar) == 'undefined')
             div.nav-collapse.collapse.navigation
               ul.nav#bar-menu-left
@@ -54,27 +59,3 @@ html
                     i.icon-signout &nbsp;
                     | Logout
     block content
-    footer.footer
-      div.container
-        p Created by 
-          a(href="http://about.ni-c.de") Willi Thiel
-          | , licensed under&nbsp;
-          a(href="https://github.com/ni-c/heimcontrol.js/blob/master/LICENSE") MIT License
-          | .
-        p Crafted using  
-          a(href="http://jade-lang.com/") Jade
-          | ,&nbsp;
-          a(href="http://twitter.github.com/bootstrap/") Bootstrap&nbsp;
-          | &amp;&nbsp;
-          a(href="http://fortawesome.github.com/Font-Awesome/") font-awesome
-          |.
-        p Running with&nbsp;
-          a(href="http://nodejs.org/") node.js
-          | ,&nbsp;
-          a(href="http://socket.io/") socket.io
-          | ,&nbsp;
-          a(href="http://expressjs.com/") express
-          | ,&nbsp;
-          a(href="http://www.mongodb.org/") mongodb
-          | .
-        p And a hell of a lot of other open source projects.
