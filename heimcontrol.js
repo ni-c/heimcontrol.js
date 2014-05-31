@@ -95,6 +95,11 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         });
       });
 
+      var sunriseSunsetLogger = require('winston');
+      sunriseSunsetLogger.add(sunriseSunsetLogger.transports.File, { 
+        filename: '/home/pi/heimcontrol.js/logs/sunrise_sunset.log' 
+      });
+
       // Express
       app.configure(function() {
         app.set('events', new Events.EventEmitter());
@@ -111,6 +116,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         app.set('theme folder', __dirname + '/public/css/themes');
         app.set('plugin folder', __dirname + '/plugins');
         app.set('plugin helper', new PluginHelper(app));
+        app.set('sunriseSunsetLogger', sunriseSunsetLogger);
         app.use(Express.favicon());
         app.use(Express.logger('dev'));
         app.use(Express.bodyParser());

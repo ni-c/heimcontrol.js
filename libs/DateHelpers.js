@@ -4,7 +4,8 @@ if (typeof define !== 'function') {
 
 define([ './date_format_helpers.js' ], function() {
   
-  var DateHelpers = function() {
+  var DateHelpers = function(app) {
+    this.sunriseSunsetLogger = app.get('sunriseSunsetLogger');
     this.now = new Date();
   }
 
@@ -29,7 +30,7 @@ define([ './date_format_helpers.js' ], function() {
   }
 
   DateHelpers.prototype.applyOffset = function(date, minutes) {
-    return new Date(date.getTime() + minutes * 60000);
+    return new Date(date.getTime() + parseInt(minutes) * 60000);
   }
 
   DateHelpers.prototype.is = function(date) {
@@ -37,19 +38,23 @@ define([ './date_format_helpers.js' ], function() {
   }  
 
   DateHelpers.prototype.sunrise = function(days){
-    return new Date(
-      this.currentYear(),
-      this.currentMonth(),
-      this.currentDay(),
-      days[this.currentDay()].sunrise.substring(0, 2),
-      days[this.currentDay()].sunrise.substring(2, 4),
-      0,
-      0
+    var sunrise = new Date(
+      parseInt(this.currentYear()),
+      parseInt(this.currentMonth()),
+      parseInt(this.currentDay()),
+      parseInt(days[this.currentDay()].sunrise.substring(0, 2)),
+      parseInt(days[this.currentDay()].sunrise.substring(2, 4))
     );
+    
+    if(sunrise.dst()){
+      sunrise = this.applyOffset(sunrise, 60) 
+    }
+      
+    return sunrise;
   }
 
   DateHelpers.prototype.sunset = function(days){
-    return new Date(
+    var sunset = new Date(
       this.currentYear(),
       this.currentMonth(),
       this.currentDay(),
@@ -58,6 +63,12 @@ define([ './date_format_helpers.js' ], function() {
       0,
       0
     );
+
+    if(sunset.dst()){
+      sunset = this.applyOffset(sunset, 60) 
+    }
+
+    return sunset;
   }
 
   var exports = DateHelpers;

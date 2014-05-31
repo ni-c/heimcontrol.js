@@ -123,3 +123,13 @@ dateFormat.i18n = {
 Date.prototype.format = function (mask, utc) {
   return dateFormat(this, mask, utc);
 };
+
+Date.prototype.stdTimezoneOffset = function() {
+  var jan = new Date((new Date()).getFullYear(), 0, 1);
+  var jul = new Date((new Date()).getFullYear(), 6, 1);
+  return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
+
+Date.prototype.dst = function() {
+  return this.getTimezoneOffset() < this.stdTimezoneOffset();
+}
