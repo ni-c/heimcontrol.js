@@ -189,11 +189,31 @@ define([ 'duino' ], function(duino) {
             this.on('detached', function(err) {
               console.log('detached');
             });
-            });*/
+            });
           that.pins[item.pin].sweep({
             lapse: 100,
             from: 1,
             to: 180,
+          });*/
+          that.pins[item.pin].on('attached', function(err) {
+            console.log('attached');
+
+            this.on('read', function(err, pos) {
+              console.log(pos);
+            });
+
+            this.on('detached', function(err) {
+              console.log('detached');
+            });
+
+            this.on('aftersweep', function(err) {
+              led.blink();
+
+              this.read();
+              this.detach();
+            });
+
+            this.sweep();
           });
         }else {
               that.pins[item.pin].read();
