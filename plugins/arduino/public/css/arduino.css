@@ -10,3 +10,6 @@
 .plugin-container.arduino.led:after {
   content: "Arduino LED";
 }
+.plugin-container.arduino.servo:after {
+  content: "Arduino LED";
+}

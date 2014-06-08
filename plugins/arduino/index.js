@@ -50,6 +50,9 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-led', function(data) {
         that.led(data);
       });
+      socket.on('arduino-servo', function(data) {
+        that.led(data);
+      });
     });
     
   };
@@ -153,7 +156,52 @@ define([ 'duino' ], function(duino) {
       }
     });
   };
+  /**
+   * Turn a servo on
+   * 
+   * @method servo
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the servo to use
+   * @param {String} data.value The value to set (0 (off) or 1 (on))
+   */
+  Arduino.prototype.servo = function(data) {
 
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-servo', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
+
+        // Create LED object
+        if (!that.pins[item.pin]) {
+          that.pins[item.pin] = new duino.Servo({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+        }
+        if(item.value == "1"){
+          that.pins[item.pin].on('attached', function(err) {
+            console.log('attached');
+            
+            this.on('detached', function(err) {
+              console.log('detached');
+            });
+  
+            this.sweep();
+            
+            });
+        }else {
+              that.pins[item.pin].read();
+              that.pins[item.pin].detach();
+        }
+      } else {
+        console.log(err);
+      }
+    });
+  };
   /**
    * Initialize the sensors attached to the Arduino
    * 
