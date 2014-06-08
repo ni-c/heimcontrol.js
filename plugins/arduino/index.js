@@ -191,7 +191,7 @@ define([ 'duino' ], function(duino) {
             });
             });*/
           that.pins[item.pin].sweep({
-            lapse: 5000,
+            lapse: 100,
             from: 1,
             to: 180,
           });
