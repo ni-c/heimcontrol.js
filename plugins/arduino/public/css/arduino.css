@@ -11,5 +11,5 @@
   content: "Arduino LED";
 }
 .plugin-container.arduino.servo:after {
-  content: "Arduino LED";
+  content: "Arduino Servo";
 }
