@@ -1,5 +1,5 @@
 {
-  "port": 8080,
+  "port": 80,
   "secret": "CHANGE_ME",
   "mongo": {
     "host" : "127.0.0.1",
