@@ -183,16 +183,18 @@ define([ 'duino' ], function(duino) {
           });
         }
         if(item.value == "1"){
-          that.pins[item.pin].on('attached', function(err) {
+          /*that.pins[item.pin].on('attached', function(err) {
             console.log('attached');
             
             this.on('detached', function(err) {
               console.log('detached');
             });
-  
-            this.sweep();
-            
-            });
+            });*/
+          that.pins[item.pin].sweep({
+            lapse: 5000,
+            from: 1,
+            to: 180,
+          });
         }else {
               that.pins[item.pin].read();
               that.pins[item.pin].detach();
