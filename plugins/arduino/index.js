@@ -51,7 +51,7 @@ define([ 'duino' ], function(duino) {
         that.led(data);
       });
       socket.on('arduino-servo', function(data) {
-        that.led(data);
+        that.servo(data);
       });
     });
     
