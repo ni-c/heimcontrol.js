@@ -82,9 +82,9 @@ define([ 'duino' ], function(duino) {
 
         // Send RC code
         if (item.value) {
-          return that.pins[item.pin].triState(item.code + "FF0F");
+          return that.pins[item.pin].triState(item.code + item.onsuffix);
         } else {
-          return that.pins[item.pin].triState(item.code + "FF00");
+          return that.pins[item.pin].triState(item.code + item.offsuffix);
         }
       } else {
         console.log(err);

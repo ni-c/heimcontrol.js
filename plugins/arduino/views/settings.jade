@@ -30,7 +30,11 @@ div.container
               div.switch-container
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
                   label(for="code") Tristate-Code:
-                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="8", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8}$")
+                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="10", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8,10}$")
+                  label(for="onsuffix") On-Suffix:
+                  input.uppercase(type="text", name="data[#{i}][onsuffix]", placeholder="FF0F", data-required="1", maxlength="4", value=(item.onsuffix ? item.onsuffix : 'FF0F'), pattern="^[A-Fa-f0-9]{2,4}$")
+                  label(for="offsuffix") Off-Suffix:
+                  input.uppercase(type="text", name="data[#{i}][offsuffix]", placeholder="FF00", data-required="1", maxlength="4", value=(item.offsuffix ? item.offsuffix : 'FF00'), pattern="^[A-Fa-f0-9]{2,4}$")
               
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
@@ -89,6 +93,10 @@ div.plugin-container.arduino.settings#template(style="display: none;")
       div.rcswitch.hidden
         label(for="code") Tristate-Code:
         input.uppercase(type="text", name="data[%i%][code]", maxlength="8", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8}$")
+        label(for="onsuffix") On-Suffix:
+        input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
+        label(for="offsuffix") Off-Suffix:
+        input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
       
       div.sensor.hidden
         label(for="formula") Formula:
