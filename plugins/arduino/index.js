@@ -194,7 +194,7 @@ define([ 'duino' ], function(duino) {
             lapse: 100,
             from: 1,
             to: 180,
-          });*/
+          });
           that.pins[item.pin].on('attached', function(err) {
             console.log('attached');
 
@@ -213,11 +213,14 @@ define([ 'duino' ], function(duino) {
               this.detach();
             });
 
-            this.sweep();
-          });
+            this.sweep();*/
+            that.pins[item.pin].attach();
+            that.pins[item.pin].write(0);
+            that.pins[item.pin].detach();
         }else {
-              that.pins[item.pin].read();
-              that.pins[item.pin].detach();
+            that.pins[item.pin].attach();
+            that.pins[item.pin].write(0);
+            that.pins[item.pin].detach();
         }
       } else {
         console.log(err);
