@@ -175,12 +175,13 @@ define([ 'duino' ], function(duino) {
         item.value = (parseInt(data.value));
         that.values[item._id] = item.value;
 
-        // Create LED object
+        // Create Servo object
         if (!that.pins[item.pin]) {
           that.pins[item.pin] = new duino.Servo({
             board: that.board,
             pin: parseInt(item.pin)
           });
+          that.pins[item.pin].attach();
         }
         if(item.value == "1"){
           /*that.pins[item.pin].on('attached', function(err) {
@@ -214,13 +215,9 @@ define([ 'duino' ], function(duino) {
             });
 
             this.sweep();*/
-            that.pins[item.pin].attach();
             that.pins[item.pin].write(0);
-            that.pins[item.pin].detach();
         }else {
-            that.pins[item.pin].attach();
             that.pins[item.pin].write(180);
-            that.pins[item.pin].detach();
         }
       } else {
         console.log(err);
