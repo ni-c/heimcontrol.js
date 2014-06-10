@@ -219,7 +219,7 @@ define([ 'duino' ], function(duino) {
             that.pins[item.pin].detach();
         }else {
             that.pins[item.pin].attach();
-            that.pins[item.pin].write(0);
+            that.pins[item.pin].write(180);
             that.pins[item.pin].detach();
         }
       } else {
