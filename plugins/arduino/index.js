@@ -183,41 +183,18 @@ define([ 'duino' ], function(duino) {
           });
           that.pins[item.pin].attach();
         }
+        //Button is on
         if(item.value == "1"){
-          /*that.pins[item.pin].on('attached', function(err) {
-            console.log('attached');
-            
-            this.on('detached', function(err) {
-              console.log('detached');
+            //that.pins[item.pin].write(0);
+            that.pins[item.pin].sweep({
+              lapse: 5000,
+              from: 1,
+              to: 180,
             });
-            });
-          that.pins[item.pin].sweep({
-            lapse: 100,
-            from: 1,
-            to: 180,
-          });
-          that.pins[item.pin].on('attached', function(err) {
-            console.log('attached');
-
-            this.on('read', function(err, pos) {
-              console.log(pos);
-            });
-
-            this.on('detached', function(err) {
-              console.log('detached');
-            });
-
-            this.on('aftersweep', function(err) {
-              led.blink();
-
-              this.read();
-              this.detach();
-            });
-
-            this.sweep();*/
-            that.pins[item.pin].write(0);
         }else {
-            that.pins[item.pin].write(180);
+        //Button is off
+            //that.pins[item.pin].write(180);
+            that.pins[item.pin].write(0);
         }
       } else {
         console.log(err);
