@@ -163,6 +163,8 @@ define([ 'duino' ], function(duino) {
    * @param {Object} data The websocket data from the client
    * @param {String} data.id The ID of the database entry from the servo to use
    * @param {String} data.value The value to set (0 (off) or 1 (on))
+   * @param {String} item.maxdegrees The value to set the maximum position of servo (value between -360 and 360)
+   * @param {String} item.mindegrees The value to set the minimum position of servo (value between -360 and 360)
    */
   Arduino.prototype.servo = function(data) {
 
@@ -183,7 +185,7 @@ define([ 'duino' ], function(duino) {
           });
           that.pins[item.pin].attach();
         }
-        //No user input the 179 and 1
+        //No user input the 179 and 1 shall be used
         var maxd = item.maxdegrees || 179
         var mind = item.mindegrees || 1
         //Check and see if the maximum and minimum is set correctly else do nothing
