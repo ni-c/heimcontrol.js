@@ -185,10 +185,10 @@ define([ 'duino' ], function(duino) {
         }
         //Button is on
         if(item.value == "1"){
-            that.pins[item.pin].write(0);
+            that.pins[item.pin].write(1);
         }else {
         //Button is off
-            that.pins[item.pin].write(180);
+            that.pins[item.pin].write(179);
         }
       } else {
         console.log(err);
