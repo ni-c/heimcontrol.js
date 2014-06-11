@@ -183,13 +183,16 @@ define([ 'duino' ], function(duino) {
           });
           that.pins[item.pin].attach();
         }
+        //No user input the 179 and 1
+        var maxd = item.maxdegrees || 179
+        var mind = item.mindegrees || 1
         //Check and see if the maximum and minimum is set correctly else do nothing
-        if (parseInt(item.maxdegrees) <= 360 && parseInt(item.mindegrees) >= -360) {
+        if (360 <= parseInt(maxd) <= 360 && 360 >= parseInt(mind) >= -360) {
           if(item.value == "1"){
-            that.pins[item.pin].write(parseInt(item.maxdegrees));
+            that.pins[item.pin].write(parseInt(maxd));
           }else {
            //Button is off
-           that.pins[item.pin].write(parseInt(item.mindegrees));
+           that.pins[item.pin].write(parseInt(mind));
           }
         }
       } else {

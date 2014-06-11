@@ -41,7 +41,7 @@ div.container
                   
                 div.servo(class=(item.method != 'servo' ? 'hidden' : ''))
                   label(for="maxdegrees") Maximum Degrees (Number)
-                  input(type="text", name="data[#{i}][maxdegrees]", placeholder="90", data-required="1", value=(item.maxdegrees ? item.maxdegrees : ''))
+                  input(type="text", name="data[#{i}][maxdegrees]", placeholder="180", data-required="1", value=(item.maxdegrees ? item.maxdegrees : ''))
                   label(for="mindegrees") Minimum Degrees (Number)
                   input(type="text", name="data[#{i}][mindegrees]", placeholder="0", data-required="1", value=(item.mindegrees ? item.mindegrees : ''))
       
