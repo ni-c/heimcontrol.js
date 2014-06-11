@@ -38,6 +38,12 @@ div.container
                   input(type="text", name="data[#{i}][formula]", placeholder="x*100-3.14", data-required="1", value=(item.formula ? item.formula : ''))
                   label(for="unit") Unit (optional):
                   input(type="text", name="data[#{i}][unit]", placeholder="°F", data-required="0", value=(item.unit ? item.unit : ''))
+                  
+                div.servo(class=(item.method != 'servo' ? 'hidden' : ''))
+                  label(for="maxdegrees") Maximum Degrees (Number)
+                  input(type="text", name="data[#{i}][maxdegrees]", placeholder="90", data-required="1", value=(item.maxdegrees ? item.maxdegrees : ''))
+                  label(for="mindegrees") Minimum Degrees (Number)
+                  input(type="text", name="data[#{i}][mindegrees]", placeholder="0", data-required="1", value=(item.mindegrees ? item.mindegrees : ''))
       
                 div.irremote(class=(item.method != 'irremote' ? 'hidden' : ''))
                   label(for="irtype") IR Type:
