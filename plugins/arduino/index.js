@@ -191,6 +191,7 @@ define([ 'duino' ], function(duino) {
            //Button is off
            that.pins[item.pin].write(parseInt(item.mindegrees));
           }
+        }
       } else {
         console.log(err);
       }
