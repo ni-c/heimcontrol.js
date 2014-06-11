@@ -19,6 +19,13 @@ require([ "jquery", "/socket.io/socket.io.js" ], function() {
     $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
   });
 
+   /**
+   * ActiveLow status switched
+   */
+  socket.on('arduino-activelow', function(data) {
+    $('*[data-id="' + data.id + '"]').removeClass('active');
+    $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
+  });
   /**
    * Arduino sensor data received
    */
