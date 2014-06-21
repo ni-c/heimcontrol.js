@@ -92,7 +92,7 @@ div.plugin-container.arduino.settings#template(style="display: none;")
     div.switch-container
       div.rcswitch.hidden
         label(for="code") Tristate-Code:
-        input.uppercase(type="text", name="data[%i%][code]", maxlength="8", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8}$")
+        input.uppercase(type="text", name="data[%i%][code]", maxlength="10", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8,10}$")
         label(for="onsuffix") On-Suffix:
         input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
         label(for="offsuffix") Off-Suffix:
