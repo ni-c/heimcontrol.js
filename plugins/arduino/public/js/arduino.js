@@ -18,6 +18,14 @@ require([ "jquery", "/socket.io/socket.io.js" ], function() {
     $('*[data-id="' + data.id + '"]').removeClass('active');
     $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
   });
+  
+    /**
+   * Servo status switched
+   */
+  socket.on('arduino-servo', function(data) {
+    $('*[data-id="' + data.id + '"]').removeClass('active');
+    $('*[data-id="' + data.id + '"][data-value="' + data.value + '"]').addClass('active');
+  });
 
   /**
    * Arduino sensor data received

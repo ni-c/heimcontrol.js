@@ -50,6 +50,9 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-led', function(data) {
         that.led(data);
       });
+      socket.on('arduino-servo', function(data) {
+        that.servo(data);
+      });
     });
     
   };
@@ -153,7 +156,52 @@ define([ 'duino' ], function(duino) {
       }
     });
   };
+  /**
+   * Turn a servo on
+   * 
+   * @method servo
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the servo to use
+   * @param {String} data.value The value to set (0 (off) or 1 (on))
+   * @param {String} item.maxdegrees The value to set the maximum position of servo (value between -360 and 360)
+   * @param {String} item.mindegrees The value to set the minimum position of servo (value between -360 and 360)
+   */
+  Arduino.prototype.servo = function(data) {
 
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-servo', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
+
+        // Create Servo object
+        if (!that.pins[item.pin]) {
+          that.pins[item.pin] = new duino.Servo({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+          that.pins[item.pin].attach();
+        }
+        //No user input the 179 and 1 shall be used
+        var maxd = item.maxdegrees || 179
+        var mind = item.mindegrees || 1
+        //Check and see if the maximum and minimum is set correctly else do nothing
+        if (360 <= parseInt(maxd) <= 360 && 360 >= parseInt(mind) >= -360) {
+          if(item.value == "1"){
+            that.pins[item.pin].write(parseInt(maxd));
+          }else {
+           //Button is off
+           that.pins[item.pin].write(parseInt(mind));
+          }
+        }
+      } else {
+        console.log(err);
+      }
+    });
+  };
   /**
    * Initialize the sensors attached to the Arduino
    * 
