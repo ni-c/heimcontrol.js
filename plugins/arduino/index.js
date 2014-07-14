@@ -50,6 +50,10 @@ define([ 'duino' ], function(duino) {
       socket.on('arduino-led', function(data) {
         that.led(data);
       });
+      socket.on('arduino-activelow', function(data) {
+        that.activelow(data);
+      });
+      });
     });
     
   };
@@ -137,6 +141,44 @@ define([ 'duino' ], function(duino) {
         // Create LED object
         if (!that.pins[item.pin]) {
           that.pins[item.pin] = new duino.Led({
+            board: that.board,
+            pin: parseInt(item.pin)
+          });
+        }
+
+        // Change LED status
+        if(item.value == "1"){
+          that.pins[item.pin].on();
+        }else {
+          that.pins[item.pin].off();
+        }
+      } else {
+        console.log(err);
+      }
+    });
+  };
+   /**
+   * Turn an Activelow light on
+   * 
+   * @method Activelow
+   * @param {Object} data The websocket data from the client
+   * @param {String} data.id The ID of the database entry from the LED to use
+   * @param {String} data.value The value 1 every time to trigger .75 sec send.
+   */
+  Arduino.prototype.activelow = function(data) {
+
+    var that = this;
+    this.pluginHelper.findItem(that.collection, data.id, function(err, item, collection) {
+      if ((!err) && (item)) {
+        // Inform clients over websockets
+        that.app.get('sockets').emit('arduino-activelow', data);
+
+        item.value = (parseInt(data.value));
+        that.values[item._id] = item.value;
+
+        // Create LED object
+        if (!that.pins[item.pin]) {
+          that.pins[item.pin] = new duino.Activelow({
             board: that.board,
             pin: parseInt(item.pin)
           });
