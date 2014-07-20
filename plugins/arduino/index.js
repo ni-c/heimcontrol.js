@@ -82,14 +82,14 @@ define([ 'duino' ], function(duino) {
 
         // Send RC code
         if (item.value) {
-          if (item.binary-on) {
-            return that.pins[item.pin].decimal(item.binary-on);
+          if (item.binaryOn) {
+            return that.pins[item.pin].decimal(item.binaryOn);
           } else {
             return that.pins[item.pin].triState(item.code + item.onsuffix);
           }
         } else {
-          if (item.binary-off) {
-            return that.pins[item.pin].decimal(item.binary-off);
+          if (item.binaryOff) {
+            return that.pins[item.pin].decimal(item.binaryOff);
           } else {
             return that.pins[item.pin].triState(item.code + item.offsuffix);
           }
