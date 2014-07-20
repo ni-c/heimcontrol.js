@@ -35,6 +35,10 @@ div.container
                   input.uppercase(type="text", name="data[#{i}][onsuffix]", placeholder="FF0F", data-required="1", maxlength="4", value=(item.onsuffix ? item.onsuffix : 'FF0F'), pattern="^[A-Fa-f0-9]{2,4}$")
                   label(for="offsuffix") Off-Suffix:
                   input.uppercase(type="text", name="data[#{i}][offsuffix]", placeholder="FF00", data-required="1", maxlength="4", value=(item.offsuffix ? item.offsuffix : 'FF00'), pattern="^[A-Fa-f0-9]{2,4}$")
+                  label(for="binary-on") Binary "on" code:
+                  input(type="text", name="data[#{i}][binary-on]", placeholder="", data-required="0", maxlength="24", value=(item.binary-on ? item.binary-on : ''), pattern="^[01]{24}$")
+                  label(for="binary-off") Binary "off" code:
+                  input(type="text", name="data[#{i}][binary-off]", placeholder="", data-required="0", maxlength="24", value=(item.binary-off ? item.binary-off : ''), pattern="^[01]{24}$")
               
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
@@ -97,6 +101,10 @@ div.plugin-container.arduino.settings#template(style="display: none;")
         input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
         label(for="offsuffix") Off-Suffix:
         input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
+        label(for="binary-on") Binary "on" code:
+        input(type="text", name="data[%i%][binary-on]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
+        label(for="binary-off") Binary "off" code:
+        input(type="text", name="data[%i%][binary-off]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
       
       div.sensor.hidden
         label(for="formula") Formula:
