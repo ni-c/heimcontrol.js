@@ -117,7 +117,7 @@ div.plugin-container.arduino.settings#template(style="display: none;")
               input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
               label(for="offsuffix") <code>off</code> suffix:
               input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
-            div.binary(class='hidden'))
+            div.binary.hidden
               p Enter the <code>on</code> and <code>off</code> codes separately as binary codes. Length is currently hardcoded at 24 bits, but this could be changed if the need arises.
               label(for="binaryOn") Binary <code>on</code> code:
               input(type="text", name="data[%i%][binaryOn]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
