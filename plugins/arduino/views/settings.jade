@@ -22,30 +22,38 @@ div.container
             div.switch
               label(for="method") Method:
               select(name="data[#{i}][method]")
-                option(disabled="disabled",selected=(item.method == '')) Choose Method
-                option(value="rcswitch",selected=(item.method == 'rcswitch')) rc-switch
-                option(value="sensor",selected=(item.method == 'sensor')) sensor
-                option(value="irremote",selected=(item.method == 'irremote')) ir-remote
-                option(value="led",selected=(item.method == 'led')) led
+                option(disabled="disabled", selected=(item.method == ''))         Choose Method
+                option(value="rcswitch",    selected=(item.method == 'rcswitch')) RC switch
+                option(value="sensor",      selected=(item.method == 'sensor'))   sensor
+                option(value="irremote",    selected=(item.method == 'irremote')) IR remote
+                option(value="led",         selected=(item.method == 'led'))      LED
               div.switch-container
+
                 div.rcswitch(class=(item.method != 'rcswitch' ? 'hidden' : ''))
-                  label(for="code") Tristate-Code:
-                  input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="10", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8,10}$")
-                  label(for="onsuffix") On-Suffix:
-                  input.uppercase(type="text", name="data[#{i}][onsuffix]", placeholder="FF0F", data-required="1", maxlength="4", value=(item.onsuffix ? item.onsuffix : 'FF0F'), pattern="^[A-Fa-f0-9]{2,4}$")
-                  label(for="offsuffix") Off-Suffix:
-                  input.uppercase(type="text", name="data[#{i}][offsuffix]", placeholder="FF00", data-required="1", maxlength="4", value=(item.offsuffix ? item.offsuffix : 'FF00'), pattern="^[A-Fa-f0-9]{2,4}$")
-                  label(for="binaryOn") Binary <code>on</code> code:
-                  input(type="text", name="data[#{i}][binaryOn]", placeholder="", data-required="0", maxlength="24", value=(item.binaryOn ? item.binaryOn : ''), pattern="^[01]{24}$")
-                  label(for="binaryOff") Binary <code>off</code> code:
-                  input(type="text", name="data[#{i}][binaryOff]", placeholder="", data-required="0", maxlength="24", value=(item.binaryOff ? item.binaryOff : ''), pattern="^[01]{24}$")
-              
+                  div.switch
+                    label(for="rctype") RC code type:
+                    select(name="data[#{i}][rctype]")
+                      option(value="tristate", selected=(item.rctype != 'binary')) Tri-state
+                      option(value="binary",   selected=(item.rctype == 'binary')) Binary
+                    div.switch-container
+                      div.tristate(class=(item.rctype != 'rcswitch' ? 'hidden' : ''))
+                        label(for="code") Tri-state code (without suffix):
+                        input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="10", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8,10}$")
+                        label(for="onsuffix") <code>on</code> suffix:
+                        input.uppercase(type="text", name="data[#{i}][onsuffix]", placeholder="FF0F", data-required="1", maxlength="4", value=(item.onsuffix ? item.onsuffix : 'FF0F'), pattern="^[A-Fa-f0-9]{2,4}$")
+                        label(for="offsuffix") <code>off</code> suffix:
+                        input.uppercase(type="text", name="data[#{i}][offsuffix]", placeholder="FF00", data-required="1", maxlength="4", value=(item.offsuffix ? item.offsuffix : 'FF00'), pattern="^[A-Fa-f0-9]{2,4}$")
+                      div.binary(class=(item.rctype != 'binary' ? 'hidden' : ''))
+                        label(for="binaryOn") Binary <code>on</code> code:
+                        input(type="text", name="data[#{i}][binaryOn]", placeholder="", data-required="0", maxlength="24", value=(item.binaryOn ? item.binaryOn : ''), pattern="^[01]{24}$")
+                        label(for="binaryOff") Binary <code>off</code> code:
+                        input(type="text", name="data[#{i}][binaryOff]", placeholder="", data-required="0", maxlength="24", value=(item.binaryOff ? item.binaryOff : ''), pattern="^[01]{24}$")
+
                 div.sensor(class=(item.method != 'sensor' ? 'hidden' : ''))
                   label(for="formula") Formula
                   input(type="text", name="data[#{i}][formula]", placeholder="x*100-3.14", data-required="1", value=(item.formula ? item.formula : ''))
                   label(for="unit") Unit (optional):
                   input(type="text", name="data[#{i}][unit]", placeholder="°F", data-required="0", value=(item.unit ? item.unit : ''))
-      
                 div.irremote(class=(item.method != 'irremote' ? 'hidden' : ''))
                   label(for="irtype") IR Type:
                   select(name="data[#{i}][irtype]")
@@ -94,17 +102,28 @@ div.plugin-container.arduino.settings#template(style="display: none;")
       option(value="irremote") ir-remote
       option(value="led") led
     div.switch-container
+
       div.rcswitch.hidden
-        label(for="code") Tristate-Code:
-        input.uppercase(type="text", name="data[%i%][code]", maxlength="10", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8,10}$")
-        label(for="onsuffix") On-Suffix:
-        input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
-        label(for="offsuffix") Off-Suffix:
-        input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
-        label(for="binary-on") Binary "on" code:
-        input(type="text", name="data[%i%][binary-on]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
-        label(for="binary-off") Binary "off" code:
-        input(type="text", name="data[%i%][binary-off]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
+        div.switch
+          label(for="rctype") Method:
+          select(name="data[%i%][rctype]")
+            option(disabled="disabled",selected=true)) Choose RC code type
+            option(value="tristate") Tri-state
+            option(value="binary") Binary
+          div.switch-container
+            div.tristate(class=(item.rctype != 'rcswitch' ? 'hidden' : ''))
+              label(for="code") Tri-state code (without suffix):
+              input.uppercase(type="text", name="data[%i%][code]", maxlength="10", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8,10}$")
+              label(for="onsuffix") <code>on</code> suffix:
+              input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
+              label(for="offsuffix") <code>off</off> suffix:
+              input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
+            div.binary(class=(item.rctype != 'binary' ? 'hidden' : ''))
+              p Enter the <code>on</code> and <code>off</code> codes separately as binary codes. Length is currently hardcoded at 24 bits, but this could be changed if the need arises.
+              label(for="binaryOn") Binary <code>on</code> code:
+              input(type="text", name="data[%i%][binaryOn]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
+              label(for="binaryOff") Binary <code>off</code> code:
+              input(type="text", name="data[%i%][binaryOff]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
       
       div.sensor.hidden
         label(for="formula") Formula:
