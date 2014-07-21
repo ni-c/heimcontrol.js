@@ -35,8 +35,8 @@ div.container
                     select(name="data[#{i}][rctype]")
                       option(value="tristate", selected=(item.rctype != 'binary')) Tri-state
                       option(value="binary",   selected=(item.rctype == 'binary')) Binary
-                    div.switch-container
-                      div.tristate(class=(item.rctype != 'rcswitch' ? 'hidden' : ''))
+                    div.switch-container.no-clear-on-switch
+                      div.tristate(class=(item.rctype == 'binary' ? 'hidden' : ''))
                         label(for="code") Tri-state code (without suffix):
                         input.uppercase(type="text", name="data[#{i}][code]", placeholder="FF0F0FFF", data-required="1", maxlength="10", value=(item.code ? item.code : ''), pattern="^[A-Fa-f0-9]{8,10}$")
                         label(for="onsuffix") <code>on</code> suffix:
@@ -96,29 +96,28 @@ div.plugin-container.arduino.settings#template(style="display: none;")
   div.switch
     label(for="method") Method:
     select(name="data[%i%][method]")
-      option(disabled="disabled",selected=true) Choose Method
-      option(value="rcswitch") rc-switch
+      option(disabled="disabled", selected=true) Choose Method
+      option(value="rcswitch") RC switch
       option(value="sensor") sensor
-      option(value="irremote") ir-remote
-      option(value="led") led
+      option(value="irremote") IR remote
+      option(value="led") LED
     div.switch-container
 
       div.rcswitch.hidden
         div.switch
-          label(for="rctype") Method:
+          label(for="rctype") Choose RC code type:
           select(name="data[%i%][rctype]")
-            option(disabled="disabled",selected=true)) Choose RC code type
-            option(value="tristate") Tri-state
+            option(value="tristate",selected=true) Tri-state
             option(value="binary") Binary
-          div.switch-container
-            div.tristate(class=(item.rctype != 'rcswitch' ? 'hidden' : ''))
+          div.switch-container.no-clear-on-switch
+            div.tristate
               label(for="code") Tri-state code (without suffix):
               input.uppercase(type="text", name="data[%i%][code]", maxlength="10", placeholder="FF0F0FFF", data-required="1", pattern="^[A-F0-9]{8,10}$")
               label(for="onsuffix") <code>on</code> suffix:
               input.uppercase(type="text", name="data[%i%][onsuffix]", maxlength="4", placeholder="FF0F", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
-              label(for="offsuffix") <code>off</off> suffix:
+              label(for="offsuffix") <code>off</code> suffix:
               input.uppercase(type="text", name="data[%i%][offsuffix]", maxlength="4", placeholder="FF00", data-required="1", pattern="^[A-Fa-f0-9]{2,4}$")
-            div.binary(class=(item.rctype != 'binary' ? 'hidden' : ''))
+            div.binary(class='hidden'))
               p Enter the <code>on</code> and <code>off</code> codes separately as binary codes. Length is currently hardcoded at 24 bits, but this could be changed if the need arises.
               label(for="binaryOn") Binary <code>on</code> code:
               input(type="text", name="data[%i%][binaryOn]", placeholder="", data-required="0", maxlength="24", pattern="^[01]{24}$")
@@ -148,4 +147,4 @@ div.plugin-container.arduino.settings#template(style="display: none;")
         label(for="addr") Length:
         input(type="text", name="data[%i%][irlength]", placeholder="48", data-required="1")
 
-  input(type="hidden", name="data[%i%][status]", value="0")
+    input(type="hidden", name="data[%i%][status]", value="0")

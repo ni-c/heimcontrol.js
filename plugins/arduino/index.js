@@ -81,7 +81,7 @@ define([ 'duino' ], function(duino) {
         }
 
         // Send RC code
-        if (item.rc-type == 'binary') {
+        if (item.rctype == 'binary') {
           if (item.value) {
             return that.pins[item.pin].decimal(parseInt(item.binaryOn, 2));
           } else {
