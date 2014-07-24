@@ -81,10 +81,15 @@ define([ 'duino' ], function(duino) {
         }
 
         // Send RC code
-        if (item.value) {
-          return that.pins[item.pin].triState(item.code + item.onsuffix);
-        } else {
-          return that.pins[item.pin].triState(item.code + item.offsuffix);
+        if (item.rctype == 'binary') {
+          if (item.value) {
+            return that.pins[item.pin].decimal(parseInt(item.binaryOn, 2));
+          } else {
+            return that.pins[item.pin].decimal(parseInt(item.binaryOff, 2));
+          }
+        } else { // assume tristate
+          var fullcode = item.code + (item.value ? item.onsuffix : item.offsuffix)
+          return that.pins[item.pin].triState(fullcode);
         }
       } else {
         console.log(err);
