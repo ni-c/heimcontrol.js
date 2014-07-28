@@ -515,8 +515,9 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
             u.update({email: r[0].email},
                      { $set: {'token': token}},
                      function (err, result) {
-                         if (err) throw err;
-                         console.log(result);
+                       if (err) {
+                         console.log(err);
+                       }
                      });
           });
           res.send(200, {'token': token});
