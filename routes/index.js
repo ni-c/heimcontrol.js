@@ -512,7 +512,13 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         if ((err) || (r.length > 0)) {
           var token = crypto.createHash('sha256').update(r[0].email + r[0].password).digest("hex");
           req.app.get('db').collection('User', function(err, u){
-            u.update({email: r[0].email}, { $set: {'token': token}});
+            u.update({email: r[0].email},
+                     { $set: {'token': token}},
+                     function (err, result) {
+                       if (err) {
+                         console.log(err);
+                       }
+                     });
           });
           res.send(200, {'token': token});
         } else {
