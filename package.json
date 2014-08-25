@@ -24,6 +24,7 @@
     "ping": "= 0.1.7",
     "wake_on_lan": "= 0.0.3",
     "delivery": "= 0.0.3",
-    "duino": "https://github.com/ni-c/duino/tarball/master"
+    "duino": "https://github.com/ni-c/duino/tarball/master",
+    "piswitch": "^1.0.3"
   }
 }
