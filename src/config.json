@@ -1,7 +1,8 @@
 {
   "locals": {
-    "url": "http://ni-c.github.com/heimcontrol.js/",
+    "url": "/heimcontrol.js/",
     "name": "heimcontrol.js"
   },
+  "baseUrl": "/heimcontrol.js/",
   "output": "../"
 }
