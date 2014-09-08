@@ -1,0 +1,12 @@
+each item in items
+  div.plugin-container.piswitch(class=item.method)
+    p.description
+      span.muted RC Switch:&nbsp;
+      strong #{item.description} 
+    div.btn-group(data-rcswitch="buttons-radio")
+      button.btn.btn-large.socket(type="button", data-socket="piswitch", data-value="1", data-id="#{item._id}", class=(item.value == 1 ? 'active' : ''))
+        i.icon-circle
+        | On
+      button.btn.btn-inverse.btn-large.socket(type="button", data-socket="piswitch", data-value="0", data-id="#{item._id}", class=(item.value == 0 ? 'active' : '')) 
+        i.icon-circle-blank
+        | Off

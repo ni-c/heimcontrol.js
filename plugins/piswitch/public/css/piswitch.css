@@ -1,0 +1,3 @@
+.plugin-container.piswitch.piswitch:after {
+  content: "RasPi RC Switch";
+}

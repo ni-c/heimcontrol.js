@@ -53,7 +53,7 @@ define([ 'fs' ], function( fs ) {
     var files = fs.readdirSync(that.pluginFolder);
 
     function requireRecursive(files) {
-      var file = files.pop();
+      var file = files.shift(); // results in alphabetical order
       requirejs([that.pluginFolder + '/' + file + '/index.js'], function(Plugin) {
         pluginList.push(new Plugin(that.app));
         if (files.length>0) {
