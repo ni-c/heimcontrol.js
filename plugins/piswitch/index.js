@@ -59,7 +59,7 @@ define([ 'piswitch' ], function(rc) {
           return;
         } else { // assume tristate
           var fullcode = item.code + (item.value ? item.onsuffix : item.offsuffix)
-          rc.send(fullcode, { type: 'tristate' });
+          rc.send(fullcode, 'tristate');
           return;
         }
       } else {
