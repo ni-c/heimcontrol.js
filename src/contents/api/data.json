@@ -152,7 +152,7 @@
             "extension_for": [],
             "file": "plugins/arduino/index.js",
             "line": 7,
-            "description": "Arduino Plugin. This plugin is able to control an Arduino that is attached to the USB port of the Raspberry PI",
+            "description": "Arduino Plugin. This plugin is able to control an Arduino that is attached to the USB port of the Raspberry Pi",
             "params": [
                 {
                     "name": "app",
@@ -172,7 +172,7 @@
             "extension_for": [],
             "file": "plugins/gpio/index.js",
             "line": 7,
-            "description": "Gpio Plugin. Can access the GPIO on the Raspberry PI",
+            "description": "Gpio Plugin. Can access the GPIO on the Raspberry Pi",
             "params": [
                 {
                     "name": "app",
@@ -1760,7 +1760,7 @@
             "file": "heimcontrol.js",
             "line": 1,
             "description": "heimcontrol.js (https://ni-c.github.com/heimcontrol.js)",
-            "brief": "heimcontrol.js - Homeautomation in node.js with the Raspberry PI",
+            "brief": "heimcontrol.js - Homeautomation in node.js with the Raspberry Pi",
             "author": "Willi Thiel (ni-c@ni-c.de)",
             "class": ""
         },
