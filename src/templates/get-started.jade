@@ -3,16 +3,16 @@ extends layout
 block content
   header.jumbotron.subhead#overview
     h1 Get started
-    p.lead Get started with heimcontrol.js on your Raspberry PI 
+    p.lead Get started with heimcontrol.js on your Raspberry Pi 
     
     section
     h2.page-header Installation
-    | How to install Node.js, MongoDB and heimcontrol.js on your Raspberry PI
+    | How to install Node.js, MongoDB and heimcontrol.js on your Raspberry Pi
     
     h3.page-header Screen
     | I recommend that you use&nbsp;
     a(href="http://linux.die.net/man/1/screen") screen
-    | &nbsp;to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
+    | &nbsp;to install the software on your Raspberry Pi, because some commands will take more than four hours to complete and broken pipes suck.
     
     h4.page-header Git and Essentials
     p First you have to install the required debian packages:
@@ -21,11 +21,11 @@ block content
     h3.page-header Node.js
     p The next step is to install&nbsp;
       a(href="http://nodejs.org/") Node.js 
-      | &nbsp;on your Raspberry PI:
+      | &nbsp;on your Raspberry Pi:
     script(src="https://gist.github.com/ni-c/f8684abbe0fd0b7b78de.js")
 
     h3.page-header MongoDB
-    p If you are using a Raspberry PI with 256MB RAM, then you have to edit the file 
+    p If you are using a Raspberry Pi with 256MB RAM, then you have to edit the file 
       code /etc/dphys-swapfile  
       | and change the value of&nbsp; 
       code CONF_SWAPSIZE 
@@ -34,7 +34,7 @@ block content
       | &nbsp;to&nbsp;
       strong 200. 
      
-    p You can find a Raspberry PI version for
+    p You can find a Raspberry Pi version for
       a(href="http://www.mongodb.org") MongoDB 
       | on GitHub. With the following command you can build an install it:
     script(src="https://gist.github.com/ni-c/b760c210d4ec2ac6c106.js")
