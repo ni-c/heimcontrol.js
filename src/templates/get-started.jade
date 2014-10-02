@@ -3,59 +3,65 @@ extends layout
 block content
   header.jumbotron.subhead#overview
     h1 Get started
-    p.lead Get started with heimcontrol.js on your Raspberry PI 
+    p.lead Get started with heimcontrol.js on your Raspberry Pi 
     
     section
     h2.page-header Installation
-    | How to install Node.js, MongoDB and heimcontrol.js on your Raspberry PI
-    
-    h3.page-header Screen
-    | I recommend that you use&nbsp;
-    a(href="http://linux.die.net/man/1/screen") screen
-    | &nbsp;to install the software on your Raspberry PI, because some commands will take more than four hours to complete and broken pipes suck.
-    
-    h4.page-header Git and Essentials
-    p First you have to install the required debian packages:
+    h3.page-header Install the dependencies: Node.js and MongoDB
+
+    p heimcontrol.js has two dependencies: #[a(href="http://nodejs.org/") Node.js] and #[a(href="http://www.mongodb.org") MongoDB]. Unfortunately, neither are currently available in the Raspbian repositories.
+
+    p This can be dealt with in several ways, each of which has benefits and trade-offs:
+    ul
+        li #[strong Compiling the programs yourself] is a safe, clean solution, but takes many hours on the Pi. Cross compilation alleviates this, but is beyond the scope of this guide (see #[a(href="https://github.com/tjanson/rpi-cross") rpi-cross] if interested).
+        li #[strong Installing a third party package] is extremely convenient, but it puts you at the mercy of the packager, who may be neither trustworthy nor competent. In practise, using these packages for a hobby project like this is almost certainly going to be fine; but the security risk should be noted.
+        li Finally, if you’re not attached to Raspbian, you could just #[strong install a distro that does supply Node and MongoDB]. Archlinux fits the bill — with the obvious consequence of needing to install and configure Archlinux.
+    p The first two options are described below.
+
+    h4.page-header Manual compilation and installation
+
+    h5 Install build prerequisites
+    p First, install the following packages, which are required for the compilation.
     script(src="https://gist.github.com/ni-c/b2420a2d6b087466b034.js")
 
-    h3.page-header Node.js
-    p The next step is to install&nbsp;
-      a(href="http://nodejs.org/") Node.js 
-      | &nbsp;on your Raspberry PI:
-    script(src="https://gist.github.com/ni-c/f8684abbe0fd0b7b78de.js")
+    p You may also want to use #[a(href="http://tmux.sourceforge.net/") tmux]:
+    script(src="https://gist.github.com/tjanson/f9e8323118557236045a.js")
+    p Now, if your SSH connection is interrupted, you can reconnect and use #[code tmux attach] to continue the shell session.
 
-    h3.page-header MongoDB
-    p If you are using a Raspberry PI with 256MB RAM, then you have to edit the file 
-      code /etc/dphys-swapfile  
-      | and change the value of&nbsp; 
-      code CONF_SWAPSIZE 
-      | &nbsp;from&nbsp;
-      strong 100  
-      | &nbsp;to&nbsp;
-      strong 200. 
+    h5 Node.js
+    p The next step is to compile and install #[a(href="http://nodejs.org/") Node.js] on your Raspberry Pi from the official sources:
+    //- v0.10.30 doesn't work due to https://github.com/joyent/node/issues/8062
+    script(src="https://gist.github.com/tjanson/10bb39cd699b4fbdfb9d.js")
+    p Try #[code node --version] — it should of course output the version.
+
+    h5 MongoDB
+    p If you are using a Raspberry Pi with 256MB RAM, then you have to edit the file #[code /etc/dphys-swapfile] and change the value of #[code CONF_SWAPSIZE] from #[code 100] to #[code 200].
      
-    p You can find a Raspberry PI version for
-      a(href="http://www.mongodb.org") MongoDB 
-      | on GitHub. With the following command you can build an install it:
+    p You can find a Raspberry Pi version of MongoDB on GitHub: #[a(href="https://github.com/RickP/mongopi") Rick Pannen’s mongopi] has been working well, despite having been last updated in 2012.
+    p With the following command you can build an install it:
     script(src="https://gist.github.com/ni-c/b760c210d4ec2ac6c106.js")
     
-    p Now add the PATH to the MongoDB binaries. Open the file&nbsp;
-      code /etc/environment
-      | &nbsp;and add the following:
+   p Now add the MongoDB binary directory to the #[code PATH], for example by adding the following to #[code /etc/environment]:
     script(src="https://gist.github.com/ni-c/9396c0e2d7bdcef92db0.js")
     
-    p Finally you have to create a MongoDB user, the MongoDB database directory and register an upstart script:
+    p Finally you have to create a MongoDB user, the MongoDB database directory, and an init script:
     script(src="https://gist.github.com/ni-c/e3660f0a954b282b8bb8.js")
+    p If the service starts successfully, you can move on to #[a(href="#hc-inst") installing heimcontrol.js].
     
-    h3.page-header heimcontrol.js
-    p You only have to clone the GitHub repository and run&nbsp;
-      code npm install
-      | &nbsp;to install homecontrol.js
+    h4.page-header Installation from prebuilt third-party packages
+    p Once again the disclaimer: You should be aware that installing packages from untrusted third parties is dangerous. The sources listed below do work and appear safe at the time of this writing, but the contents could change anytime.
+    p So if you’re using heimcontrol.js for something mission-critical, a) tell us what — because that sounds cool! — and b) compile everything yourself from official sources.
+
+    p With that out of the way, the actual installation is really easy: Simply download and install #[a(href="https://github.com/nathanjohnson320/node_arm") node_arm by Nathaniel Johnson] and #[a(href="https://github.com/tjanson/mongodb-armhf-deb") mongodb-armhf-deb by Tom Janson] as follows:
+    script(src="https://gist.github.com/tjanson/197adb638d67237422ef.js")
+    p If the node binary is present (and returns the expected version) and the MongoDB service starts successfully, you’re all set. (If not, #[a(href="https://github.com/ni-c/heimcontrol.js/issues") please file an issue].)
+
+    h3.page-header#hc-inst Install heimcontrol.js
+    p You only have to clone the GitHub repository and run #[code npm install] to install homecontrol.js:
+    p (If you have Python 3 installed, run #[code npm config set python python2.7] to make node-gyp play along.)
     script(src="https://gist.github.com/ni-c/3fc75069276ddf0fb90b.js")
-    
-    p Now you can run heimcontrol.js by typing&nbsp;
-      code node heimcontrol.js
-      | &nbsp;.
+    p Now you can run heimcontrol.js by typing #[code node heimcontrol.js].
+
 
     section
     h2.page-header Documentation
@@ -72,6 +78,7 @@ block content
       code docs
       | &nbsp; directory of the project.
    
+
   section
     h3.page-header gh-pages
     p The gh-pages that you are currently reading can be found in the&nbsp;
