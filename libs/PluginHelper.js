@@ -51,6 +51,7 @@ define([ 'fs' ], function( fs ) {
     var pluginList = [];
     var that = this;
     var files = fs.readdirSync(that.pluginFolder);
+    var requirejs = require('requirejs');
 
     function requireRecursive(files) {
       var file = files.shift(); // results in alphabetical order
