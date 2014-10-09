@@ -19,7 +19,17 @@ define([ 'duino' ], function(duino) {
 
     this.app = app;
     this.id = this.name.toLowerCase();
+
     this.board = new duino.Board();
+    // this.board.debug = true;
+    function warnNoDuino(e) {
+        console.warn("[WARNING] error while trying to connect to Arduino:")
+        console.warn(" >>> " + e);
+        console.info("[INFO] continuing and hoping for the best...");
+        // FIXME: we should disable this plugin in some way, though
+    }
+    this.board.on('error', warnNoDuino);
+    this.board.setup();
 
     this.pins = {};
     this.pluginHelper = app.get('plugin helper');
