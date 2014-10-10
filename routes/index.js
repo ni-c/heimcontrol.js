@@ -449,8 +449,11 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
         if (r.length == 0) {
           return res.redirect('/register');
         } else {
-          var c = cookie.parse(req.headers.cookie);
-          if ((!err) && (c.email) && (c.password)) {
+	  var c = null;
+	  if (typeof req.headers.cookie !== 'undefined') {
+            c = cookie.parse(req.headers.cookie);
+          }
+          if ((!err) && c && c.email && c.password) {
             return Controller.doLogin(req, res);
           } else {
             return res.render('login', {
