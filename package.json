@@ -24,7 +24,7 @@
     "ping": "= 0.1.7",
     "wake_on_lan": "= 0.0.3",
     "delivery": "= 0.0.3",
-    "duino": "tjanson/duino#gracefulish-detectconnect",
+    "duino": "ni-c/duino#master",
     "piswitch": "^1.0.3"
   }
 }
