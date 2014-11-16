@@ -18,7 +18,7 @@ div.container
             label(for="description") Description (optional):
             input(type="text", name="data[#{i}][description]", placeholder="Temperature", value="#{item.description}")
             label(for="pin") Arduino PIN:
-            input.uppercase(type="text", name="data[#{i}][pin]", placeholder="10", maxlength="2", required="1", value="#{item.pin}", pattern="^A[0-9]|[0-9]{2}$")
+            input.uppercase(type="text", name="data[#{i}][pin]", placeholder="10", maxlength="2", required="1", value="#{item.pin}", pattern="^A[0-9]|[0-9]{1,2}$")
             div.switch
               label(for="method") Method:
               select(name="data[#{i}][method]")
@@ -92,7 +92,7 @@ div.plugin-container.arduino.settings#template(style="display: none;")
   label(for="description") Description (optional):
   input(type="text", name="data[%i%][description]", placeholder="Temperature")
   label(for="pin") Arduino PIN:
-  input.uppercase(type="text", name="data[%i%][pin]", placeholder="10", maxlength="2", required="1", pattern="^A[0-9]|[0-9]{2}$")
+  input.uppercase(type="text", name="data[%i%][pin]", placeholder="10", maxlength="2", required="1", pattern="^A[0-9]|[0-9]{1,2}$")
   div.switch
     label(for="method") Method:
     select(name="data[%i%][method]")
