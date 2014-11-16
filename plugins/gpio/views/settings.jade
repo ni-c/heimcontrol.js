@@ -28,17 +28,31 @@ div.container
               input(type="hidden", name="data[#{i}][direction]", value="#{item.direction}")
             br
             br
-            label(for="pin") GPIO Pin:
+            label(for="pin") physical GPIO Pin number (Wiring Pi no. in parentheses):
             select(name="data[#{i}][pin]")
-              option(disabled="disabled",selected=(item.pin == '0')) Choose PIN
-              option(value="7",selected=(item.pin == '7')) PIN 7
-              option(value="11",selected=(item.pin == '11')) PIN 11
-              option(value="12",selected=(item.pin == '12')) PIN 12
-              option(value="13",selected=(item.pin == '13')) PIN 13
-              option(value="15",selected=(item.pin == '15')) PIN 15
-              option(value="16",selected=(item.pin == '16')) PIN 16
-              option(value="18",selected=(item.pin == '18')) PIN 18
-              option(value="22",selected=(item.pin == '22')) PIN 22
+              option(disabled="disabled",selected=(item.pin == '0')) Choose Pin
+              option(value="7",selected=(item.pin == '7')) Pin 7 (WPi #7)
+              option(value="11",selected=(item.pin == '11')) Pin 11 (WPi #0)
+              option(value="12",selected=(item.pin == '12')) Pin 12 (WPi #1)
+              option(value="13",selected=(item.pin == '13')) Pin 13 (WPi #2)
+              option(value="15",selected=(item.pin == '15')) Pin 15 (WPi #3)
+              option(value="16",selected=(item.pin == '16')) Pin 16 (WPi #4)
+              option(value="18",selected=(item.pin == '18')) Pin 18 (WPi #5)
+              option(value="19",selected=(item.pin == '19')) Pin 19 "MOSI" (WPi #12)
+              option(value="21",selected=(item.pin == '21')) Pin 21 "MISO" (WPi #13)
+              option(value="22",selected=(item.pin == '22')) Pin 22 (WPi #6)
+              option(value="23",selected=(item.pin == '23')) Pin 23 "SCKL" (WPi #14)
+              option(value="24",selected=(item.pin == '24')) Pin 24 "CE0" (WPi #10)
+              option(value="26",selected=(item.pin == '26')) Pin 26 "CE1" (WPi #11)
+              option(value="29",selected=(item.pin == '29')) Pin 29 (WPi #21) [B+ only]
+              option(value="31",selected=(item.pin == '31')) Pin 31 (WPi #22) [B+ only]
+              option(value="32",selected=(item.pin == '32')) Pin 32 (WPi #26) [B+ only]
+              option(value="33",selected=(item.pin == '33')) Pin 33 (WPi #23) [B+ only]
+              option(value="35",selected=(item.pin == '35')) Pin 35 "MISO" (WPi #24) [B+ only]
+              option(value="36",selected=(item.pin == '36')) Pin 36 (WPi #27) [B+ only]
+              option(value="37",selected=(item.pin == '37')) Pin 37 (WPi #25) [B+ only]
+              option(value="38",selected=(item.pin == '38')) Pin 38 "MOSI" (WPi #28) [B+ only]
+              option(value="40",selected=(item.pin == '40')) Pin 40 "SCLK" (WPi #29) [B+ only]
             input(type="hidden", name="data[#{i}][_id]", value="#{item._id}")
             input(type="hidden", name="data[#{i}][value]", value="0")
           
