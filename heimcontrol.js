@@ -173,7 +173,7 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
         // 404 Not found
         app.all('*', Routes.notFound);
 
-      });
+      }, config.plugins.exclude);
     }
   });
 });
