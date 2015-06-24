@@ -1,0 +1,56 @@
+div.container
+  h1 Settings
+  h2 DS18X20
+  p The plugin requires
+  pre sudo modprobe w1-therm
+  - if (typeof(success) !== 'undefined')
+    div.alert.alert-success.fade.in
+      button.close(type="button", data-dismiss="alert") ×
+      =success
+  div.row16
+    form(action="/settings/ds18x20", method="post")
+      div#ds18x20
+        each item, i in items
+          div.plugin-container.ds18x20.settings(id="#{item._id}")
+            button.btn.btn-danger.pull-right.delete(type="button",data-delete="#{item._id}")
+              i.icon-trash.icon-large
+              |  Delete
+
+            label(for="input") Input Device:
+            select(name="data[#{i}][input]")
+              each input in meta.devices
+                option(value="#{input}",selected=(item.input == input)) #{input}
+
+            label(for="interval") Interval in seconds:
+            input(type="text", name="data[#{i}][interval]", placeholder="10", required="1", value="#{item.interval}", pattern="^[0-9]*$")
+
+            label(for="description") Description (optional):
+            input(type="text", name="data[#{i}][description]", placeholder="Temperature Sensor", value=(item.description ? item.description : ''))
+
+            input(type="hidden", name="data[#{i}][_id]", value="#{item._id}")
+
+      p.ds18x20.buttons
+        button.btn.btn-info.add(data-target="ds18x20", type="button")
+          i.icon-plus.icon-large
+            |  Add
+
+        button.btn.btn-success.save(type="submit") 
+          i.icon-save.icon-large
+            |  Save
+
+input(type="hidden", name="iterator", id="iterator", value=(items.length))
+
+div.plugin-container.ds18x20.settings#template(style="display: none;")
+  button.btn.btn-danger.pull-right.delete(type="button")
+    i.icon-trash.icon-large
+      |  Delete
+
+  label(for="input") Input Device:
+  select(name="data[%i%][input]")
+    each input in meta.devices
+      option(value="#{input}") #{input}
+  label(for="interval") Interval in seconds:
+  input(type="text", name="data[%i%][interval]", placeholder="10", required="1", pattern="^[0-9]*$")
+  label(for="description") Description (optional):
+  input(type="text", name="data[%i%][description]", placeholder="Temperature Sensor")
+
