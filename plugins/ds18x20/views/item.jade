@@ -1,0 +1,11 @@
+each item in items
+  div.plugin-container.ds18x20
+    p.description
+      strong #{item.description || "Temperature Sensor"}
+      span.muted  (#{item.input})
+
+    div.large
+      p
+        span.value(data-id="#{item._id}") #{item.value || "Loading..."}
+        | &deg; C
+
