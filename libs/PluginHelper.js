@@ -47,11 +47,19 @@ define([ 'fs' ], function( fs ) {
    * @param {String} callback.err null if no error occured, otherwise the error
    * @param {Object} callback.result An array containing the plugins
    */
-  PluginHelper.prototype.getPluginList = function(callback) {
+  PluginHelper.prototype.getPluginList = function(callback, excludes) {
     var pluginList = [];
     var that = this;
     var files = fs.readdirSync(that.pluginFolder);
     var requirejs = require('requirejs');
+
+    // Remove excluded plugins from the files list
+    for(key in excludes) {
+      var plugin = excludes[key];
+      var index = files.indexOf(plugin);
+      if( index > -1)
+          files.splice(index, 1);
+    }
 
     function requireRecursive(files) {
       var file = files.shift(); // results in alphabetical order
