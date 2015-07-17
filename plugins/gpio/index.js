@@ -76,6 +76,10 @@ define([ 'pi-gpio' ], function(gpio) {
         collection.find({
           direction: 'input'
         }).toArray(function(err, result) {
+          if (err) {
+            console.log(err);
+            return;
+          }
           result.forEach(function(item) {
             gpio.setDirection(parseInt(item.pin), "input", function(err) {
               gpio.read(parseInt(item.pin), function(err, value) {
