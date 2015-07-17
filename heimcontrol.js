@@ -141,6 +141,9 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       });
 
       // Routes
+      var isAuthorizedRoute = config.authentication == "false" ?
+	Routes.noAuthentication : Routes.isAuthorized;
+
       app.get('/register', Routes.showRegister);
       app.post('/register', Routes.doRegister);
 
@@ -148,18 +151,18 @@ requirejs([ 'http', 'connect', 'mongodb', 'path', 'express', 'node-conf', 'socke
       app.post('/login', Routes.doLogin);
       app.post('/api/login', Routes.createAuthToken);
 
-      app.get('/', Routes.isAuthorized, Routes.index);
+      app.get('/', isAuthorizedRoute, Routes.index);
 
-      app.get('/settings', Routes.isAuthorized, Routes.settings);
-      app.post('/settings/password', Routes.isAuthorized, Routes.changePassword);
-      app.post('/settings/user/create', Routes.isAuthorized, Routes.createUser);
-      app.get('/settings/user/delete/:email', Routes.isAuthorized, Routes.deleteUser);
-      app.post('/settings/theme', Routes.isAuthorized, Routes.changeTheme);
+      app.get('/settings', isAuthorizedRoute, Routes.settings);
+      app.post('/settings/password', isAuthorizedRoute, Routes.changePassword);
+      app.post('/settings/user/create', isAuthorizedRoute, Routes.createUser);
+      app.get('/settings/user/delete/:email', isAuthorizedRoute, Routes.deleteUser);
+      app.post('/settings/theme', isAuthorizedRoute, Routes.changeTheme);
 
-      app.all('/api/:plugin/:method?', Routes.isAuthorized, Routes.api, Routes.notFound);
+      app.all('/api/:plugin/:method?', isAuthorizedRoute, Routes.api, Routes.notFound);
       
-      app.get('/settings/:plugin', Routes.isAuthorized, Routes.settings, Routes.notFound);
-      app.post('/settings/:plugin', Routes.isAuthorized, Routes.saveSettings, Routes.notFound);
+      app.get('/settings/:plugin', isAuthorizedRoute, Routes.settings, Routes.notFound);
+      app.post('/settings/:plugin', isAuthorizedRoute, Routes.saveSettings, Routes.notFound);
 
       app.get('/logout', Routes.logout);
       

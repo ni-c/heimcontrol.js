@@ -767,6 +767,18 @@ define([ 'crypto', 'cookie', 'fs' ], function(crypto, cookie, fs) {
     }
   };
 
+  /**
+   * Don't do any authorization check.
+   *
+   * @method noAuthentication 
+   * @param {Object} req The request
+   * @param {Object} res The response
+   * @param {Object} next The next route
+   */
+  Controller.noAuthentication = function(req, res, next) {
+    next();
+  };
+
   var exports = Controller;
 
   return exports;
